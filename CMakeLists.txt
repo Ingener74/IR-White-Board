@@ -7,5 +7,8 @@ set(IRWB_REPO_ROOT ${CMAKE_CURRENT_LIST_DIR})
 print_repo_root("main cmake")
 print_current_dir()
 
+# 3rdparty's
 add_subdirectory(3rdparty)
+
+# apps
 add_subdirectory(apps)
