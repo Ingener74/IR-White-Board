@@ -8,14 +8,14 @@
 
 #include <iostream>
 
-#include <qtgui/qwidget.h>
-#include <qtgui/qapplication.h>
-#include <qtcore/qstring.h>
-#include <QtCore/qsharedmemory.h>
-
-#include "C_MainWindow.h"
-
+// #include <qtgui/qwidget.h>
+// #include <qtgui/qapplication.h>
+// #include <qtcore/qstring.h>
+// #include <QtCore/qsharedmemory.h>
+// #include "C_MainWindow.h"
 //#include "md5.h"
+
+
 
 using namespace std;
 
