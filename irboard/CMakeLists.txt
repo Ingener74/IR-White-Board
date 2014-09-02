@@ -27,7 +27,7 @@ set(PROJECT_NAME irboard)
 project(${PROJECT_NAME})
 
 qt5_add_resources(RES_SOURCES
-    res/MainResource.qrc
+    resorces/MainResource.qrc
 )
 qt5_wrap_ui(UI_SOURCES 
     ui/AboutWindow.ui
@@ -35,18 +35,18 @@ qt5_wrap_ui(UI_SOURCES
     ui/SettingsWindow.ui
 )
 set(SOURCES
-#    src/C_AboutWindow.cpp
+    src/AboutWindow.cpp
 #    src/C_CalibrationWindow.cpp
 #    src/C_CoordinateTransform.cpp
 #    src/C_DisplayMouse.cpp
-#    src/C_MainWindow.cpp
+    src/MainWindow.cpp
 #    src/C_RawMouse.cpp
-#    src/C_SettingsWindow.cpp
+   src/SettingsWindow.cpp
 #    src/matrix.cpp
     src/SmartPen.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
 
 # set(LIBS
 # )

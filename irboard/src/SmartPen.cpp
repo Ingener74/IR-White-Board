@@ -6,35 +6,30 @@
 // Description :
 //============================================================================
 
-#include <iostream>
-
 // #include <qtgui/qwidget.h>
 // #include <qtgui/qapplication.h>
 // #include <qtcore/qstring.h>
 // #include <QtCore/qsharedmemory.h>
-// #include "C_MainWindow.h"
-//#include "md5.h"
 
-
+#include <MainWindow.h>
+#include <memory>
+#include <QtWidgets/QApplication>
 
 using namespace std;
 
-		QApplication*					pApplication	= 0;
-		C_MainWindow*					pMainWindow		= 0;
-
-int main( int argc, char* argv[]){
-
+int main(int argc, char* argv[])
+{
 //	QSharedMemory oneInstance("SmartPen_SharedForOneInstance");
 //	if(!oneInstance.create(512, QSharedMemory::ReadWrite)){
 //		return 0;
 //	}
 
-	pApplication = new QApplication(argc, argv);
+    auto app = make_shared<QApplication>(argc, argv);
 
-	pMainWindow = new C_MainWindow;
-	pMainWindow->setWindowFlags(pMainWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
-	pMainWindow->setWindowFlags(pMainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
-	pMainWindow->show();
+    auto mainWindow = make_shared<MainWindow>(app);
+    mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
+    mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
+    mainWindow->show();
 
-	return pApplication->exec();
+    return app->exec();
 }

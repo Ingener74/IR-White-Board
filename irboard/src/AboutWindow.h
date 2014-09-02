@@ -8,21 +8,22 @@
 #ifndef C_ABOUTWINDOW_H_
 #define C_ABOUTWINDOW_H_
 
-#include <QtGui/qwidget.h>
+#include <QtWidgets/QWidget>
 #include <QtGui/QCloseEvent>
 
-#include "ui_AboutWindow.h"
+#include <ui_AboutWindow.h>
 
-class C_AboutWindow: public QWidget {
-	Q_OBJECT
+class AboutWindow: public QWidget
+{
+Q_OBJECT
 public:
-	C_AboutWindow();
-	virtual ~C_AboutWindow();
+    AboutWindow();
+    virtual ~AboutWindow();
 
-	void closeEvent( QCloseEvent* pEvent );
+    void closeEvent(QCloseEvent* pEvent);
 
 private:
-	Ui::formAbout ui;
+    Ui::formAbout _ui;
 };
 
 #endif /* C_ABOUTWINDOW_H_ */
