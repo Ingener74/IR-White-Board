@@ -6,29 +6,22 @@
 // Description :
 //============================================================================
 
-#include <MainWindow.h>
-#include <QtWidgets/QSystemTrayIcon>
-#include <QtGui/QIcon>
 #include <QtWidgets/QMenu>
-#include <QtGui/QCloseEvent>
-#include <QtWidgets/QGraphicsScene>
-#include <QtWidgets/QGraphicsPixmapItem>
-#include <QtGui/QPixmap>
 #include <QtWidgets/QMessageBox>
-
 #include <QtWidgets/QDesktopWidget>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QSystemTrayIcon>
+#include <QtWidgets/QGraphicsPixmapItem>
 
-#include <QtCore/QTextCodec>
-#include <QtCore/QString>
+#include <QtGui/QIcon>
+#include <QtGui/QPixmap>
+#include <QtGui/QCloseEvent>
+
 #include <QtCore/QTimer>
+#include <QtCore/QString>
+#include <QtCore/QTextCodec>
 
-//#include "C_SettingsWindow.h"
-//#include "C_AboutWindow.h"
-//#include "C_CalibrationWindow.h"
-//
-//#include "C_RawMouse.h"
-//
-//#include "C_CoordinateTransform.h"
+#include <MainWindow.h>
 
 using namespace std;
 
@@ -52,55 +45,64 @@ MainWindow::MainWindow(shared_ptr<QApplication> app, QWidget *parent /*= 0*/, Qt
 //
 //	QTextCodec *codec = QTextCodec::codecForName("cp1251");
 //	QTextCodec::setCodecForTr(codec);
-//
-//	pMainWindow = this;
-//
-//	pSettingsWindow = new C_SettingsWindow();
-////	pSettingsWindow->windowFlags(pSettingsWindow->windowFlags() &~(Qt::WindowMinimizeButtonHint));
-////	pSettingsWindow->windowFlags(pSettingsWindow->windowFlags() &~(Qt::WindowMaximizeButtonHint));
-//
+
+    _settingsWindow = make_shared<SettingsWindow>();
+//	pSettingsWindow->windowFlags(pSettingsWindow->windowFlags() &~(Qt::WindowMinimizeButtonHint));
+//	pSettingsWindow->windowFlags(pSettingsWindow->windowFlags() &~(Qt::WindowMaximizeButtonHint));
+
 //	pAboutWindow = new C_AboutWindow();
 //	pCalibrationWindow = new C_CalibrationWindow();
+
+	_systemTrayMenu = make_shared<QMenu>();
+
+    _systemTrayMenuRestore = shared_ptr<QAction>(
+            _systemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/restore.png")), QObject::tr("Restore")));
+
+    _systemTrayMenu->addSeparator();
+
+    _systemTrayMenuCalibration = shared_ptr<QAction>(
+            _systemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/calibrate.png")), QObject::tr("Calibrate")));
+    _systemTrayMenuSettings = shared_ptr<QAction>(
+            _systemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/cogwheel.png")), QObject::tr("Settings")));
+
+    _systemTrayMenu->addSeparator();
+
+    _systemTrayMenuAbout = shared_ptr<QAction>(
+            _systemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/help.png")), QObject::tr("About")));
+
+    _systemTrayMenu->addSeparator();
+
+    _systemTrayMenuClose = shared_ptr<QAction>(
+            _systemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/close.png")), QObject::tr("Close")));
+
+    QIcon oTrayIcon;
+    oTrayIcon.addFile(QString::fromUtf8(":/main/webcam.png"), QSize(), QIcon::Normal, QIcon::Off);
+    _systemTray = make_shared<QSystemTrayIcon>(oTrayIcon);
+    _systemTray->setContextMenu(_systemTrayMenu.get());
+    _systemTray->show();
+
+//	QObject::connect(this,								SIGNAL(signalPulledOut()),			this,					SLOT(slotPulledOut())			);
 //
-//	pSystemTrayMenu = new QMenu();
+//	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		this,					SLOT(slotSystemNoCamera())		);
+//	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		pSettingsWindow,		SLOT(slotSettingsNoCamera())	);
+
+    QObject::connect(_ui.ButtonSettings,                SIGNAL(clicked()),               _settingsWindow.get(),     SLOT(show())                    );
+    QObject::connect(_systemTrayMenuSettings.get(),     SIGNAL(triggered()),             _settingsWindow.get(),     SLOT(show())                    );
+
+    QObject::connect(_systemTrayMenuClose.get(),        SIGNAL(triggered()),             this,                      SLOT(close())                   );
+
+    QObject::connect(_ui.ButtonToTray,                  SIGNAL(clicked()),               this,                      SLOT(hide())                    );
+    QObject::connect(_systemTrayMenuRestore.get(),      SIGNAL(triggered()),             this,                      SLOT(show())                    );
+
+//	QObject::connect(ui.ButtonCalibrate,					SIGNAL(clicked()),					this,					SLOT(Calibration())				);
+//	QObject::connect(pSystemTrayMenuCalibration,			SIGNAL(triggered()),				this,					SLOT(Calibration())				);
 //
-//	pSystemTrayMenuRestore		= pSystemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/restore.png")), QObject::tr("������������ ������� ����"));
-//	pSystemTrayMenu->addSeparator();
-//	pSystemTrayMenuCalibration	= pSystemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/calibrate.png")), QObject::tr("����������"));
-//	pSystemTrayMenuSettings		= pSystemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/cogwheel.png")), QObject::tr("���������"));
-//	pSystemTrayMenu->addSeparator();
-//	pSystemTrayMenuAbout		= pSystemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/help.png")), QObject::tr("� ���������..."));
-//	pSystemTrayMenu->addSeparator();
-//	pSystemTrayMenuClose		= pSystemTrayMenu->addAction(QIcon(QString::fromUtf8(":/main/close.png")), QObject::tr("������� ���������"));
+//	QObject::connect(pSystemTrayMenuAbout,				SIGNAL(triggered()),				pAboutWindow,			SLOT(show())					);
 //
-//	QIcon oTrayIcon;
-//	oTrayIcon.addFile(QString::fromUtf8(":/main/webcam.png"), QSize(), QIcon::Normal, QIcon::Off);
-//	pSystemTray = new QSystemTrayIcon(oTrayIcon);
-//	pSystemTray->setContextMenu(pSystemTrayMenu);
-//	pSystemTray->show();
+//	QObject::connect(pSettingsWindow,					SIGNAL(signalSettingsCaptureNoExist()),this,					SLOT(slotSystemNoCamera())		);
 //
-//	QObject::connect(	this,								SIGNAL(signalPulledOut()),			this,					SLOT(slotPulledOut())			);
-//
-//	QObject::connect(	this,								SIGNAL(signalSystemNoCamera()),		this,					SLOT(slotSystemNoCamera())		);
-//	QObject::connect(	this,								SIGNAL(signalSystemNoCamera()),		pSettingsWindow,		SLOT(slotSettingsNoCamera())	);
-//
-//	QObject::connect(	ui.ButtonSettings,					SIGNAL(clicked()),					pSettingsWindow,		SLOT(show())					);
-//	QObject::connect(	pSystemTrayMenuSettings,			SIGNAL(triggered()),				pSettingsWindow,		SLOT(show())					);
-//
-//	QObject::connect(	pSystemTrayMenuClose,				SIGNAL(triggered()),				this,					SLOT(close())					);
-//
-//	QObject::connect(	ui.ButtonToTray,					SIGNAL(clicked()),					this,					SLOT(hide())					);
-//	QObject::connect(	pSystemTrayMenuRestore,				SIGNAL(triggered()),				this,					SLOT(show())					);
-//
-//	QObject::connect(	ui.ButtonCalibrate,					SIGNAL(clicked()),					this,					SLOT(Calibration())				);
-//	QObject::connect(	pSystemTrayMenuCalibration,			SIGNAL(triggered()),				this,					SLOT(Calibration())				);
-//
-//	QObject::connect(	pSystemTrayMenuAbout,				SIGNAL(triggered()),				pAboutWindow,			SLOT(show())					);
-//
-//	QObject::connect(	pSettingsWindow,					SIGNAL(signalSettingsCaptureNoExist()),this,					SLOT(slotSystemNoCamera())		);
-//
-//	QObject::connect(	this,								SIGNAL(signalAllOk()),				this,					SLOT(slotSystemAllOk())			);
-//	QObject::connect(	this,								SIGNAL(signalCalibrationIsNeeded()),this,					SLOT(slotSystemNotCalibrated())	);
+//	QObject::connect(this,								SIGNAL(signalAllOk()),				this,					SLOT(slotSystemAllOk())			);
+//	QObject::connect(this,								SIGNAL(signalCalibrationIsNeeded()),this,					SLOT(slotSystemNotCalibrated())	);
 //
 //	pRawMouse = new C_RawMouse();
 //
@@ -143,10 +145,9 @@ void MainWindow::closeEvent( QCloseEvent* pEvent )
 //		plicense->close();
 //	if(pCoordinateTransform!=0)
 //		pCoordinateTransform->SaveTransformationMatrix(wstring(L"tm.data"));
-//	if(pSettingsWindow!=0)
-//		pSettingsWindow->close();
-//	if(pSystemTray!=0)
-//		pSystemTray->hide();
+
+    _settingsWindow->close();
+    _systemTray->hide();
 }
 
 void MainWindow::timerEvent( QTimerEvent* pEvent ){

@@ -27,7 +27,7 @@ set(PROJECT_NAME irboard)
 project(${PROJECT_NAME})
 
 qt5_add_resources(RES_SOURCES
-    resorces/MainResource.qrc
+    resources/MainResource.qrc
 )
 qt5_wrap_ui(UI_SOURCES 
     ui/AboutWindow.ui

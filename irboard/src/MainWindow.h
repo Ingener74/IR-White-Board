@@ -2,12 +2,16 @@
 #ifndef MAINWINDOW_H_
 #define MAINWINDOW_H_
 
-#include <SettingsWindow.h>
-#include <QtWidgets/QMainWindow>
+#include <memory>
+
 #include <QtCore/QTimer>
 
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QSystemTrayIcon>
+
 #include <ui_MainWindow.h>
-#include <memory>
+
+#include <SettingsWindow.h>
 
 //#include <opencv2/highgui/highgui.hpp>
 //#include <opencv2/imgproc/imgproc.hpp>
@@ -48,28 +52,28 @@ signals:
     void signalPulledOut();
 
 private:
-    Ui::MainWindow _ui;
+    Ui::MainWindow                   _ui;
 
-    std::shared_ptr<QApplication> _app;
+    std::shared_ptr<QApplication>    _app;
 
-//    QSystemTrayIcon*                pSystemTray                 = 0;
-//    QMenu*                          pSystemTrayMenu             = 0;
-//
-//    QAction*                        pSystemTrayMenuRestore      = 0;
-//    QAction*                        pSystemTrayMenuCalibration  = 0;
-//    QAction*                        pSystemTrayMenuSettings     = 0;
-//    QAction*                        pSystemTrayMenuAbout        = 0;
-//    QAction*                        pSystemTrayMenuClose        = 0;
-//
+    std::shared_ptr<QSystemTrayIcon> _systemTray;
+    std::shared_ptr<QMenu>           _systemTrayMenu;
+
+    std::shared_ptr<QAction>         _systemTrayMenuRestore;
+    std::shared_ptr<QAction>         _systemTrayMenuCalibration;
+    std::shared_ptr<QAction>         _systemTrayMenuSettings;
+    std::shared_ptr<QAction>         _systemTrayMenuAbout;
+    std::shared_ptr<QAction>         _systemTrayMenuClose;
+
     /** Settings window */
-    std::shared_ptr<SettingsWindow> _settingsWindow;
-    bool                            _bshown = false;
-//
-//    // capture system data
+    std::shared_ptr<SettingsWindow>  _settingsWindow;
+    bool                             _bshown = false;
+
+    // capture system data
 //    VideoCapture*                   pVideoCapture               = 0;
 //    bool                            captureExist                = false;
 //    Mat                             inputImage;
-//
+
 //    // pulled out checking
 //    C_PulledOutOfCamera             poutcheck;
 //    // end pulled out checking
