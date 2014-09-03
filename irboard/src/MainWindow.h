@@ -13,6 +13,8 @@
 
 #include <SettingsWindow.h>
 
+#include "../../irboard/src/CalibrationWindow.h"
+
 //#include <opencv2/highgui/highgui.hpp>
 //#include <opencv2/imgproc/imgproc.hpp>
 //#include <opencv2/core/core.hpp>
@@ -52,22 +54,21 @@ signals:
     void signalPulledOut();
 
 private:
-    Ui::MainWindow                   _ui;
+    Ui::MainWindow                      _ui;
 
-    std::shared_ptr<QApplication>    _app;
+    std::shared_ptr<QApplication>       _app;
 
-    std::shared_ptr<QSystemTrayIcon> _systemTray;
-    std::shared_ptr<QMenu>           _systemTrayMenu;
+    std::shared_ptr<QSystemTrayIcon>    _systemTray;
+    std::shared_ptr<QMenu>              _systemTrayMenu;
 
-    std::shared_ptr<QAction>         _systemTrayMenuRestore;
-    std::shared_ptr<QAction>         _systemTrayMenuCalibration;
-    std::shared_ptr<QAction>         _systemTrayMenuSettings;
-    std::shared_ptr<QAction>         _systemTrayMenuAbout;
-    std::shared_ptr<QAction>         _systemTrayMenuClose;
+    std::shared_ptr<QAction>            _systemTrayMenuRestore;
+    std::shared_ptr<QAction>            _systemTrayMenuCalibration;
+    std::shared_ptr<QAction>            _systemTrayMenuSettings;
+    std::shared_ptr<QAction>            _systemTrayMenuAbout;
+    std::shared_ptr<QAction>            _systemTrayMenuClose;
 
     /** Settings window */
-    std::shared_ptr<SettingsWindow>  _settingsWindow;
-    bool                             _bshown = false;
+    std::shared_ptr<SettingsWindow>     _settingsWindow;
 
     // capture system data
 //    VideoCapture*                   pVideoCapture               = 0;
@@ -99,7 +100,7 @@ private:
 //    C_AboutWindow*                  pAboutWindow                = 0;
 //
 //    // calibration window data
-//    C_CalibrationWindow*            pCalibrationWindow          = 0;
+    std::shared_ptr<CalibrationWindow> _calibrationWindow;
 //    Size_<unsigned int>             calibrationPoints;
 //
 //    // mouse control data
