@@ -12,8 +12,7 @@
 #include <ui_MainWindow.h>
 
 #include <SettingsWindow.h>
-
-#include "../../irboard/src/CalibrationWindow.h"
+#include <CalibrationWindow.h>
 
 //#include <opencv2/highgui/highgui.hpp>
 //#include <opencv2/imgproc/imgproc.hpp>

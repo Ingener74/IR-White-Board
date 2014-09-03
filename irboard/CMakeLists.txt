@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
 
+# find OpenCV
+find_package(OpenCV 
+    COMPONENTS 
+        core 
+        imgproc 
+        highgui
+)
+
 # find Qt5
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -11,6 +19,9 @@ include_directories(
     ${Qt5Widgets_INCLUDES}
     ${Qt5Core_INCLUDES}
     ${Qt5OpenGL_INCLUDES}
+
+    ${OpenCV_INCLUDE_DIRS}
+
     src
 )
 
@@ -30,12 +41,10 @@ qt5_add_resources(RES_SOURCES
     resources/MainResource.qrc
 )
 qt5_wrap_ui(UI_SOURCES 
-    ui/AboutWindow.ui
     ui/MainWindow.ui
     ui/SettingsWindow.ui
 )
 set(SOURCES
-    src/AboutWindow.cpp
     src/CalibrationWindow.cpp
 #    src/C_CoordinateTransform.cpp
 #    src/C_DisplayMouse.cpp
@@ -48,9 +57,10 @@ set(SOURCES
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
 
-# set(LIBS
-# )
-# target_link_libraries(${PROJECT_NAME} ${LIBS})
+set(LIBS
+    ${OpenCV_LIBRARIES} 
+)
+target_link_libraries(${PROJECT_NAME} ${LIBS})
 qt5_use_modules(${PROJECT_NAME} Widgets Core OpenGL)
 
 # install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
