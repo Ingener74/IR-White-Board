@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>625</width>
-    <height>491</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Настройки</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="MainResource.qrc">
+   <iconset resource="../resources/MainResource.qrc">
     <normaloff>:/main/main.png</normaloff>:/main/main.png</iconset>
   </property>
   <property name="toolTip">
@@ -34,7 +34,7 @@
        <string/>
       </property>
       <attribute name="icon">
-       <iconset resource="MainResource.qrc">
+       <iconset resource="../resources/MainResource.qrc">
         <normaloff>:/main/webcam.png</normaloff>:/main/webcam.png</iconset>
       </attribute>
       <attribute name="title">
@@ -93,7 +93,7 @@
               <string>Оригинальное изображение</string>
              </property>
              <property name="icon">
-              <iconset resource="MainResource.qrc">
+              <iconset resource="../resources/MainResource.qrc">
                <normaloff>:/main/webcam.png</normaloff>:/main/webcam.png</iconset>
              </property>
             </item>
@@ -102,7 +102,7 @@
               <string>Обработанное изображение</string>
              </property>
              <property name="icon">
-              <iconset resource="MainResource.qrc">
+              <iconset resource="../resources/MainResource.qrc">
                <normaloff>:/main/pictures.png</normaloff>:/main/pictures.png</iconset>
              </property>
             </item>
@@ -148,7 +148,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="MainResource.qrc">:/main/no_web_camera_320240.png</pixmap>
+          <pixmap resource="../resources/MainResource.qrc">:/main/no_web_camera_320240.png</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -159,7 +159,7 @@
      </widget>
      <widget class="QWidget" name="TabOtherSettings">
       <attribute name="icon">
-       <iconset resource="MainResource.qrc">
+       <iconset resource="../resources/MainResource.qrc">
         <normaloff>:/main/main.png</normaloff>:/main/main.png</iconset>
       </attribute>
       <attribute name="title">
@@ -247,7 +247,7 @@
         <string>Закрыть</string>
        </property>
        <property name="icon">
-        <iconset resource="MainResource.qrc">
+        <iconset resource="../resources/MainResource.qrc">
          <normaloff>:/main/apply.png</normaloff>:/main/apply.png</iconset>
        </property>
        <property name="iconSize">
@@ -263,6 +263,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="../resources/MainResource.qrc"/>
   <include location="MainResource.qrc"/>
  </resources>
  <connections/>
