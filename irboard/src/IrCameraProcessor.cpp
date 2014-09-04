@@ -12,23 +12,31 @@
 #include <IrCameraProcessor.h>
 
 using namespace std;
+using namespace cv;
 
-IrCameraProcessor::IrCameraProcessor(IrSpotReceiver irSpot) :
+IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver irSpot, ImageOutput imageOutput) :
         _irSpot(irSpot ? irSpot : throw invalid_argument("ir spot receiver empty"))
 {
+    auto sc = sensorCreator ? sensorCreator : throw invalid_argument("sensor creator is empty");
     promise<exception_ptr> start_promise;
 
     auto start = start_promise.get_future();
 
-    _thread = thread([this](promise<exception_ptr> &start)
+    _thread = thread([this, sc, imageOutput](promise<exception_ptr> &start)
     {
         try
         {
+            auto sensor = sc();
+
+            if(!sensor->isOpened()) throw std::runtime_error("blabla");
 
             start.set_exception(exception_ptr());
 
             for(;;)
             {
+                std::shared_ptr<Mat> image;
+
+                if(imageOutput)imageOutput(image);
 
                 this_thread::sleep_for(chrono::milliseconds(30));
                 _irSpot(0.5, 0.5);
@@ -44,7 +52,7 @@ IrCameraProcessor::IrCameraProcessor(IrSpotReceiver irSpot) :
     _thread.detach();
 
     start.wait();
-    if (start) rethrow_exception(start.get());
+    if (start.get()) rethrow_exception(start.get());
 }
 
 IrCameraProcessor::~IrCameraProcessor()

@@ -507,14 +507,6 @@ void MainWindow::slotPulledOut()
 {
 }
 
-
-
-
-
-
-
-
-
-
-
-
+void MainWindow::putImage(std::shared_ptr<cv::Mat>)
+{
+}

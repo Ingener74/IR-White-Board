@@ -11,9 +11,12 @@
 
 #include <QtWidgets/QApplication>
 
+#include <IrCameraProcessor.h>
 #include <MainWindow.h>
 
 using namespace std;
+using namespace std::placeholders;
+using namespace cv;
 
 int main(int argc, char* argv[])
 {
@@ -25,6 +28,17 @@ int main(int argc, char* argv[])
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
         mainWindow->show();
+
+        auto irCameraProcessor = make_shared<IrCameraProcessor>(
+        []()
+        {
+            return make_shared<VideoCapture>(0);
+        },
+        [](double x, double y)
+        {
+            cout << "x = " << x << ", y = " << y << endl;
+        },
+        bind(&MainWindow::putImage, mainWindow.get(), _1));
 
         return app->exec();
     }

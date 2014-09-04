@@ -14,11 +14,9 @@
 #include <SettingsWindow.h>
 #include <CalibrationWindow.h>
 
-//#include <opencv2/highgui/highgui.hpp>
-//#include <opencv2/imgproc/imgproc.hpp>
-//#include <opencv2/core/core.hpp>
-
-//#include "C_DisplayMouse.h"
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core.hpp>
 
 //////////////////////////////////////////////////////////////////////////
 class MainWindow: public QMainWindow
@@ -33,6 +31,8 @@ public:
 
     void closeEvent(QCloseEvent* pEvent);
     void timerEvent(QTimerEvent* pEvent);
+
+    void putImage(std::shared_ptr<cv::Mat>);
 
 public slots:
     void Calibration(void);
@@ -94,9 +94,6 @@ private:
 //
 //    int                             captureTimer                = 0;
 //    int                             findCaptureTimer            = 0;
-//
-//    // about window data
-//    C_AboutWindow*                  pAboutWindow                = 0;
 //
 //    // calibration window data
     std::shared_ptr<CalibrationWindow> _calibrationWindow;

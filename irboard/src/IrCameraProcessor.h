@@ -11,12 +11,18 @@
 #include <thread>
 #include <functional>
 
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
+using SensorCreator = std::function<std::shared_ptr<cv::VideoCapture>()>;
 using IrSpotReceiver = std::function<void (double, double)>;
+using ImageOutput = std::function<void(std::shared_ptr<cv::Mat>)>;
 
 class IrCameraProcessor
 {
 public:
-    IrCameraProcessor(IrSpotReceiver);
+    IrCameraProcessor(SensorCreator, IrSpotReceiver, ImageOutput = ImageOutput());
     virtual ~IrCameraProcessor();
 
 private:
