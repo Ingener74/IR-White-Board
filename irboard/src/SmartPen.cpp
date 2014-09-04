@@ -78,21 +78,37 @@ public:
     }
 };
 
+
+/*
+ *  *------------------*    *----------------------*
+ *  |                  |    |                      |
+ *  |                  |    |                      |
+ *  |                  |    |                      |
+ * -|  VideoCapture    |--->|  IR Video Processor  |--->
+ *  |                  |    |                      |
+ *  |                  |    |                      |
+ *  |                  |    |                      |
+ *  *------------------*    *----------------------*
+ *
+ */
+
+
 int main(int argc, char* argv[])
 {
     try
     {
         auto app = make_shared<QApplication>(argc, argv);
 
-//        auto mainWindow = make_shared<MainWindow>(app);
-//        mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
-//        mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
-//        mainWindow->show();
+        auto mainWindow = make_shared<MainWindow>(app);
+        mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
+        mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
+        mainWindow->show();
 
         auto irCameraProcessor = make_shared<IrCameraProcessor>([]()
         {
             return make_shared</*VideoCapture*/VideoCaptureMock>(0);
-        }, [](double x, double y)
+        },
+        [](double x, double y)
         {
             cout << "x = " << x << ", y = " << y << endl;
         }, /*bind(&MainWindow::putImage, mainWindow.get(), _1)*/
