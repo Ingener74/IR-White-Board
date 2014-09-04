@@ -17,7 +17,7 @@
 
 using SensorCreator = std::function<std::shared_ptr<cv::VideoCapture>()>;
 using IrSpotReceiver = std::function<void (double, double)>;
-using ImageOutput = std::function<void(std::shared_ptr<cv::Mat>)>;
+using ImageOutput = std::function<void(cv::Mat)>;
 
 class IrCameraProcessor
 {

@@ -32,7 +32,7 @@ public:
     void closeEvent(QCloseEvent* pEvent);
     void timerEvent(QTimerEvent* pEvent);
 
-    void putImage(std::shared_ptr<cv::Mat>);
+    void putImage(cv::Mat);
 
 public slots:
     void Calibration(void);

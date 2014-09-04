@@ -34,7 +34,9 @@ IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver
 
             for(;;)
             {
-                std::shared_ptr<Mat> image;
+                Mat image;
+
+                *sensor >> image;
 
                 if(imageOutput)imageOutput(image);
 
