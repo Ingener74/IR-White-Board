@@ -16,7 +16,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 using SensorCreator = std::function<std::shared_ptr<cv::VideoCapture>()>;
-using IrSpotReceiver = std::function<void (double, double)>;
+using IrSpotReceiver = std::function<void (int, int)>;
 using ImageOutput = std::function<void(cv::Mat)>;
 
 class IrCameraProcessor

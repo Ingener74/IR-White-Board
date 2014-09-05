@@ -108,14 +108,14 @@ int main(int argc, char* argv[])
         {
             return make_shared</*VideoCapture*/VideoCaptureMock>(0);
         },
-        [](double x, double y)
+        [](int x, int y)
         {
             cout << "x = " << x << ", y = " << y << endl;
-        }, /*bind(&MainWindow::putImage, mainWindow.get(), _1)*/
-        [](Mat image)
+        }, bind(&MainWindow::putImage, mainWindow.get(), _1)
+        /*[](Mat image)
         {
             cout << image.rows << " x " << image.cols << endl;
-        });
+        }*/);
 
         return app->exec();
     }

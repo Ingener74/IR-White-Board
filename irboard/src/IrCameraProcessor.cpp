@@ -18,8 +18,8 @@ IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver
         _irSpot(irSpot ? irSpot : throw invalid_argument("ir spot receiver empty"))
 {
     auto sc = sensorCreator ? sensorCreator : throw invalid_argument("sensor creator is empty");
-    promise<exception_ptr> start_promise;
 
+    promise<exception_ptr> start_promise;
     auto start = start_promise.get_future();
 
     _thread = thread([this, sc, imageOutput](promise<exception_ptr> &start)
@@ -41,7 +41,7 @@ IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver
                 if(imageOutput)imageOutput(image);
 
                 this_thread::sleep_for(chrono::milliseconds(30));
-                _irSpot(0.5, 0.5);
+                _irSpot(320, 240);
             }
         }
         catch (exception const & e)

@@ -47,7 +47,7 @@ qt5_wrap_ui(UI_SOURCES
 set(SOURCES
     src/IrCameraProcessor.cpp
     src/CalibrationWindow.cpp
-#    src/C_CoordinateTransform.cpp
+    src/CoordConverter.cpp
 #    src/C_DisplayMouse.cpp
     src/MainWindow.cpp
 #    src/C_RawMouse.cpp

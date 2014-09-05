@@ -6,6 +6,8 @@
 // Description :
 //============================================================================
 
+#include <iostream>
+
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QDesktopWidget>
@@ -507,6 +509,7 @@ void MainWindow::slotPulledOut()
 {
 }
 
-void MainWindow::putImage(cv::Mat)
+void MainWindow::putImage(cv::Mat image)
 {
+    cout << "MainWindow::putImage(cv::Mat) " << image.cols << " x " << image.rows << endl;
 }
