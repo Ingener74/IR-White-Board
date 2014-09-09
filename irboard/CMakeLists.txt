@@ -47,13 +47,11 @@ qt5_wrap_ui(UI_SOURCES
 set(SOURCES
     src/IrCameraProcessor.cpp
     src/CalibrationWindow.cpp
-    src/CoordConverter.cpp
-#    src/C_DisplayMouse.cpp
     src/MainWindow.cpp
-#    src/C_RawMouse.cpp
-   src/SettingsWindow.cpp
-#    src/matrix.cpp
+    src/SettingsWindow.cpp
     src/SmartPen.cpp
+    src/Transformer.cpp
+    src/CoordinateConverter.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})

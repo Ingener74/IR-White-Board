@@ -26,7 +26,7 @@ Q_OBJECT
 public:
     using Ptr = std::shared_ptr<MainWindow>;
 
-    MainWindow(std::shared_ptr<QApplication> app, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    MainWindow(std::shared_ptr<QApplication>, std::shared_ptr<SettingsWindow>, QWidget *parent = 0, Qt::WindowFlags flags = 0);
     virtual ~MainWindow();
 
     void closeEvent(QCloseEvent* pEvent);

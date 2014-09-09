@@ -28,8 +28,11 @@
 using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MainWindow::MainWindow(shared_ptr<QApplication> app, QWidget *parent /*= 0*/, Qt::WindowFlags flags /*= 0 */) :
-        QMainWindow(parent, flags), _app(app)
+MainWindow::MainWindow(shared_ptr<QApplication> app, std::shared_ptr<SettingsWindow> settings,
+        QWidget *parent /*= 0*/, Qt::WindowFlags flags /*= 0 */) :
+        QMainWindow(parent, flags),
+        _app(app ? app : throw invalid_argument("application is invalid")),
+        _settingsWindow(settings ? settings : throw invalid_argument("settings window is invalid"))
 {
     _ui.setupUi(this);
 
@@ -47,10 +50,6 @@ MainWindow::MainWindow(shared_ptr<QApplication> app, QWidget *parent /*= 0*/, Qt
 //
 //	QTextCodec *codec = QTextCodec::codecForName("cp1251");
 //	QTextCodec::setCodecForTr(codec);
-
-    _settingsWindow = make_shared<SettingsWindow>();
-    _settingsWindow->setWindowFlags(_settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
-    _settingsWindow->setWindowFlags(_settingsWindow->windowFlags() &~(Qt::WindowMaximizeButtonHint));
 
 //	pAboutWindow = new C_AboutWindow();
 

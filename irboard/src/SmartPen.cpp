@@ -11,6 +11,7 @@
 
 #include <QtWidgets/QApplication>
 
+#include <CoordinateConverter.h>
 #include <IrCameraProcessor.h>
 #include <MainWindow.h>
 
@@ -99,23 +100,39 @@ int main(int argc, char* argv[])
     {
         auto app = make_shared<QApplication>(argc, argv);
 
-        auto mainWindow = make_shared<MainWindow>(app);
+        auto settingsWindow = make_shared<SettingsWindow>();
+        settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
+        settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
+
+        auto mainWindow = make_shared<MainWindow>(app, settingsWindow);
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
         mainWindow->show();
+
+        auto coordConverter = make_shared<CoordinateConverter>(
+        [](int x, int y)
+        {
+            cout << "Mouse point " << x << " x " << y << endl;
+        },
+        []()
+        {
+            return Transformer(0, 0,
+            [](int i)
+            {
+                return Point();
+            });
+        },
+        [](const Transformer& transformer)
+        {
+        });
 
         auto irCameraProcessor = make_shared<IrCameraProcessor>([]()
         {
             return make_shared</*VideoCapture*/VideoCaptureMock>(0);
         },
-        [](int x, int y)
-        {
-            cout << "x = " << x << ", y = " << y << endl;
-        }, bind(&MainWindow::putImage, mainWindow.get(), _1)
-        /*[](Mat image)
-        {
-            cout << image.rows << " x " << image.cols << endl;
-        }*/);
+        bind(&CoordinateConverter::putCoordinates, coordConverter.get(), _1, _2),
+        bind(&MainWindow::putImage, mainWindow.get(), _1));
+
 
         return app->exec();
     }
