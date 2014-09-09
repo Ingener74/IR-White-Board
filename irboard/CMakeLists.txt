@@ -52,6 +52,7 @@ set(SOURCES
     src/SmartPen.cpp
     src/Transformer.cpp
     src/CoordinateConverter.cpp
+    src/Platform.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
