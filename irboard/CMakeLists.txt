@@ -53,6 +53,7 @@ set(SOURCES
     src/Transformer.cpp
     src/CoordinateConverter.cpp
     src/Platform.cpp
+    src/IrMouse.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})

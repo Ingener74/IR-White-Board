@@ -11,9 +11,9 @@
 #include <QtCore/QTimer>
 #include <QtCore/QEvent>
 
-//#include <opencv2/highgui/highgui.hpp>
-//#include <opencv2/imgproc/imgproc.hpp>
-//#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core.hpp>
 
 #include <ui_SettingsWindow.h>
 
@@ -43,19 +43,12 @@ public slots:
     void changeCalibrationPointsHor(int i);
     void changeCalibrationPointsVer(int i);
 
-//    void slotDrawSensorImage(Mat& image);
+    void slotDrawSensorImage(cv::Mat image);
 
     void slotSettingsNoCamera();
 
-//	void Apply();
-
 private:
     Ui::WindowSettings _ui;
-
-//    Mat dest;
-//    Mat resized;
-
-    bool bshown = false;
 };
 
 #endif

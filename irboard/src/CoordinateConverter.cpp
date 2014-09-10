@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <iostream>
+
 #include <CoordinateConverter.h>
 
 using namespace std;
@@ -24,5 +26,22 @@ CoordinateConverter::~CoordinateConverter()
 void CoordinateConverter::putCoordinates(int x, int y)
 {
     auto point = _transformer.convert(x, y);
-    _mouseOutput(point.x, point.y);
+    _mouseOutput(point.x, point.y, MouseButton::NO_BUTTON, MouseCommand::MOVE);
 }
+
+ostream& operator<<(std::ostream& out, const MouseButton& rho)
+{
+    static string mb[]
+    { "No Button", "Left", "Right", "Middle", };
+    cout << mb[static_cast<int>(rho)];
+    return out;
+}
+
+ostream& operator<<(std::ostream& out, const MouseCommand& rho)
+{
+    static string mc[]
+    { "Move", "Up", "Down", };
+    cout << mc[static_cast<int>(rho)];
+    return out;
+}
+

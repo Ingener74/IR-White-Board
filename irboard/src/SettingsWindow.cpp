@@ -1,6 +1,9 @@
 
 #include <SettingsWindow.h>
 
+using namespace std;
+using namespace cv;
+
 //////////////////////////////////////////////////////////////////////////
 SettingsWindow::SettingsWindow(QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0 */) :
         QWidget(parent, f)
@@ -35,7 +38,7 @@ void SettingsWindow::closeEvent(QCloseEvent* pEvent)
 
 void SettingsWindow::DrawPoints()
 {
-//    Mat points(Size_<unsigned int>(480, 360), CV_8UC3, CV_RGB(255, 178, 107));
+    Mat points(Size_<unsigned int>(480, 360), CV_8UC3, CV_RGB(255, 178, 107));
 //    for (unsigned int py = 0; py < calibrationPoints.height; ++py)
 //    {
 //        for (unsigned int px = 0; px < calibrationPoints.width; ++px)
@@ -45,8 +48,8 @@ void SettingsWindow::DrawPoints()
 //                            py * points.rows / (calibrationPoints.height - 1)), 3, CV_RGB(255, 255, 255), -1);
 //        }
 //    }
-//    QImage im((uchar*) (points.data), points.cols, points.rows, QImage::Format_RGB888);
-//    ui.labelPointsPositions->setPixmap(QPixmap::fromImage(im));
+    QImage im((uchar*) (points.data), points.cols, points.rows, QImage::Format_RGB888);
+    _ui.labelPointsPositions->setPixmap(QPixmap::fromImage(im));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,8 +79,8 @@ void SettingsWindow::SensorChange(int iIndex)
 //    uiNextCamera = iIndex - 1;
 }
 
-//void C_SettingsWindow::slotDrawSensorImage(Mat& image)
-//{
+void SettingsWindow::slotDrawSensorImage(Mat image)
+{
 //    if (ui.comboBoxViewedImage->currentIndex() == 0)
 //    {
 //        cvtColor(inputImage, dest, CV_BGR2RGB);
@@ -93,10 +96,11 @@ void SettingsWindow::SensorChange(int iIndex)
 //    {
 //        rectangle(resized, Point(5, 5), Point(resized.cols - 5, resized.rows - 5), CV_RGB(0, 0, 255), 5);
 //    }
-//
-//    QImage im((uchar*) resized.data, resized.cols, resized.rows, QImage::Format_RGB888);
-//    ui.labelSensorView->setPixmap(QPixmap::fromImage(im));
-//}
+
+    Mat resized = image;
+    QImage im((uchar*) resized.data, resized.cols, resized.rows, QImage::Format_RGB888);
+    _ui.labelSensorView->setPixmap(QPixmap::fromImage(im));
+}
 
 void SettingsWindow::slotSettingsNoCamera()
 {
@@ -106,12 +110,12 @@ void SettingsWindow::slotSettingsNoCamera()
 void SettingsWindow::changeCalibrationPointsHor(int i)
 {
 //    calibrationPoints = Size_<unsigned int>(i, calibrationPoints.height);
-//    DrawPoints();
+    DrawPoints();
 }
 
 void SettingsWindow::changeCalibrationPointsVer(int i)
 {
 //    calibrationPoints = Size_<unsigned int>(calibrationPoints.width, i);
-//    DrawPoints();
+    DrawPoints();
 }
 
