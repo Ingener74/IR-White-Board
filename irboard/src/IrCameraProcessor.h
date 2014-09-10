@@ -8,12 +8,15 @@
 #ifndef IRCAMERAPROCESSOR_H_
 #define IRCAMERAPROCESSOR_H_
 
-#include <thread>
 #include <functional>
+#include <memory>
+#include <thread>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+namespace cv
+{
+class VideoCapture;
+class Mat;
+} /* namespace cv */
 
 using SensorCreator = std::function<std::shared_ptr<cv::VideoCapture>()>;
 using IrSpotReceiver = std::function<void (int, int)>;
