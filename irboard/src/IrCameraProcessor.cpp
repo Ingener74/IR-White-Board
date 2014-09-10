@@ -14,15 +14,16 @@
 using namespace std;
 using namespace cv;
 
-IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver irSpot, ImageOutput imageOutput) :
-        _irSpot(irSpot ? irSpot : throw invalid_argument("ir spot receiver empty"))
+IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver irSpot, Thresholder thresholder, ImageOutput imageOutput) :
+        _irSpot(irSpot ? irSpot : throw invalid_argument("invalid ir spot receiver"))
 {
     auto sc = sensorCreator ? sensorCreator : throw invalid_argument("sensor creator is empty");
+    auto threshold = thresholder ? thresholder : throw invalid_argument("invalid thresholder");
 
     promise<exception_ptr> start_promise;
     auto start = start_promise.get_future();
 
-    _thread = thread([this, sc, imageOutput](promise<exception_ptr> &start)
+    _thread = thread([this, sc, threshold, imageOutput](promise<exception_ptr> &start)
     {
         try
         {
@@ -37,6 +38,8 @@ IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver
                 Mat image;
 
                 *sensor >> image;
+
+                auto th = threshold();
 
                 if(imageOutput)imageOutput(image);
 

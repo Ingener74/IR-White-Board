@@ -37,6 +37,7 @@ IrMouse::IrMouse(ImageOutput imageOut)
                 auto irCameraProcessor = make_shared<IrCameraProcessor>(
                     bind(&Platform::createVideoSource, platform.get()),
                     bind(&CoordinateConverter::putCoordinates, coordConverter.get(), _1, _2),
+                    [](){ return 255 - 3; },
                     imageOut
                 );
             }

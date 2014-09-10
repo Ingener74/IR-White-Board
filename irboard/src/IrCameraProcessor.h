@@ -18,11 +18,12 @@
 using SensorCreator = std::function<std::shared_ptr<cv::VideoCapture>()>;
 using IrSpotReceiver = std::function<void (int, int)>;
 using ImageOutput = std::function<void(cv::Mat)>;
+using Thresholder = std::function<unsigned char()>;
 
 class IrCameraProcessor
 {
 public:
-    IrCameraProcessor(SensorCreator, IrSpotReceiver, ImageOutput = ImageOutput());
+    IrCameraProcessor(SensorCreator, IrSpotReceiver, Thresholder, ImageOutput = ImageOutput());
     virtual ~IrCameraProcessor();
 
 private:
