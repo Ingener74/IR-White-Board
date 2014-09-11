@@ -11,8 +11,8 @@ using namespace std;
 using namespace cv;
 
 Transformer::Transformer(int width, int coilsCount, CoilsFiller cf) :
-        _coils(!coilsCount ? coilsCount : throw invalid_argument("coils count can't be zero")),
-        _width(!width ? width : throw invalid_argument("transformer width can't be zero"))
+        _coils(coilsCount ? coilsCount : throw invalid_argument("coils must have more than zero hanks")),
+        _width(width ? width : throw invalid_argument("transformer width can't be zero"))
 {
     for (int i = 0; i < coilsCount; ++i)
         _coils[i] = cf(i);

@@ -64,6 +64,9 @@ public:
 
         circle(image, Point(320, 240), 2, Scalar(255, 255, 255), -1);
 
+        static int badGuy = 20;
+        if(!--badGuy)throw runtime_error("you shall not pass");
+
         return true;
     }
 
@@ -92,9 +95,9 @@ void Platform::mouseCommand(int x, int y, MouseButton mouseButton, MouseCommand 
 
 Transformer Platform::loadTransformer()
 {
-    return Transformer(0, 0, [](int index)
+    return Transformer(640, 640 * 480, [](int index)
     {
-        return Point();
+        return Point(0, 0);
     });
 }
 

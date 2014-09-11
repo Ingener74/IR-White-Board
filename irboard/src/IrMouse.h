@@ -14,7 +14,7 @@
 class IrMouse
 {
 public:
-    IrMouse(ImageOutput);
+    IrMouse(ImageOutput, Thresholder);
     virtual ~IrMouse();
 
 private:

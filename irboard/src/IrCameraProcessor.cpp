@@ -17,24 +17,20 @@
 using namespace std;
 using namespace cv;
 
-IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver irSpot, Thresholder thresholder, ImageOutput imageOutput) :
-        _irSpot(irSpot ? irSpot : throw invalid_argument("invalid ir spot receiver"))
+IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver irSpot, Thresholder thresholder, promise<exception_ptr>& errorControl,
+        ImageOutput imageOutput)
 {
     auto sc = sensorCreator ? sensorCreator : throw invalid_argument("sensor creator is empty");
     auto threshold = thresholder ? thresholder : throw invalid_argument("invalid thresholder");
+    auto ir = irSpot ? irSpot : throw invalid_argument("invalid ir spot receiver");
 
-    promise<exception_ptr> start_promise;
-    auto start = start_promise.get_future();
-
-    _thread = thread([this, sc, threshold, imageOutput](promise<exception_ptr> &start)
+    _thread = thread([this, sc, ir, threshold, imageOutput](promise<exception_ptr> &errorControl)
     {
         try
         {
             auto sensor = sc();
 
-            if(!sensor->isOpened()) throw std::runtime_error("blabla");
-
-            start.set_exception(exception_ptr());
+            if(!sensor->isOpened()) throw std::runtime_error("can't open ir sensor device");
 
             for(;;)
             {
@@ -45,22 +41,16 @@ IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver
                 auto th = threshold();
 
                 if(imageOutput)imageOutput(image);
-
-                this_thread::sleep_for(chrono::milliseconds(30));
-                _irSpot(320, 240);
+                ir(320, 240);
             }
         }
         catch (exception const & e)
         {
-            cerr << "ir camera processor error: " << e.what() << endl;
-            start.set_exception(current_exception());
+            errorControl.set_exception(current_exception());
         }
 
-    }, ref(start_promise));
+    }, ref(errorControl));
     _thread.detach();
-
-    start.wait();
-    if (start.get()) rethrow_exception(start.get());
 }
 
 IrCameraProcessor::~IrCameraProcessor()

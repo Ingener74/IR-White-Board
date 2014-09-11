@@ -8,10 +8,9 @@
 #ifndef COORDINATECONVERTER_H_
 #define COORDINATECONVERTER_H_
 
+#include <Transformer.h>
 #include <functional>
 #include <iostream>
-
-#include <Transformer.h>
 
 enum class MouseButton
 {

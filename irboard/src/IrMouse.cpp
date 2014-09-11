@@ -18,9 +18,9 @@ using namespace std;
 using namespace std::placeholders;
 using namespace cv;
 
-IrMouse::IrMouse(ImageOutput imageOut)
+IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder)
 {
-    _thread = thread([imageOut]()
+    _thread = thread([imageOut, thresholder]()
     {
         for(;;)
         {
@@ -34,17 +34,25 @@ IrMouse::IrMouse(ImageOutput imageOut)
                     bind(&Platform::saveTransformer, platform.get(), _1)
                 );
 
+                promise<exception_ptr> errorControl;
+                auto controlFuture = errorControl.get_future();
+
                 auto irCameraProcessor = make_shared<IrCameraProcessor>(
                     bind(&Platform::createVideoSource, platform.get()),
                     bind(&CoordinateConverter::putCoordinates, coordConverter.get(), _1, _2),
-                    [](){ return 255 - 3; },
+                    thresholder,
+                    ref(errorControl),
                     imageOut
                 );
+
+                controlFuture.wait();
+                if(controlFuture.get())rethrow_exception(controlFuture.get());
             }
             catch (exception const & e)
             {
                 cerr << "IrMouse error: " << e.what() << endl;
             }
+            this_thread::sleep_for(chrono::milliseconds(1000));
         }
     });
     _thread.detach();

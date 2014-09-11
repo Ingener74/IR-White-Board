@@ -46,7 +46,10 @@ int main(int argc, char* argv[])
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
         mainWindow->show();
 
-        auto irMouse = make_shared<IrMouse>(bind(&MainWindow::putImage, mainWindow.get(), _1));
+        auto irMouse = make_shared<IrMouse>(
+            bind(&MainWindow::putImage, mainWindow.get(), _1),
+            bind(&SettingsWindow::getThreshold, settingsWindow.get())
+        );
 
         return app->exec();
     }

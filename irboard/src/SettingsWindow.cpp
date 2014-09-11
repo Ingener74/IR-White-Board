@@ -68,9 +68,9 @@ void SettingsWindow::timerEvent(QTimerEvent* pEvent)
 }
 
 //////////////////////////////////////////////////////////////////////////
-void SettingsWindow::RefreshThreshold(int iThreshold)
+void SettingsWindow::RefreshThreshold(int threshold)
 {
-//    uiThreshold = iThreshold;
+    _threshold = threshold;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -119,3 +119,7 @@ void SettingsWindow::changeCalibrationPointsVer(int i)
     DrawPoints();
 }
 
+uint8_t SettingsWindow::getThreshold()
+{
+    return max(0, min(_ui.horizontalSliderThreshold->sliderPosition(), 255));
+}

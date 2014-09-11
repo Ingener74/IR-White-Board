@@ -29,19 +29,19 @@ void CoordinateConverter::putCoordinates(int x, int y)
     _mouseOutput(point.x, point.y, MouseButton::NO_BUTTON, MouseCommand::MOVE);
 }
 
-ostream& operator<<(std::ostream& out, const MouseButton& rho)
+ostream& operator<<(ostream& out, const MouseButton& rho)
 {
     static string mb[]
     { "No Button", "Left", "Right", "Middle", };
-    cout << mb[static_cast<int>(rho)];
+    out << mb[static_cast<int>(rho)];
     return out;
 }
 
-ostream& operator<<(std::ostream& out, const MouseCommand& rho)
+ostream& operator<<(ostream& out, const MouseCommand& rho)
 {
     static string mc[]
     { "Move", "Up", "Down", };
-    cout << mc[static_cast<int>(rho)];
+    out << mc[static_cast<int>(rho)];
     return out;
 }
 

@@ -47,8 +47,12 @@ public slots:
 
     void slotSettingsNoCamera();
 
+    uint8_t getThreshold();
+
 private:
     Ui::WindowSettings _ui;
+
+    uint8_t _threshold = 255 - 3;
 };
 
 #endif
