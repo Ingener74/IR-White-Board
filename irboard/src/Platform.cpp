@@ -64,9 +64,6 @@ public:
 
         circle(image, Point(320, 240), 2, Scalar(255, 255, 255), -1);
 
-        static int badGuy = 20;
-        if(!--badGuy)throw runtime_error("you shall not pass");
-
         return true;
     }
 

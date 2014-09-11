@@ -97,9 +97,12 @@ void SettingsWindow::slotDrawSensorImage(Mat image)
 //        rectangle(resized, Point(5, 5), Point(resized.cols - 5, resized.rows - 5), CV_RGB(0, 0, 255), 5);
 //    }
 
-    Mat resized = image;
-    QImage im((uchar*) resized.data, resized.cols, resized.rows, QImage::Format_RGB888);
-    _ui.labelSensorView->setPixmap(QPixmap::fromImage(im));
+    if (!isHidden())
+    {
+        Mat resized = image;
+        QImage im((uchar*) resized.data, resized.cols, resized.rows, QImage::Format_RGB888);
+        _ui.labelSensorView->setPixmap(QPixmap::fromImage(im));
+    }
 }
 
 void SettingsWindow::slotSettingsNoCamera()
