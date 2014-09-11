@@ -56,7 +56,11 @@ set(SOURCES
     src/IrMouse.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
+if(MINGW)
+    add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
+else()
+    add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
+endif()
 
 set(LIBS
     ${OpenCV_LIBRARIES} 

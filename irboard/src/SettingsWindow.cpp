@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include <SettingsWindow.h>
 
 using namespace std;
@@ -81,14 +83,6 @@ void SettingsWindow::SensorChange(int iIndex)
 
 void SettingsWindow::slotDrawSensorImage(Mat image)
 {
-//    if (ui.comboBoxViewedImage->currentIndex() == 0)
-//    {
-//        cvtColor(inputImage, dest, CV_BGR2RGB);
-//    }
-//    else
-//    {
-//        cvtColor(outImage, dest, CV_BGR2RGB);
-//    }
 //
 //    ::resize(dest, resized, Size(320, 240));
 //
@@ -99,7 +93,17 @@ void SettingsWindow::slotDrawSensorImage(Mat image)
 
     if (!isHidden())
     {
-        Mat resized = image;
+//        if (_ui.comboBoxViewedImage->currentIndex() == 0)
+//        {
+//            cvtColor(inputImage, dest, CV_BGR2RGB);
+//        }
+//        else
+//        {
+//            cvtColor(outImage, dest, CV_BGR2RGB);
+//        }
+
+        Mat resized;
+        cvtColor(image, resized, CV_RGB2BGR);
         QImage im((uchar*) resized.data, resized.cols, resized.rows, QImage::Format_RGB888);
         _ui.labelSensorView->setPixmap(QPixmap::fromImage(im));
     }

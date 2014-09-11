@@ -264,7 +264,6 @@
  </widget>
  <resources>
   <include location="../resources/MainResource.qrc"/>
-  <include location="MainResource.qrc"/>
  </resources>
  <connections/>
 </ui>
