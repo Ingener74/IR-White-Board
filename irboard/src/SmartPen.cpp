@@ -43,7 +43,10 @@ int main(int argc, char* argv[])
             return Point(200, 200);
         });
 
-        auto settingsWindow = make_shared<SettingsWindow>();
+        auto settingsWindow = make_shared<SettingsWindow>([]()
+        {
+            return 255 - 3;
+        });
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
 

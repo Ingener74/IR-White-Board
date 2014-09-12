@@ -1,4 +1,3 @@
-
 #include <iostream>
 
 #include <SettingsWindow.h>
@@ -7,8 +6,9 @@ using namespace std;
 using namespace cv;
 
 //////////////////////////////////////////////////////////////////////////
-SettingsWindow::SettingsWindow(QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0 */) :
-        QWidget(parent, f)
+SettingsWindow::SettingsWindow(Thresholder thresholder, QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0 */) :
+        QWidget(parent, f),
+        _thresholder(thresholder ? thresholder : throw invalid_argument("in settings window thresholder is invalid"))
 {
     _ui.setupUi(this);
 
@@ -18,14 +18,14 @@ SettingsWindow::SettingsWindow(QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0
     connect(_ui.ButtonApply, SIGNAL(clicked()), SLOT(hide()));
 
     QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));
-//    QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), pMainWindow, SLOT(slotSystemNoCamera()));
 
+//    QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), pMainWindow, SLOT(slotSystemNoCamera()));
 //    QObject::connect(this, SIGNAL(signalSettingsCaptureExist()), pMainWindow, SLOT(slotSystemNotCalibrated()));
 
     QObject::connect(_ui.spinBoxHorPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsHor(int)));
     QObject::connect(_ui.spinBoxVetPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsVer(int)));
 
-//    _ui.horizontalSliderThreshold->setValue(uiThreshold);
+    _ui.horizontalSliderThreshold->setValue(_thresholder());
 
 //	startTimer(1000 / 30);
 }
@@ -56,9 +56,8 @@ void SettingsWindow::DrawPoints()
 //////////////////////////////////////////////////////////////////////////
 void SettingsWindow::showEvent(QShowEvent* pEvent)
 {
-//    ui.horizontalSliderThreshold->setValue(uiThreshold);
-//
-//    DrawPoints();
+    _ui.horizontalSliderThreshold->setValue(_thresholder());
+    DrawPoints();
 }
 
 //////////////////////////////////////////////////////////////////////////

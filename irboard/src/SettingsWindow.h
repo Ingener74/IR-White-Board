@@ -4,6 +4,7 @@
 
 #include <string>
 #include <memory>
+#include <cstdint>
 
 #include <QtWidgets/QWidget>
 #include <QtGui/QCloseEvent>
@@ -17,6 +18,7 @@
 #include <opencv2/core/core.hpp>
 
 #include <ui_SettingsWindow.h>
+#include <IrCameraProcessor.h>
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -28,7 +30,7 @@ Q_OBJECT
 public:
     using Ptr = std::shared_ptr<SettingsWindow>;
 
-    SettingsWindow(QWidget * parent = 0, Qt::WindowFlags f = 0);
+    SettingsWindow(Thresholder, QWidget * parent = 0, Qt::WindowFlags f = 0);
 
     void closeEvent(QCloseEvent* pEvent);
     void showEvent(QShowEvent* pEvent);
@@ -54,6 +56,8 @@ public slots:
 
 private:
     Ui::WindowSettings _ui;
+
+    Thresholder _thresholder;
 
     uint8_t _threshold = 255 - 3;
 };
