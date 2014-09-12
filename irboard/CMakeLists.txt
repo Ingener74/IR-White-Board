@@ -34,6 +34,12 @@ add_definitions(
     ${Qt5OpenGL_DEFINITIONS}
 )
 
+if(MINGW)
+    add_definitions(-DMINGW)
+else()
+    add_definitions(-DLINUX)
+endif()
+
 set(PROJECT_NAME irboard)
 project(${PROJECT_NAME})
 
@@ -57,6 +63,9 @@ set(SOURCES
 )
 
 if(MINGW)
+    set(SOURCES ${SOURCES} 
+        WinPlatform.cpp
+    )
     add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
 else()
     add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})

@@ -33,9 +33,8 @@ SettingsWindow::SettingsWindow(QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0
 //////////////////////////////////////////////////////////////////////////
 void SettingsWindow::closeEvent(QCloseEvent* pEvent)
 {
-//    bshown = false;
-//    pEvent->ignore();
-//    hide();
+    pEvent->ignore();
+    hide();
 }
 
 void SettingsWindow::DrawPoints()
@@ -60,8 +59,6 @@ void SettingsWindow::showEvent(QShowEvent* pEvent)
 //    ui.horizontalSliderThreshold->setValue(uiThreshold);
 //
 //    DrawPoints();
-//
-//    bshown = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,9 +80,6 @@ void SettingsWindow::SensorChange(int iIndex)
 
 void SettingsWindow::slotDrawSensorImage(Mat image)
 {
-//
-//    ::resize(dest, resized, Size(320, 240));
-//
 //    if ((float) lInCorrentCounter / (float) lFullCounter > 0.1)
 //    {
 //        rectangle(resized, Point(5, 5), Point(resized.cols - 5, resized.rows - 5), CV_RGB(0, 0, 255), 5);
@@ -102,16 +96,20 @@ void SettingsWindow::slotDrawSensorImage(Mat image)
 //            cvtColor(outImage, dest, CV_BGR2RGB);
 //        }
 
-        Mat resized;
-        cvtColor(image, resized, CV_RGB2BGR);
-        QImage im((uchar*) resized.data, resized.cols, resized.rows, QImage::Format_RGB888);
+        Mat rgb, out;
+
+        cvtColor(image, rgb, CV_RGB2BGR);
+
+        cv::resize(rgb, out, Size(320, 240));
+
+        QImage im((uchar*) out.data, out.cols, out.rows, QImage::Format_RGB888);
         _ui.labelSensorView->setPixmap(QPixmap::fromImage(im));
     }
 }
 
 void SettingsWindow::slotSettingsNoCamera()
 {
-//    ui.labelSensorView->setPixmap(QPixmap(QString::fromUtf8(":/main/no_web_camera_320240.png")));
+    _ui.labelSensorView->setPixmap(QPixmap(QString::fromUtf8(":/main/no_web_camera_320240.png")));
 }
 
 void SettingsWindow::changeCalibrationPointsHor(int i)

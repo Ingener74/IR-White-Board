@@ -24,12 +24,12 @@ public:
     Platform();
     virtual ~Platform();
 
-    void mouseCommand(int x, int y, MouseButton, MouseCommand);
+    virtual void mouseCommand(int x, int y, MouseButton, MouseCommand);
 
-    Transformer loadTransformer();
-    void saveTransformer(const Transformer&);
+    virtual Transformer loadTransformer();
+    virtual void saveTransformer(const Transformer&);
 
-    std::shared_ptr<cv::VideoCapture> createVideoSource();
+    virtual std::shared_ptr<cv::VideoCapture> createVideoSource();
 };
 
 #endif /* PLATFORM_H_ */

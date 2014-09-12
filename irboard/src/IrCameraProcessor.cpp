@@ -11,6 +11,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 #include <IrCameraProcessor.h>
 
@@ -34,11 +35,20 @@ IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver
 
             for(;;)
             {
-                Mat image;
+                Mat image, mono, thresh;
 
                 *sensor >> image;
 
                 auto th = threshold();
+
+                cvtColor(image, mono, CV_BGR2GRAY);
+                cv::threshold(mono, thresh, th, (unsigned char)(-1), CV_THRESH_BINARY);
+
+                vector<vector<Point> > contours;
+                findContours(thresh, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+
+                Mat outImage(thresh.size(), CV_8UC3, Scalar(0));
+                drawContours(outImage, contours, -1, CV_RGB(0, 255, 0), 1);
 
                 if(imageOutput)imageOutput(image);
                 ir(320, 240);

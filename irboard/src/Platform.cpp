@@ -104,6 +104,5 @@ void Platform::saveTransformer(const Transformer&)
 
 shared_ptr<VideoCapture> Platform::createVideoSource()
 {
-//    return make_shared<VideoCaptureMock>(0);
-    return make_shared<VideoCapture>(0);
+    return make_shared<VideoCaptureMock>(0);
 }

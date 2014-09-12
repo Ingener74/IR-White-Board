@@ -14,6 +14,10 @@
 #include <IrMouse.h>
 #include <Platform.h>
 
+#ifdef MINGW
+#include <WinPlatform.h>
+#endif
+
 using namespace std;
 using namespace std::placeholders;
 using namespace cv;
@@ -26,7 +30,11 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder)
         {
             try
             {
+#ifdef MINGW
+                auto platform = make_shared<WinPlatform>();
+#else
                 auto platform = make_shared<Platform>();
+#endif
 
                 auto coordConverter = make_shared<CoordinateConverter>(
                     bind(&Platform::mouseCommand, platform.get(), _1, _2, _3, _4),
