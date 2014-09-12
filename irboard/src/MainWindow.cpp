@@ -40,6 +40,8 @@ MainWindow::MainWindow(
 {
     _ui.setupUi(this);
 
+    string s = R"(Test)";
+
 //	calibrationPoints = Size_<unsigned int>(5,4);
 //
 //	screenResolution = getSystemResolution();
