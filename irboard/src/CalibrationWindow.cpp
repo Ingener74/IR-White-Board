@@ -1,63 +1,50 @@
-
 #include <opencv2/core/core.hpp>
 
 #include <CalibrationWindow.h>
 
+using namespace std;
 using namespace cv;
 
-/*data definition*/
-//extern	S_Size<long>            oSystemDisplayResolution;         /*���������� ������*/
-//		HWND                    hCalibrationWindowWnd = 0;
-//
-//extern	C_CoordinateTransform   oCoordinateTransformSystem;       /*coordinate transformation system*/
-//extern	cv::Size_<int>					oSystemDisplayResolution;
-//extern	C_CoordinateTransform*			pCoordinateTransform;
-//extern	float							fps;
-
 //////////////////////////////////////////////////////////////////////////
-CalibrationWindow::CalibrationWindow(QWidget* pParent /*= 0 */) :
-        QGLWidget(pParent)
+CalibrationWindow::CalibrationWindow(CalibrationPoint cp, QWidget* pParent /*= 0 */) :
+        QGLWidget(pParent), _calibrationPoint(cp ? cp : throw invalid_argument("calibration point getter is invalid"))
 {
-//	startTimer( 1000 / fps );
+    startTimer(1000 / 30 /*FIXME fps??? */);
 }
 
 //////////////////////////////////////////////////////////////////////////
 void CalibrationWindow::initializeGL()
 {
-	glClearColor(0.42f, 0.7f, 1.0f, 0);
+    glClearColor(0.42f, 0.7f, 1.0f, 0);
 }
 
 //////////////////////////////////////////////////////////////////////////
 void CalibrationWindow::resizeGL(int iWidth, int iHeight)
 {
-	glViewport(0, 0, (GLint)iWidth, (GLint)iHeight);
+    glViewport(0, 0, (GLint) iWidth, (GLint) iHeight);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-	glOrtho(0.0f, (float)iWidth, 0.0f, (float)iHeight, -10, 10);
+    glOrtho(0.0f, (float) iWidth, 0.0f, (float) iHeight, -10, 10);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 //////////////////////////////////////////////////////////////////////////
 void CalibrationWindow::paintGL()
 {
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.42f, 0.7f, 1.0f, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.42f, 0.7f, 1.0f, 0);
 
-	glColor3f(1.0f, 1.0f, 1.0f);
-	glLineWidth(2.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glLineWidth(2.0f);
 
-//	if(pCoordinateTransform != 0){
-//		if(pCoordinateTransform->GetNumberOfDisplayPoints() > 0){
-//			DrawMark(pCoordinateTransform->GetCurrentDisplayPoint());
-//		}
-//	}
+    DrawMark(_calibrationPoint());
 
-	glFlush();
-	glPopMatrix();
+    glFlush();
+    glPopMatrix();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,33 +67,33 @@ void CalibrationWindow::timerEvent(QTimerEvent* pEvent)
 void CalibrationWindow::closeEvent(QCloseEvent* pEvent)
 {
     pEvent->ignore();
-
     hide();
 }
 
 //////////////////////////////////////////////////////////////////////////
-void DrawMark(Point point) {
-		glColor3f(1, 1, 1);
+void CalibrationWindow::DrawMark(Point point)
+{
+    glColor3f(1, 1, 1);
 
-		glBegin(GL_LINES);
-			glVertex2f(point.x - 20, point.y);
-			glVertex2f(point.x + 20, point.y);
+    glBegin(GL_LINES);
+    glVertex2f(point.x - 20, point.y);
+    glVertex2f(point.x + 20, point.y);
 
-			glVertex2f(point.x, point.y - 20);
-			glVertex2f(point.x, point.y + 20);
-		glEnd();
+    glVertex2f(point.x, point.y - 20);
+    glVertex2f(point.x, point.y + 20);
+    glEnd();
 
-		long  lPies = 20;
-		float fR  = 20.0f;
-		float fdR = (360.0f / lPies) * (3.1415f / 180.0f);
+    long lPies = 20;
+    float fR = 20.0f;
+    float fdR = (360.0f / lPies) * (3.1415f / 180.0f);
 
-		glLineWidth(3);
-		glBegin(GL_LINES);
-		for ( long i = 0; i < lPies; ++i )
-		{
-			cv::Point2f oPP( fR * cos(fdR*i), fR * sin(fdR*i));
-			glVertex2f( point.x + fR * cos(fdR*i),		point.y + fR*sin(fdR*i));
-			glVertex2f( point.x + fR * cos(fdR*(i+1)),	point.y + fR*sin(fdR*(i+1)));
-		}
-		glEnd();
+    glLineWidth(3);
+    glBegin(GL_LINES);
+    for (long i = 0; i < lPies; ++i)
+    {
+        cv::Point2f oPP(fR * cos(fdR * i), fR * sin(fdR * i));
+        glVertex2f(point.x + fR * cos(fdR * i), point.y + fR * sin(fdR * i));
+        glVertex2f(point.x + fR * cos(fdR * (i + 1)), point.y + fR * sin(fdR * (i + 1)));
+    }
+    glEnd();
 }

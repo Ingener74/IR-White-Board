@@ -1,6 +1,8 @@
 #ifndef CALIBRATIONWINDOW_H_
 #define CALIBRATIONWINDOW_H_
 
+#include <memory>
+
 #include <opencv2/core/core.hpp>
 
 #include <QtCore/QEvent>
@@ -12,11 +14,15 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QCloseEvent>
 
+using CalibrationPoint = std::function<cv::Point()>;
+
 class CalibrationWindow: public QGLWidget
 {
 Q_OBJECT
 public:
-    CalibrationWindow(QWidget* pParent = 0);
+    using Ptr = std::shared_ptr<CalibrationWindow>;
+
+    CalibrationWindow(CalibrationPoint, QWidget* pParent = 0);
 protected:
     void initializeGL();
     void resizeGL(int iWidth, int iHeight);
@@ -30,6 +36,7 @@ protected:
     void DrawMark(cv::Point point);
 
 private:
+    CalibrationPoint _calibrationPoint;
 };
 
 #endif

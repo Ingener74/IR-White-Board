@@ -3,6 +3,7 @@
 #define SETTINGS_WINDOW_H_
 
 #include <string>
+#include <memory>
 
 #include <QtWidgets/QWidget>
 #include <QtGui/QCloseEvent>
@@ -25,6 +26,8 @@ Q_OBJECT
     void DrawPoints();
 
 public:
+    using Ptr = std::shared_ptr<SettingsWindow>;
+
     SettingsWindow(QWidget * parent = 0, Qt::WindowFlags f = 0);
 
     void closeEvent(QCloseEvent* pEvent);

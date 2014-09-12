@@ -28,11 +28,15 @@
 using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-MainWindow::MainWindow(shared_ptr<QApplication> app, std::shared_ptr<SettingsWindow> settings,
+MainWindow::MainWindow(
+        shared_ptr<QApplication> app,
+        SettingsWindow::Ptr settings,
+        CalibrationWindow::Ptr calib,
         QWidget *parent /*= 0*/, Qt::WindowFlags flags /*= 0 */) :
         QMainWindow(parent, flags),
         _app(app ? app : throw invalid_argument("application is invalid")),
-        _settingsWindow(settings ? settings : throw invalid_argument("settings window is invalid"))
+        _settingsWindow(settings ? settings : throw invalid_argument("settings window is invalid")),
+        _calibrationWindow(calib ? calib : throw invalid_argument("calibration window is invalid"))
 {
     _ui.setupUi(this);
 
@@ -52,8 +56,6 @@ MainWindow::MainWindow(shared_ptr<QApplication> app, std::shared_ptr<SettingsWin
 //	QTextCodec::setCodecForTr(codec);
 
 //	pAboutWindow = new C_AboutWindow();
-
-    _calibrationWindow = make_shared<CalibrationWindow>();
 
     _systemTrayMenu = make_shared<QMenu>();
 
@@ -88,16 +90,16 @@ MainWindow::MainWindow(shared_ptr<QApplication> app, std::shared_ptr<SettingsWin
 //	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		this,					SLOT(slotSystemNoCamera())		);
 //	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		pSettingsWindow,		SLOT(slotSettingsNoCamera())	);
 
-    QObject::connect(_ui.ButtonSettings,                SIGNAL(clicked()),               _settingsWindow.get(),     SLOT(show())                    );
-    QObject::connect(_systemTrayMenuSettings.get(),     SIGNAL(triggered()),             _settingsWindow.get(),     SLOT(show())                    );
+    QObject::connect(_ui.ButtonSettings,                SIGNAL(clicked()),                  _settingsWindow.get(),      SLOT(show())                    );
+    QObject::connect(_systemTrayMenuSettings.get(),     SIGNAL(triggered()),                _settingsWindow.get(),      SLOT(show())                    );
 
-    QObject::connect(_systemTrayMenuClose.get(),        SIGNAL(triggered()),             this,                      SLOT(close())                   );
+    QObject::connect(_systemTrayMenuClose.get(),        SIGNAL(triggered()),                this,                       SLOT(close())                   );
 
-    QObject::connect(_ui.ButtonToTray,                  SIGNAL(clicked()),               this,                      SLOT(hide())                    );
-    QObject::connect(_systemTrayMenuRestore.get(),      SIGNAL(triggered()),             this,                      SLOT(show())                    );
+    QObject::connect(_ui.ButtonToTray,                  SIGNAL(clicked()),                  this,                       SLOT(hide())                    );
+    QObject::connect(_systemTrayMenuRestore.get(),      SIGNAL(triggered()),                this,                       SLOT(show())                    );
 
-//	QObject::connect(ui.ButtonCalibrate,					SIGNAL(clicked()),					this,					SLOT(Calibration())				);
-//	QObject::connect(pSystemTrayMenuCalibration,			SIGNAL(triggered()),				this,					SLOT(Calibration())				);
+    QObject::connect(_ui.ButtonCalibrate,               SIGNAL(clicked()),                  this,                       SLOT(Calibration())             );
+    QObject::connect(_systemTrayMenuCalibration.get(),  SIGNAL(triggered()),                this,                       SLOT(Calibration())             );
 //
 //	QObject::connect(pSystemTrayMenuAbout,				SIGNAL(triggered()),				pAboutWindow,			SLOT(show())					);
 //
@@ -329,8 +331,8 @@ void MainWindow::Calibration(void)
 //	pRawMouse->SetMoveCallBack(0);
 //	pRawMouse->SetRightDownCallBack(0);
 //	pRawMouse->SetRightUpCallBack(0);
-//
-//	pCalibrationWindow->showFullScreen();
+
+    _calibrationWindow->showFullScreen();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -506,9 +508,4 @@ void MainWindow::slotSystemNotCalibrated()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MainWindow::slotPulledOut()
 {
-}
-
-void MainWindow::putImage(cv::Mat image)
-{
-    cout << "MainWindow::putImage(cv::Mat) " << image.cols << " x " << image.rows << endl;
 }

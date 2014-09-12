@@ -13,6 +13,7 @@
 
 #include <IrMouse.h>
 #include <MainWindow.h>
+#include <CalibrationWindow.h>
 
 using namespace std;
 using namespace std::placeholders;
@@ -37,11 +38,16 @@ int main(int argc, char* argv[])
     {
         auto app = make_shared<QApplication>(argc, argv);
 
+        auto calibrationWindow = make_shared<CalibrationWindow>([]()
+        {
+            return Point(200, 200);
+        });
+
         auto settingsWindow = make_shared<SettingsWindow>();
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
 
-        auto mainWindow = make_shared<MainWindow>(app, settingsWindow);
+        auto mainWindow = make_shared<MainWindow>(app, settingsWindow, calibrationWindow);
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
         mainWindow->show();

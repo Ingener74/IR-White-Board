@@ -26,13 +26,15 @@ Q_OBJECT
 public:
     using Ptr = std::shared_ptr<MainWindow>;
 
-    MainWindow(std::shared_ptr<QApplication>, std::shared_ptr<SettingsWindow>, QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    MainWindow(
+            std::shared_ptr<QApplication>,
+            SettingsWindow::Ptr,
+            CalibrationWindow::Ptr,
+            QWidget *parent = 0, Qt::WindowFlags flags = 0);
     virtual ~MainWindow();
 
     void closeEvent(QCloseEvent* pEvent);
     void timerEvent(QTimerEvent* pEvent);
-
-    void putImage(cv::Mat);
 
 public slots:
     void Calibration(void);
@@ -66,8 +68,8 @@ private:
     std::shared_ptr<QAction>            _systemTrayMenuAbout;
     std::shared_ptr<QAction>            _systemTrayMenuClose;
 
-    /** Settings window */
-    std::shared_ptr<SettingsWindow>     _settingsWindow;
+    SettingsWindow::Ptr                 _settingsWindow;
+
 
     // capture system data
 //    VideoCapture*                   pVideoCapture               = 0;
@@ -96,7 +98,7 @@ private:
 //    int                             findCaptureTimer            = 0;
 //
 //    // calibration window data
-    std::shared_ptr<CalibrationWindow> _calibrationWindow;
+    CalibrationWindow::Ptr              _calibrationWindow;
 //    Size_<unsigned int>             calibrationPoints;
 //
 //    // mouse control data
