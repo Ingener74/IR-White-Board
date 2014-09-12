@@ -35,8 +35,10 @@ add_definitions(
 )
 
 if(MINGW)
+    message("Configured for MinGW")
     add_definitions(-DMINGW)
 else()
+    message("Configured for Linux GCC")
     add_definitions(-DLINUX)
 endif()
 
@@ -73,6 +75,7 @@ endif()
 
 set(LIBS
     ${OpenCV_LIBRARIES} 
+    GL
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 qt5_use_modules(${PROJECT_NAME} Widgets Core OpenGL)
