@@ -12,6 +12,11 @@ CalibrationWindow::CalibrationWindow(CalibrationPoint cp, QWidget* pParent /*= 0
     startTimer(1000 / 30 /*FIXME fps??? */);
 }
 
+CalibrationWindow::~CalibrationWindow()
+{
+    cout << "CalibrationWindow::~CalibrationWindow()" << endl;
+}
+
 //////////////////////////////////////////////////////////////////////////
 void CalibrationWindow::initializeGL()
 {

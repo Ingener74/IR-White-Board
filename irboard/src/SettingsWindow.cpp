@@ -27,7 +27,12 @@ SettingsWindow::SettingsWindow(Thresholder thresholder, QWidget * parent /*= 0*/
 
     _ui.horizontalSliderThreshold->setValue(_thresholder());
 
-//	startTimer(1000 / 30);
+    //	startTimer(1000 / 30);
+}
+
+SettingsWindow::~SettingsWindow()
+{
+    cout << "SettingsWindow::~SettingsWindow()" << endl;
 }
 
 //////////////////////////////////////////////////////////////////////////

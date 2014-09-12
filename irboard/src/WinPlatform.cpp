@@ -17,6 +17,7 @@ WinPlatform::WinPlatform()
 
 WinPlatform::~WinPlatform()
 {
+    cout << "WinPlatform::~WinPlatform()" << endl;
 }
 
 //void WinPlatform::mouseCommand(int x, int y, MouseButton enumMouseButton, MouseCommand enumMouseCommand)

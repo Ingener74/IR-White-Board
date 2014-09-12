@@ -69,5 +69,6 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder)
 IrMouse::~IrMouse()
 {
     _thread = thread();
+    cout << "IrMouse::~IrMouse()" << endl;
 }
 

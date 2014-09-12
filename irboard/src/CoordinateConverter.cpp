@@ -21,6 +21,7 @@ CoordinateConverter::CoordinateConverter(MouseOutput mo, CoilsLoader cl, CoilsSa
 CoordinateConverter::~CoordinateConverter()
 {
     _coilsSaver(_transformer);
+    cout << "CoordinateConverter::~CoordinateConverter()" << endl;
 }
 
 void CoordinateConverter::putCoordinates(int x, int y)

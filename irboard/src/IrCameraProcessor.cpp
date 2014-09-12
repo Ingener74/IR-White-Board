@@ -66,5 +66,6 @@ IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver
 IrCameraProcessor::~IrCameraProcessor()
 {
     _thread = thread();
+    cout << "IrCameraProcessor::~IrCameraProcessor()" << endl;
 }
 

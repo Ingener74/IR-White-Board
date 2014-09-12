@@ -18,6 +18,11 @@ Transformer::Transformer(int width, int coilsCount, CoilsFiller cf) :
         _coils[i] = cf(i);
 }
 
+Transformer::~Transformer()
+{
+    cout << "Transformer::~Transformer()" << endl;
+}
+
 Point Transformer::convert(int x, int y)
 {
     return _coils[y * _width + x];

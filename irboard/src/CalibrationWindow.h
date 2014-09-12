@@ -13,16 +13,18 @@
 
 #include <QtGui/QKeyEvent>
 #include <QtGui/QCloseEvent>
+#include <QGLFunctions>
 
 using CalibrationPoint = std::function<cv::Point()>;
 
-class CalibrationWindow: public QGLWidget
+class CalibrationWindow: public QGLWidget, public QGLFunctions
 {
 Q_OBJECT
 public:
     using Ptr = std::shared_ptr<CalibrationWindow>;
 
     CalibrationWindow(CalibrationPoint, QWidget* pParent = 0);
+    virtual ~CalibrationWindow();
 protected:
     void initializeGL();
     void resizeGL(int iWidth, int iHeight);

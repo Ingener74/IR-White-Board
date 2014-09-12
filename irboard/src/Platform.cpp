@@ -83,6 +83,7 @@ Platform::Platform()
 
 Platform::~Platform()
 {
+    cout << "Platform::~Platform()" << endl;
 }
 
 void Platform::mouseCommand(int x, int y, MouseButton mouseButton, MouseCommand mouseCommand)

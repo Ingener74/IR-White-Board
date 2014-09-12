@@ -31,6 +31,7 @@ public:
     using Ptr = std::shared_ptr<SettingsWindow>;
 
     SettingsWindow(Thresholder, QWidget * parent = 0, Qt::WindowFlags f = 0);
+    virtual ~SettingsWindow();
 
     void closeEvent(QCloseEvent* pEvent);
     void showEvent(QShowEvent* pEvent);

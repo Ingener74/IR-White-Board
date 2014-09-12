@@ -8,6 +8,9 @@ find_package(OpenCV
         highgui
 )
 
+# find OpenGL
+find_package(OpenGL)
+
 # find Qt5
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -66,7 +69,7 @@ set(SOURCES
 
 if(MINGW)
     set(SOURCES ${SOURCES} 
-        WinPlatform.cpp
+        src/WinPlatform.cpp
     )
     add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
 else()
@@ -74,8 +77,7 @@ else()
 endif()
 
 set(LIBS
-    ${OpenCV_LIBRARIES} 
-    GL
+    ${OpenCV_LIBRARIES} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY}
 )
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 qt5_use_modules(${PROJECT_NAME} Widgets Core OpenGL)
