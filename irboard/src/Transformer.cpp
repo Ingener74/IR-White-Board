@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <iostream>
+
 #include <Transformer.h>
 
 using namespace std;
