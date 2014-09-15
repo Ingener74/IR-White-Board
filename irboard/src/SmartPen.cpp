@@ -19,19 +19,6 @@ using namespace std;
 using namespace std::placeholders;
 using namespace cv;
 
-/*
- *  *------------------*    *----------------------*
- *  |                  |    |                      |
- *  |                  |    |                      |
- *  |                  |    |                      |
- * -|  VideoCapture    |--->|  IR Video Processor  |--->
- *  |                  |    |                      |
- *  |                  |    |                      |
- *  |                  |    |                      |
- *  *------------------*    *----------------------*
- *
- */
-
 int main(int argc, char* argv[])
 {
     try

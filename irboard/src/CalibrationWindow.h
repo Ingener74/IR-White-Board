@@ -13,7 +13,8 @@
 
 #include <QtGui/QKeyEvent>
 #include <QtGui/QCloseEvent>
-#include <QGLFunctions>
+
+#include <QtOpenGL/QGLFunctions>
 
 using CalibrationPoint = std::function<cv::Point()>;
 
