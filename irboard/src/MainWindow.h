@@ -43,8 +43,6 @@ public slots:
     void slotSystemAllOk();
     void slotSystemNotCalibrated();
 
-    void slotPulledOut();
-
 signals:
     void signalMainWindowExit();
     void signalSystemNoCamera();
@@ -70,24 +68,6 @@ private:
 
     SettingsWindow::Ptr                 _settingsWindow;
 
-
-    // capture system data
-//    VideoCapture*                   pVideoCapture               = 0;
-//    bool                            captureExist                = false;
-//    Mat                             inputImage;
-
-//    // pulled out checking
-//    C_PulledOutOfCamera             poutcheck;
-//    // end pulled out checking
-//
-//    // incorrect camera parameters
-//    long                            lInCorrentCounter           = 0;
-//    long                            lFullCounter                = 0;
-//    // end incorrect
-//
-//    Mat                             mono;
-//    Mat                             thresh;
-//
 //    Mat                             outImage;
 //    unsigned int                    uiThreshold                 = 255 - 3;
 //    unsigned int                    uiCurrentCamera             = 0;
@@ -123,46 +103,6 @@ private:
 //void CoordinateTransformWorkOnRightUp( Point2f A_rPoint );
 //
 //bool ProbablyWroneCamera(vector<vector<Point> >& contours, Mat& threshImage);
-
-//class C_PulledOutOfCamera
-//{
-//public:
-//    C_PulledOutOfCamera() :
-//            m_Buffer(25)
-//    {
-//    }
-//
-//    bool Check(Mat& image)
-//    {
-//        long lSum = 0;
-//
-//        for (int y = 0; y < image.rows; y += (image.rows - 5) / 10)
-//        {
-//            for (int x = 0; x < image.cols; ++x)
-//            {
-//                lSum += image.at<Vec3b>(y, x)[0] + image.at<Vec3b>(y, x)[1] + image.at<Vec3b>(y, x)[2];
-//            }
-//        }
-//
-//        // paste new sum of image rows in buffer
-//        for (unsigned int i = 0; i < m_Buffer.size() - 1; ++i)
-//        {
-//            m_Buffer[i] = m_Buffer[i + 1];
-//        }
-//        m_Buffer[m_Buffer.size() - 1] = lSum;
-//
-//        // now check
-//        bool match = true;
-//        for (unsigned int i = 1; i < m_Buffer.size(); ++i)
-//        {
-//            if (m_Buffer[0] != m_Buffer[i] || m_Buffer[i] == 0) match = false;
-//        }
-//
-//        return match;
-//    }
-//private:
-//    vector<long> m_Buffer;
-//};
 
 #endif
 

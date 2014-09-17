@@ -144,15 +144,6 @@ MainWindow::~MainWindow()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MainWindow::closeEvent(QCloseEvent* pEvent)
 {
-//	if(pVideoCapture != 0){
-//		pVideoCapture->release();
-//		delete pVideoCapture;
-//	}
-//	if(plicense != 0)
-//		plicense->close();
-//	if(pCoordinateTransform!=0)
-//		pCoordinateTransform->SaveTransformationMatrix(wstring(L"tm.data"));
-
     _settingsWindow->close();
     _systemTray->hide();
 }
@@ -507,8 +498,3 @@ void MainWindow::slotSystemNotCalibrated()
 //	else
 //		return false;
 //}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void MainWindow::slotPulledOut()
-{
-}
