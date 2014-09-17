@@ -23,22 +23,27 @@
 #include <QtCore/QString>
 #include <QtCore/QTextCodec>
 
+#include <ui_MainWindow.h>
 #include <MainWindow.h>
+
+#include <SettingsWindow.h>
+#include <CalibrationWindow.h>
 
 using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 MainWindow::MainWindow(
         shared_ptr<QApplication> app,
-        SettingsWindow::Ptr settings,
-        CalibrationWindow::Ptr calib,
+        std::shared_ptr<SettingsWindow> settings,
+        std::shared_ptr<CalibrationWindow> calib,
         QWidget *parent /*= 0*/, Qt::WindowFlags flags /*= 0 */) :
         QMainWindow(parent, flags),
         _app(app ? app : throw invalid_argument("application is invalid")),
         _settingsWindow(settings ? settings : throw invalid_argument("settings window is invalid")),
         _calibrationWindow(calib ? calib : throw invalid_argument("calibration window is invalid"))
 {
-    _ui.setupUi(this);
+    _ui = make_shared<Ui_MainWindow>();
+    _ui->setupUi(this);
 
     string s = R"(Test)";
 
@@ -92,15 +97,15 @@ MainWindow::MainWindow(
 //	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		this,					SLOT(slotSystemNoCamera())		);
 //	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		pSettingsWindow,		SLOT(slotSettingsNoCamera())	);
 
-    QObject::connect(_ui.ButtonSettings,                SIGNAL(clicked()),                  _settingsWindow.get(),      SLOT(show())                    );
+    QObject::connect(_ui->ButtonSettings,               SIGNAL(clicked()),                  _settingsWindow.get(),      SLOT(show())                    );
     QObject::connect(_systemTrayMenuSettings.get(),     SIGNAL(triggered()),                _settingsWindow.get(),      SLOT(show())                    );
 
     QObject::connect(_systemTrayMenuClose.get(),        SIGNAL(triggered()),                this,                       SLOT(close())                   );
 
-    QObject::connect(_ui.ButtonToTray,                  SIGNAL(clicked()),                  this,                       SLOT(hide())                    );
+    QObject::connect(_ui->ButtonToTray,                 SIGNAL(clicked()),                  this,                       SLOT(hide())                    );
     QObject::connect(_systemTrayMenuRestore.get(),      SIGNAL(triggered()),                this,                       SLOT(show())                    );
 
-    QObject::connect(_ui.ButtonCalibrate,               SIGNAL(clicked()),                  this,                       SLOT(Calibration())             );
+    QObject::connect(_ui->ButtonCalibrate,              SIGNAL(clicked()),                  this,                       SLOT(Calibration())             );
     QObject::connect(_systemTrayMenuCalibration.get(),  SIGNAL(triggered()),                this,                       SLOT(Calibration())             );
 //
 //	QObject::connect(pSystemTrayMenuAbout,				SIGNAL(triggered()),				pAboutWindow,			SLOT(show())					);

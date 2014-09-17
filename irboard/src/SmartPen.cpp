@@ -13,6 +13,7 @@
 
 #include <IrMouse.h>
 #include <MainWindow.h>
+#include <SettingsWindow.h>
 #include <CalibrationWindow.h>
 
 using namespace std;

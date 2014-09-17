@@ -7,20 +7,14 @@
 #include <cstdint>
 
 #include <QtWidgets/QWidget>
-#include <QtGui/QCloseEvent>
-#include <QtGui/QHideEvent>
-#include <QtGui/QShowEvent>
-#include <QtCore/QTimer>
-#include <QtCore/QEvent>
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/core/core.hpp>
-
-#include <ui_SettingsWindow.h>
 #include <IrCameraProcessor.h>
 
 //////////////////////////////////////////////////////////////////////////
+
+class QCloseEvent;
+class QShowEvent;
+class Ui_WindowSettings;
 
 class SettingsWindow: public QWidget
 {
@@ -28,14 +22,11 @@ Q_OBJECT
     void DrawPoints();
 
 public:
-    using Ptr = std::shared_ptr<SettingsWindow>;
-
     SettingsWindow(Thresholder, QWidget * parent = 0, Qt::WindowFlags f = 0);
     virtual ~SettingsWindow();
 
     void closeEvent(QCloseEvent* pEvent);
     void showEvent(QShowEvent* pEvent);
-    void timerEvent(QTimerEvent* pEvent);
 
 signals:
     void signalSettingsCaptureNoExist();
@@ -56,7 +47,7 @@ public slots:
     uint8_t getThreshold();
 
 private:
-    Ui::WindowSettings _ui;
+    std::shared_ptr<Ui_WindowSettings> _ui;
 
     Thresholder _thresholder;
 

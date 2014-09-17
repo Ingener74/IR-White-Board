@@ -3,20 +3,16 @@
 #define MAINWINDOW_H_
 
 #include <memory>
-
-#include <QtCore/QTimer>
-
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QSystemTrayIcon>
 
-#include <ui_MainWindow.h>
-
-#include <SettingsWindow.h>
-#include <CalibrationWindow.h>
-
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/core/core.hpp>
+class Ui_MainWindow;
+class SettingsWindow;
+class CalibrationWindow;
+class QTimerEvent;
+class QCloseEvent;
+class QSystemTrayIcon;
+class QMenu;
+class QAction;
 
 //////////////////////////////////////////////////////////////////////////
 class MainWindow: public QMainWindow
@@ -28,8 +24,8 @@ public:
 
     MainWindow(
             std::shared_ptr<QApplication>,
-            SettingsWindow::Ptr,
-            CalibrationWindow::Ptr,
+            std::shared_ptr<SettingsWindow>,
+            std::shared_ptr<CalibrationWindow>,
             QWidget *parent = 0, Qt::WindowFlags flags = 0);
     virtual ~MainWindow();
 
@@ -53,7 +49,7 @@ signals:
     void signalPulledOut();
 
 private:
-    Ui::MainWindow                      _ui;
+    std::shared_ptr<Ui_MainWindow>      _ui;
 
     std::shared_ptr<QApplication>       _app;
 
@@ -66,7 +62,8 @@ private:
     std::shared_ptr<QAction>            _systemTrayMenuAbout;
     std::shared_ptr<QAction>            _systemTrayMenuClose;
 
-    SettingsWindow::Ptr                 _settingsWindow;
+//    SettingsWindow::Ptr                 _settingsWindow;
+    std::shared_ptr<SettingsWindow>     _settingsWindow;
 
 //    Mat                             outImage;
 //    unsigned int                    uiThreshold                 = 255 - 3;
@@ -78,7 +75,8 @@ private:
 //    int                             findCaptureTimer            = 0;
 //
 //    // calibration window data
-    CalibrationWindow::Ptr              _calibrationWindow;
+//    CalibrationWindow::Ptr              _calibrationWindow;
+    std::shared_ptr<CalibrationWindow> _calibrationWindow;
 //    Size_<unsigned int>             calibrationPoints;
 //
 //    // mouse control data
@@ -88,8 +86,6 @@ private:
 //    C_CoordinateTransform*          pCoordinateTransform        = 0;
 //    Size_<unsigned int>             screenResolution;
 };
-
-//Size_<unsigned int> getSystemResolution();
 
 // callbacks
 // for calibration
@@ -101,8 +97,6 @@ private:
 //void CoordinateTransformWorkOnMove( Point2f A_rPoint );
 //void CoordinateTransformWorkOnRightDown( Point2f A_rPoint );
 //void CoordinateTransformWorkOnRightUp( Point2f A_rPoint );
-//
-//bool ProbablyWroneCamera(vector<vector<Point> >& contours, Mat& threshImage);
 
 #endif
 

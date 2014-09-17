@@ -1,33 +1,36 @@
+
 #include <iostream>
 
+#include <QtGui/QCloseEvent>
+
+#include <opencv2/imgproc/imgproc.hpp>
+
+#include <ui_SettingsWindow.h>
 #include <SettingsWindow.h>
 
 using namespace std;
 using namespace cv;
 
 //////////////////////////////////////////////////////////////////////////
-SettingsWindow::SettingsWindow(Thresholder thresholder, QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0 */) :
+SettingsWindow::SettingsWindow(Thresholder thresholder,
+        QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0 */) :
         QWidget(parent, f),
         _thresholder(thresholder ? thresholder : throw invalid_argument("in settings window thresholder is invalid"))
 {
-    _ui.setupUi(this);
+    _ui = make_shared<Ui_WindowSettings>();
+    _ui->setupUi(this);
 
-    QObject::connect(_ui.horizontalSliderThreshold, SIGNAL(valueChanged(int)), this, SLOT(RefreshThreshold(int)));
+    QObject::connect(_ui->horizontalSliderThreshold, SIGNAL(valueChanged(int)), this, SLOT(RefreshThreshold(int)));
 
-    connect(_ui.spinBoxCamera, SIGNAL(valueChanged(int)), SLOT(SensorChange(int)));
-    connect(_ui.ButtonApply, SIGNAL(clicked()), SLOT(hide()));
+    connect(_ui->spinBoxCamera, SIGNAL(valueChanged(int)), SLOT(SensorChange(int)));
+    connect(_ui->ButtonApply, SIGNAL(clicked()), SLOT(hide()));
 
     QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));
 
-//    QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), pMainWindow, SLOT(slotSystemNoCamera()));
-//    QObject::connect(this, SIGNAL(signalSettingsCaptureExist()), pMainWindow, SLOT(slotSystemNotCalibrated()));
+    QObject::connect(_ui->spinBoxHorPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsHor(int)));
+    QObject::connect(_ui->spinBoxVetPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsVer(int)));
 
-    QObject::connect(_ui.spinBoxHorPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsHor(int)));
-    QObject::connect(_ui.spinBoxVetPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsVer(int)));
-
-    _ui.horizontalSliderThreshold->setValue(_thresholder());
-
-    //	startTimer(1000 / 30);
+    _ui->horizontalSliderThreshold->setValue(_thresholder());
 }
 
 SettingsWindow::~SettingsWindow()
@@ -55,19 +58,14 @@ void SettingsWindow::DrawPoints()
 //        }
 //    }
     QImage im((uchar*) (points.data), points.cols, points.rows, QImage::Format_RGB888);
-    _ui.labelPointsPositions->setPixmap(QPixmap::fromImage(im));
+    _ui->labelPointsPositions->setPixmap(QPixmap::fromImage(im));
 }
 
 //////////////////////////////////////////////////////////////////////////
 void SettingsWindow::showEvent(QShowEvent* pEvent)
 {
-    _ui.horizontalSliderThreshold->setValue(_thresholder());
+    _ui->horizontalSliderThreshold->setValue(_thresholder());
     DrawPoints();
-}
-
-//////////////////////////////////////////////////////////////////////////
-void SettingsWindow::timerEvent(QTimerEvent* pEvent)
-{
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,13 +105,13 @@ void SettingsWindow::slotDrawSensorImage(Mat image)
         cv::resize(rgb, out, Size(320, 240));
 
         QImage im((uchar*) out.data, out.cols, out.rows, QImage::Format_RGB888);
-        _ui.labelSensorView->setPixmap(QPixmap::fromImage(im));
+        _ui->labelSensorView->setPixmap(QPixmap::fromImage(im));
     }
 }
 
 void SettingsWindow::slotSettingsNoCamera()
 {
-    _ui.labelSensorView->setPixmap(QPixmap(QString::fromUtf8(":/main/no_web_camera_320240.png")));
+    _ui->labelSensorView->setPixmap(QPixmap(QString::fromUtf8(":/main/no_web_camera_320240.png")));
 }
 
 void SettingsWindow::changeCalibrationPointsHor(int i)
@@ -130,5 +128,5 @@ void SettingsWindow::changeCalibrationPointsVer(int i)
 
 uint8_t SettingsWindow::getThreshold()
 {
-    return max(0, min(_ui.horizontalSliderThreshold->sliderPosition(), 255));
+    return max(0, min(_ui->horizontalSliderThreshold->sliderPosition(), 255));
 }
