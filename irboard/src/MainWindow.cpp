@@ -30,6 +30,7 @@
 #include <CalibrationWindow.h>
 
 using namespace std;
+using namespace cv;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 MainWindow::MainWindow(
@@ -51,14 +52,6 @@ MainWindow::MainWindow(
 //	calibrationPoints = Size_<unsigned int>(5,4);
 //
 //	screenResolution = getSystemResolution();
-//
-//	pCoordinateTransform = new C_CoordinateTransform(wstring(L"tm.data"), screenResolution);
-//	if(pCoordinateTransform->GetStatus()==E_ctssEMPTY){
-//		delete pCoordinateTransform;
-//		pCoordinateTransform = 0;
-//	}else{
-////		imwrite("tm_data.png", pCoordinateTransform->getImageRepresentation());
-//	}
 //
 //	QTextCodec *codec = QTextCodec::codecForName("cp1251");
 //	QTextCodec::setCodecForTr(codec);
@@ -86,52 +79,24 @@ MainWindow::MainWindow(
     _systemTray->setContextMenu(_menu.get());
     _systemTray->show();
 
-//	QObject::connect(this,								SIGNAL(signalPulledOut()),			this,					SLOT(slotPulledOut())			);
-//
 //	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		this,					SLOT(slotSystemNoCamera())		);
 //	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		pSettingsWindow,		SLOT(slotSettingsNoCamera())	);
 
-    QObject::connect(_ui->ButtonSettings,               SIGNAL(clicked()),                  _settingsWindow.get(),      SLOT(show())                    );
-    QObject::connect(_menuSettings.get(),     SIGNAL(triggered()),                _settingsWindow.get(),      SLOT(show())                    );
+    QObject::connect(_ui->ButtonSettings,               SIGNAL(clicked()),                  _settingsWindow.get(),  SLOT(show())                    );
+    QObject::connect(_menuSettings.get(),               SIGNAL(triggered()),                _settingsWindow.get(),  SLOT(show())                    );
 
-    QObject::connect(_menuClose.get(),        SIGNAL(triggered()),                this,                       SLOT(close())                   );
+    QObject::connect(_menuClose.get(),                  SIGNAL(triggered()),                this,                   SLOT(close())                   );
 
-    QObject::connect(_ui->ButtonToTray,                 SIGNAL(clicked()),                  this,                       SLOT(hide())                    );
-    QObject::connect(_menuRestore.get(),      SIGNAL(triggered()),                this,                       SLOT(show())                    );
+    QObject::connect(_ui->ButtonToTray,                 SIGNAL(clicked()),                  this,                   SLOT(hide())                    );
+    QObject::connect(_menuRestore.get(),                SIGNAL(triggered()),                this,                   SLOT(show())                    );
 
-    QObject::connect(_ui->ButtonCalibrate,              SIGNAL(clicked()),                  this,                       SLOT(Calibration())             );
-    QObject::connect(_menuCalibration.get(),  SIGNAL(triggered()),                this,                       SLOT(Calibration())             );
-//
-//	QObject::connect(pSystemTrayMenuAbout,				SIGNAL(triggered()),				pAboutWindow,			SLOT(show())					);
-//
+    QObject::connect(_ui->ButtonCalibrate,              SIGNAL(clicked()),                  this,                   SLOT(Calibration())             );
+    QObject::connect(_menuCalibration.get(),            SIGNAL(triggered()),                this,                   SLOT(Calibration())             );
+
 //	QObject::connect(pSettingsWindow,					SIGNAL(signalSettingsCaptureNoExist()),this,					SLOT(slotSystemNoCamera())		);
-//
+
 //	QObject::connect(this,								SIGNAL(signalAllOk()),				this,					SLOT(slotSystemAllOk())			);
 //	QObject::connect(this,								SIGNAL(signalCalibrationIsNeeded()),this,					SLOT(slotSystemNotCalibrated())	);
-//
-//	pRawMouse = new C_RawMouse();
-//
-//	pVideoCapture = new VideoCapture();
-//	pVideoCapture->open(uiCurrentCamera);
-//
-//	if(!pVideoCapture->isOpened()){
-////		slotSystemNoCamera();
-//		emit signalSystemNoCamera();
-//
-//	}else{
-//		captureExist = true;
-//		if( pCoordinateTransform != 0 ){
-//			if(pCoordinateTransform->GetStatus()==E_ctssCALIBRATED){
-//				slotSystemAllOk();
-//			}else{
-//				slotSystemNotCalibrated();
-//			}
-//		}else{
-//			slotSystemNotCalibrated();
-//		}
-//
-//		captureTimer = startTimer(1000 / fps);
-//	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -393,12 +358,11 @@ void MainWindow::slotSystemNotCalibrated()
 //		pRawMouse->SetRightDownCallBack(0);
 //		pRawMouse->SetRightUpCallBack(0);
 //	}
-//
-//	show();
-//
-//	ui.labelMainImage->setPixmap(QPixmap(QString::fromUtf8(":/main/calibrate.png")));
-//
-//	pSystemTray->showMessage(QObject::tr("������������� �����"), QObject::tr("���������� ����������"), QSystemTrayIcon::Information, 1000);
+
+    show();
+
+    _ui->labelMainImage->setPixmap(QPixmap(QString::fromUtf8(":/main/calibrate.png")));
+    _systemTray->showMessage(QObject::tr("������������� �����"), QObject::tr("���������� ����������"), QSystemTrayIcon::Information, 1000);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -419,11 +383,12 @@ void MainWindow::slotSystemNotCalibrated()
 //}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Size_<unsigned int> getSystemResolution() {
-//	QDesktopWidget desk;
-//	QRect systemRes = desk.screenGeometry();
-//	return Size_<unsigned int>( systemRes.width(), systemRes.height() );
-//}
+Size getSystemResolution()
+{
+    QDesktopWidget desk;
+    QRect systemRes = desk.screenGeometry();
+    return Size(systemRes.width(), systemRes.height());
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //void CoordinateTransformWorkOnLeftDown( Point2f A_rPoint )

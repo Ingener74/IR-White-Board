@@ -3,6 +3,7 @@
 #include <opencv2/core/core.hpp>
 
 #include <CalibrationWindow.h>
+#include <QtGui/QKeyEvent>
 
 using namespace std;
 using namespace cv;

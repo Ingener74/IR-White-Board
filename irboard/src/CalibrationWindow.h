@@ -7,14 +7,15 @@
 
 #include <QtCore/QEvent>
 #include <QtCore/QTimer>
-
-#include <QtOpenGL/QGLWidget>
 #include <QtOpenGL/QGLColormap>
 
-#include <QtGui/QKeyEvent>
-#include <QtGui/QCloseEvent>
+#include <QtOpenGL/QGLWidget>
 
 #include <QtOpenGL/QGLFunctions>
+
+class QKeyEvent;
+class QTimerEvent;
+class QCloseEvent;
 
 using CalibrationPoint = std::function<cv::Point()>;
 

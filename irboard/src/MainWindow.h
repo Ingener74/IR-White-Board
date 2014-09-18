@@ -65,22 +65,12 @@ private:
 
     std::shared_ptr<CalibrationWindow>  _calibrationWindow;
 
-//    Mat                             outImage;
-//    unsigned int                    uiThreshold                 = 255 - 3;
-//    unsigned int                    uiCurrentCamera             = 0;
-//    unsigned int                    uiNextCamera                = 0;
-//    float                           fps                         = 30.0f;
-//
-//    int                             captureTimer                = 0;
-//    int                             findCaptureTimer            = 0;
-//
 //    Size_<unsigned int>             calibrationPoints;
-//
+
 //    // mouse control data
 //    C_RawMouse*                     pRawMouse                   = 0;
 //    Point2f                         lastRawPosition;
 //
-//    C_CoordinateTransform*          pCoordinateTransform        = 0;
 //    Size_<unsigned int>             screenResolution;
 };
 
