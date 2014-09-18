@@ -26,6 +26,7 @@ using IrSpotReceiver = std::function<void (int, int)>;
 using ImageOutput = std::function<void(cv::Mat)>;
 using Thresholder = std::function<uint8_t()>;
 using OutputImageSelector = std::function<int()>;
+using IrProcessorControl = std::function<bool()>;
 
 class IrCameraProcessor
 {
@@ -36,6 +37,7 @@ public:
             Thresholder,
             std::promise<std::exception_ptr>& errorControl,
             OutputImageSelector,
+            IrProcessorControl,
             ImageOutput = ImageOutput());
     virtual ~IrCameraProcessor();
 

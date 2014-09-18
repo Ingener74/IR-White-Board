@@ -24,9 +24,10 @@ using namespace cv;
 
 IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelector outputImageSelector)
 {
-    _thread = thread([imageOut, thresholder, outputImageSelector]()
+    _stopThread = false;
+    _thread = thread([imageOut, thresholder, outputImageSelector, this]()
     {
-        for(;;)
+        while(!_stopThread)
         {
             try
             {
@@ -45,12 +46,13 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelec
                 promise<exception_ptr> errorControl;
                 auto controlFuture = errorControl.get_future();
 
-                auto irCameraProcessor = make_shared<IrCameraProcessor>(
+                _irProcessor = make_shared<IrCameraProcessor>(
                     bind(&Platform::createVideoSource, platform.get()),
                     bind(&CoordinateConverter::putCoordinates, coordConverter.get(), _1, _2),
                     thresholder,
                     ref(errorControl),
                     outputImageSelector,
+                    bind(&IrMouse::isStopThread, this),
                     imageOut
                 );
 
@@ -63,13 +65,18 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelec
             }
             this_thread::sleep_for(chrono::milliseconds(1000));
         }
+        cout << "ir mouse thread stopped" << endl;
     });
-    _thread.detach();
 }
 
 IrMouse::~IrMouse()
 {
-    _thread = thread();
+    _stopThread = true;
+    _thread.join();
     cout << "IrMouse::~IrMouse()" << endl;
 }
 
+bool IrMouse::isStopThread()
+{
+    return _stopThread;
+}

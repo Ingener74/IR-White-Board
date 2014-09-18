@@ -24,14 +24,16 @@ IrCameraProcessor::IrCameraProcessor(
     Thresholder thresholder,
     promise<exception_ptr>& errorControl,
     OutputImageSelector outputImageMode,
+    IrProcessorControl irControl,
     ImageOutput imageOutput
 ){
     auto sc        = sensorCreator   ? sensorCreator   : throw invalid_argument("sensor creator is empty");
     auto threshold = thresholder     ? thresholder     : throw invalid_argument("invalid thresholder");
     auto ir        = irSpot          ? irSpot          : throw invalid_argument("invalid ir spot receiver");
     auto oim       = outputImageMode ? outputImageMode : throw invalid_argument("output image mode is invalid");
+    auto irc       = irControl       ? irControl       : throw invalid_argument("ir processor control is invalid");
 
-    _thread = thread([this, sc, ir, threshold, imageOutput, oim](promise<exception_ptr> &errorControl)
+    _thread = thread([this, sc, ir, threshold, imageOutput, oim, irc](promise<exception_ptr> &errorControl)
     {
         try
         {
@@ -39,7 +41,7 @@ IrCameraProcessor::IrCameraProcessor(
 
             if(!sensor->isOpened()) throw std::runtime_error("can't open ir sensor device");
 
-            for(;;)
+            while(!irc())
             {
                 Mat image, mono, thresh;
 
@@ -59,6 +61,8 @@ IrCameraProcessor::IrCameraProcessor(
                 if(imageOutput)imageOutput(oim() ? outImage : image);
                 ir(320, 240);
             }
+            errorControl.set_exception(exception_ptr());
+            cout << "ir processor is stopped" << endl;
         }
         catch (exception const & e)
         {
@@ -66,12 +70,11 @@ IrCameraProcessor::IrCameraProcessor(
         }
 
     }, ref(errorControl));
-    _thread.detach();
 }
 
 IrCameraProcessor::~IrCameraProcessor()
 {
-    _thread = thread();
+    _thread.join();
     cout << "IrCameraProcessor::~IrCameraProcessor()" << endl;
 }
 

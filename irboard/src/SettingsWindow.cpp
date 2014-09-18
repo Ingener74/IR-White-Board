@@ -47,7 +47,7 @@ void SettingsWindow::closeEvent(QCloseEvent* pEvent)
 
 void SettingsWindow::DrawPoints()
 {
-    Mat points(Size_<unsigned int>(480, 360), CV_8UC3, CV_RGB(255, 178, 107));
+    Mat points(Size(480, 360), CV_8UC3, CV_RGB(255, 178, 107));
 //    for (unsigned int py = 0; py < calibrationPoints.height; ++py)
 //    {
 //        for (unsigned int px = 0; px < calibrationPoints.width; ++px)
@@ -89,15 +89,6 @@ void SettingsWindow::slotDrawSensorImage(Mat image)
 
     if (!isHidden())
     {
-//        if (_ui.comboBoxViewedImage->currentIndex() == 0)
-//        {
-//            cvtColor(inputImage, dest, CV_BGR2RGB);
-//        }
-//        else
-//        {
-//            cvtColor(outImage, dest, CV_BGR2RGB);
-//        }
-
         Mat rgb, out;
 
         cvtColor(image, rgb, CV_RGB2BGR);
