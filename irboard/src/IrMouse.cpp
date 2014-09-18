@@ -53,6 +53,7 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelec
                     ref(errorControl),
                     outputImageSelector,
                     bind(&IrMouse::isStopThread, this),
+                    // bind(&atomic<bool>::load, &_stopThread, memory_order_seq_cst),
                     imageOut
                 );
 
