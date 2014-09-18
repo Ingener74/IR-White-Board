@@ -28,6 +28,8 @@ public:
     void closeEvent(QCloseEvent* pEvent);
     void showEvent(QShowEvent* pEvent);
 
+    int getImageSelector() const;
+
 signals:
     void signalSettingsCaptureNoExist();
     void signalSettingsCaptureExist();

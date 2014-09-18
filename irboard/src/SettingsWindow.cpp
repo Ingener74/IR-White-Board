@@ -15,9 +15,9 @@ using namespace cv;
 SettingsWindow::SettingsWindow(Thresholder thresholder,
         QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0 */) :
         QWidget(parent, f),
+        _ui(make_shared<Ui_WindowSettings>()),
         _thresholder(thresholder ? thresholder : throw invalid_argument("in settings window thresholder is invalid"))
 {
-    _ui = make_shared<Ui_WindowSettings>();
     _ui->setupUi(this);
 
     QObject::connect(_ui->horizontalSliderThreshold, SIGNAL(valueChanged(int)), this, SLOT(RefreshThreshold(int)));
@@ -129,4 +129,9 @@ void SettingsWindow::changeCalibrationPointsVer(int i)
 uint8_t SettingsWindow::getThreshold()
 {
     return max(0, min(_ui->horizontalSliderThreshold->sliderPosition(), 255));
+}
+
+int SettingsWindow::getImageSelector() const
+{
+    return _ui->comboBoxViewedImage->currentIndex();
 }

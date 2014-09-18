@@ -45,7 +45,8 @@ int main(int argc, char* argv[])
 
         auto irMouse = make_shared<IrMouse>(
             bind(&SettingsWindow::slotDrawSensorImage, settingsWindow.get(), _1),
-            bind(&SettingsWindow::getThreshold, settingsWindow.get())
+            bind(&SettingsWindow::getThreshold, settingsWindow.get()),
+            bind(&SettingsWindow::getImageSelector, settingsWindow.get())
         );
 
         return app->exec();

@@ -22,9 +22,9 @@ using namespace std;
 using namespace std::placeholders;
 using namespace cv;
 
-IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder)
+IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelector outputImageSelector)
 {
-    _thread = thread([imageOut, thresholder]()
+    _thread = thread([imageOut, thresholder, outputImageSelector]()
     {
         for(;;)
         {
@@ -50,6 +50,7 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder)
                     bind(&CoordinateConverter::putCoordinates, coordConverter.get(), _1, _2),
                     thresholder,
                     ref(errorControl),
+                    outputImageSelector,
                     imageOut
                 );
 

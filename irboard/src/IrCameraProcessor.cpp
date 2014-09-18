@@ -18,14 +18,20 @@
 using namespace std;
 using namespace cv;
 
-IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver irSpot, Thresholder thresholder, promise<exception_ptr>& errorControl,
-        ImageOutput imageOutput)
-{
-    auto sc = sensorCreator ? sensorCreator : throw invalid_argument("sensor creator is empty");
-    auto threshold = thresholder ? thresholder : throw invalid_argument("invalid thresholder");
-    auto ir = irSpot ? irSpot : throw invalid_argument("invalid ir spot receiver");
+IrCameraProcessor::IrCameraProcessor(
+    SensorCreator sensorCreator,
+    IrSpotReceiver irSpot,
+    Thresholder thresholder,
+    promise<exception_ptr>& errorControl,
+    OutputImageSelector outputImageMode,
+    ImageOutput imageOutput
+){
+    auto sc        = sensorCreator   ? sensorCreator   : throw invalid_argument("sensor creator is empty");
+    auto threshold = thresholder     ? thresholder     : throw invalid_argument("invalid thresholder");
+    auto ir        = irSpot          ? irSpot          : throw invalid_argument("invalid ir spot receiver");
+    auto oim       = outputImageMode ? outputImageMode : throw invalid_argument("output image mode is invalid");
 
-    _thread = thread([this, sc, ir, threshold, imageOutput](promise<exception_ptr> &errorControl)
+    _thread = thread([this, sc, ir, threshold, imageOutput, oim](promise<exception_ptr> &errorControl)
     {
         try
         {
@@ -50,7 +56,7 @@ IrCameraProcessor::IrCameraProcessor(SensorCreator sensorCreator, IrSpotReceiver
                 Mat outImage(thresh.size(), CV_8UC3, Scalar(0));
                 drawContours(outImage, contours, -1, CV_RGB(0, 255, 0), 1);
 
-                if(imageOutput)imageOutput(image);
+                if(imageOutput)imageOutput(oim() ? outImage : image);
                 ir(320, 240);
             }
         }

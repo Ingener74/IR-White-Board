@@ -8,7 +8,6 @@
 #ifndef IRCAMERAPROCESSOR_H_
 #define IRCAMERAPROCESSOR_H_
 
-#include <opencv2/core/core.hpp>
 #include <cstdint>
 #include <exception>
 #include <functional>
@@ -26,17 +25,21 @@ using SensorCreator = std::function<std::shared_ptr<cv::VideoCapture>()>;
 using IrSpotReceiver = std::function<void (int, int)>;
 using ImageOutput = std::function<void(cv::Mat)>;
 using Thresholder = std::function<uint8_t()>;
+using OutputImageSelector = std::function<int()>;
 
 class IrCameraProcessor
 {
 public:
-    IrCameraProcessor(SensorCreator, IrSpotReceiver, Thresholder, std::promise<std::exception_ptr>& errorControl,
+    IrCameraProcessor(
+            SensorCreator,
+            IrSpotReceiver,
+            Thresholder,
+            std::promise<std::exception_ptr>& errorControl,
+            OutputImageSelector,
             ImageOutput = ImageOutput());
     virtual ~IrCameraProcessor();
 
 private:
-//    IrSpotReceiver _irSpot;
-
     std::thread _thread;
 };
 

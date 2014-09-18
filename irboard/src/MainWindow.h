@@ -54,16 +54,16 @@ private:
     std::shared_ptr<QApplication>       _app;
 
     std::shared_ptr<QSystemTrayIcon>    _systemTray;
-    std::shared_ptr<QMenu>              _systemTrayMenu;
+    std::shared_ptr<QMenu>              _menu;
 
-    std::shared_ptr<QAction>            _systemTrayMenuRestore;
-    std::shared_ptr<QAction>            _systemTrayMenuCalibration;
-    std::shared_ptr<QAction>            _systemTrayMenuSettings;
-    std::shared_ptr<QAction>            _systemTrayMenuAbout;
-    std::shared_ptr<QAction>            _systemTrayMenuClose;
+    std::shared_ptr<QAction>            _menuRestore;
+    std::shared_ptr<QAction>            _menuCalibration;
+    std::shared_ptr<QAction>            _menuSettings;
+    std::shared_ptr<QAction>            _menuClose;
 
-//    SettingsWindow::Ptr                 _settingsWindow;
     std::shared_ptr<SettingsWindow>     _settingsWindow;
+
+    std::shared_ptr<CalibrationWindow>  _calibrationWindow;
 
 //    Mat                             outImage;
 //    unsigned int                    uiThreshold                 = 255 - 3;
@@ -74,9 +74,6 @@ private:
 //    int                             captureTimer                = 0;
 //    int                             findCaptureTimer            = 0;
 //
-//    // calibration window data
-//    CalibrationWindow::Ptr              _calibrationWindow;
-    std::shared_ptr<CalibrationWindow> _calibrationWindow;
 //    Size_<unsigned int>             calibrationPoints;
 //
 //    // mouse control data
