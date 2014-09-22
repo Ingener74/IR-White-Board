@@ -70,6 +70,7 @@ set(SOURCES
 if(MINGW)
     set(SOURCES ${SOURCES} 
         src/WinPlatform.cpp
+        # resources/res.rc
     )
     add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
 else()
