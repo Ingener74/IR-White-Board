@@ -45,6 +45,8 @@ IrCameraProcessor::IrCameraProcessor(
             {
                 Mat image, mono, thresh;
 
+//                throw runtime_error("test exception");
+
                 *sensor >> image;
 
                 auto th = threshold();
@@ -61,7 +63,8 @@ IrCameraProcessor::IrCameraProcessor(
                 if(imageOutput)imageOutput(oim() ? outImage : image);
                 ir(320, 240);
             }
-            errorControl.set_exception(exception_ptr());
+//            errorControl.set_exception(exception_ptr());
+            errorControl.set_value(exception_ptr());
             cout << "ir processor is stopped" << endl;
         }
         catch (exception const & e)

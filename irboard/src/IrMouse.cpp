@@ -58,6 +58,9 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelec
                 );
 
                 controlFuture.wait();
+
+                cout << "control future " << bool(controlFuture.get()) << endl;
+
                 if(controlFuture.get())rethrow_exception(controlFuture.get());
             }
             catch (exception const & e)
