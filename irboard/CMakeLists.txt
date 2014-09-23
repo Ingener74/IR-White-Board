@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
+
+include(PCHSupport)
+
 # find OpenCV
 find_package(OpenCV 
     COMPONENTS 
@@ -41,7 +45,7 @@ if(MINGW)
     message("Configured for MinGW")
     add_definitions(-DMINGW)
 elseif(APPLE)
-    message("Configured for MacOsX")
+    message("Configured for MacOS X")
     add_definitions(-DMACOSX)
 else()
     message("Configured for Linux GCC")
@@ -80,6 +84,8 @@ set(SOURCES
     src/Platform.cpp
     src/IrMouse.cpp
 )
+
+# add_precompiled_header(irboard src/precompiled_headers.h)
 
 if(MINGW)
     set(HEADERS ${HEADERS}
