@@ -40,6 +40,9 @@ add_definitions(
 if(MINGW)
     message("Configured for MinGW")
     add_definitions(-DMINGW)
+else if(APPLE)
+    message("Configured for MacOsX")
+    add_definitions(-DMACOSX)
 else()
     message("Configured for Linux GCC")
     add_definitions(-DLINUX)
@@ -55,6 +58,17 @@ qt5_wrap_ui(UI_SOURCES
     ui/MainWindow.ui
     ui/SettingsWindow.ui
 )
+set(HEADERS
+    src/CalibrationWindow.h
+    src/CoordConverter.h
+    src/CoordinateConverter.h
+    src/IrCameraProcessor.h
+    src/IrMouse.h
+    src/MainWindow.h
+    src/Platform.h
+    src/SettingsWindow.h
+    src/Transformer.h
+)
 set(SOURCES
     src/IrCameraProcessor.cpp
     src/CalibrationWindow.cpp
@@ -68,11 +82,16 @@ set(SOURCES
 )
 
 if(MINGW)
-    set(SOURCES ${SOURCES} 
+    set(HEADERS ${HEADERS}
+        src/WinPlatform.h
+    )
+    set(SOURCES ${SOURCES}
         src/WinPlatform.cpp
         # resources/res.rc
     )
     add_executable(${PROJECT_NAME} WIN32 ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
+else if(APPLE)
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
 else()
     add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
 endif()
