@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
 {
     try
     {
+        // mac os
         auto app = make_shared<QApplication>(argc, argv);
 
         auto calibrationWindow = make_shared<CalibrationWindow>([]()
