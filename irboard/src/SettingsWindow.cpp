@@ -62,15 +62,19 @@ void SettingsWindow::closeEvent(QCloseEvent* pEvent)
 void SettingsWindow::DrawPoints()
 {
     Mat points(Size(480, 360), CV_8UC3, CV_RGB(255, 178, 107));
-//    for (unsigned int py = 0; py < calibrationPoints.height; ++py)
-//    {
-//        for (unsigned int px = 0; px < calibrationPoints.width; ++px)
-//        {
-//            circle(points,
-//                    Point(px * points.cols / (calibrationPoints.width - 1),
-//                            py * points.rows / (calibrationPoints.height - 1)), 3, CV_RGB(255, 255, 255), -1);
-//        }
-//    }
+    auto calibrationPoints = _getCalibPoints();
+    for (unsigned int py = 0; py < calibrationPoints.height; ++py)
+    {
+        for (unsigned int px = 0; px < calibrationPoints.width; ++px)
+        {
+            circle(points,
+                    Point
+                    (
+                        px * points.cols / (calibrationPoints.width - 1),
+                        py * points.rows / (calibrationPoints.height - 1)
+                    ), 3, CV_RGB(255, 255, 255), -1);
+        }
+    }
     QImage im((uchar*) (points.data), points.cols, points.rows, QImage::Format_RGB888);
     _ui->labelPointsPositions->setPixmap(QPixmap::fromImage(im));
 }
@@ -85,11 +89,6 @@ void SettingsWindow::showEvent(QShowEvent* pEvent)
 //////////////////////////////////////////////////////////////////////////
 void SettingsWindow::slotDrawSensorImage(Mat image)
 {
-//    if ((float) lInCorrentCounter / (float) lFullCounter > 0.1)
-//    {
-//        rectangle(resized, Point(5, 5), Point(resized.cols - 5, resized.rows - 5), CV_RGB(0, 0, 255), 5);
-//    }
-
     if (!isHidden())
     {
         Mat rgb, out;
@@ -110,13 +109,15 @@ void SettingsWindow::slotSettingsNoCamera()
 
 void SettingsWindow::changeCalibrationPointsHor(int i)
 {
-//    calibrationPoints = Size_<unsigned int>(i, calibrationPoints.height);
+    auto calibrationPoints = _getCalibPoints();
+    _putCalibPoints(Size(i, calibrationPoints.height));
     DrawPoints();
 }
 
 void SettingsWindow::changeCalibrationPointsVer(int i)
 {
-//    calibrationPoints = Size_<unsigned int>(calibrationPoints.width, i);
+    auto calibrationPoints = _getCalibPoints();
+    _putCalibPoints(Size(calibrationPoints.width, i));
     DrawPoints();
 }
 

@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <future>
 #include <iostream>
+#include <chrono>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -49,6 +50,8 @@ IrCameraProcessor::IrCameraProcessor(
 
                 auto th = threshold();
 
+                auto start = chrono::high_resolution_clock::now();
+
                 cvtColor(image, mono, CV_BGR2GRAY);
                 cv::threshold(mono, thresh, th, (unsigned char)(-1), CV_THRESH_BINARY);
 
@@ -57,6 +60,11 @@ IrCameraProcessor::IrCameraProcessor(
 
                 Mat outImage(thresh.size(), CV_8UC3, Scalar(0));
                 drawContours(outImage, contours, -1, CV_RGB(0, 255, 0), 1);
+
+                auto end = chrono::high_resolution_clock::now();
+
+                auto execTime = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+                cout << "exec time " << execTime << endl;
 
                 if(imageOutput)imageOutput(oim() ? outImage : image);
                 ir(320, 240);
