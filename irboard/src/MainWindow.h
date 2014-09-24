@@ -64,14 +64,6 @@ private:
     std::shared_ptr<SettingsWindow>     _settingsWindow;
 
     std::shared_ptr<CalibrationWindow>  _calibrationWindow;
-
-//    Size_<unsigned int>             calibrationPoints;
-
-//    // mouse control data
-//    C_RawMouse*                     pRawMouse                   = 0;
-//    Point2f                         lastRawPosition;
-//
-//    Size_<unsigned int>             screenResolution;
 };
 
 // callbacks

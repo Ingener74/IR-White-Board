@@ -3,16 +3,16 @@
 
 #include <memory>
 
-#include <opencv2/core/core.hpp>
-
-#include <QtCore/QEvent>
-#include <QtCore/QTimer>
-#include <QtOpenGL/QGLColormap>
-
 #include <QtOpenGL/QGLWidget>
-
 #include <QtOpenGL/QGLFunctions>
 
+namespace cv {
+
+template<typename _Tp> class Point_;
+typedef Point_<int> Point2i;
+typedef Point2i Point;
+
+}  // namespace cv
 class QKeyEvent;
 class QTimerEvent;
 class QCloseEvent;

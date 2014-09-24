@@ -85,6 +85,8 @@ set(SOURCES
     src/IrMouse.cpp
 )
 
+file(COPY ../data/config.json DESTINATION ${CMAKE_BINARY_DIR})
+
 # add_precompiled_header(irboard src/precompiled_headers.h)
 
 if(MINGW)

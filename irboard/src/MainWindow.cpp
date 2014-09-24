@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#include <opencv2/core/core.hpp>
+
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QDesktopWidget>
@@ -46,6 +48,16 @@ MainWindow::MainWindow(
                 _calibrationWindow(calib ? calib : throw invalid_argument("calibration window is invalid"))
 {
     _ui->setupUi(this);
+
+    /*
+     * How to add mask to image
+     */
+//    QPixmap windowImage(":/path/to/image.png");
+//    setMask(windowImage.mask());
+
+//    setWindowOpacity(0.5);
+
+    QVector<int> test;
 
     string s = R"(Test)";
 

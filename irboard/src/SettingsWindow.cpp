@@ -12,17 +12,27 @@ using namespace std;
 using namespace cv;
 
 //////////////////////////////////////////////////////////////////////////
-SettingsWindow::SettingsWindow(Thresholder thresholder,
-        QWidget * parent /*= 0*/, Qt::WindowFlags f /*= 0 */) :
-        QWidget(parent, f),
-        _ui(make_shared<Ui_WindowSettings>()),
-        _thresholder(thresholder ? thresholder : throw invalid_argument("in settings window thresholder is invalid"))
+SettingsWindow::SettingsWindow(
+        GetThreshold getThreshold,
+        PutThreshold putThreshold,
+        GetCalibrationPoints getCalibPoints,
+        PutCalibrationPoints putCalibPoints,
+        QWidget * parent /*= 0*/,
+        Qt::WindowFlags f /*= 0 */) :
+                QWidget(parent, f),
+                _ui(make_shared<Ui_WindowSettings>()),
+                _getThreshold(getThreshold ? getThreshold : throw invalid_argument("in settings window get threshold is invalid")),
+                _putThreshold(putThreshold ? putThreshold : throw invalid_argument("in settings window put threshold is invalid")),
+                _getCalibPoints(getCalibPoints ? getCalibPoints : throw invalid_argument("get calibration points is invalid")),
+                _putCalibPoints(putCalibPoints ? putCalibPoints : throw invalid_argument("put calibration points is invalid"))
 {
     _ui->setupUi(this);
 
-    QObject::connect(_ui->horizontalSliderThreshold, SIGNAL(valueChanged(int)), this, SLOT(RefreshThreshold(int)));
+    function<void(int)> a = [](int i){
+        cout << "i = " << i << endl;
+    };
 
-    connect(_ui->spinBoxCamera, SIGNAL(valueChanged(int)), SLOT(SensorChange(int)));
+    connect(_ui->spinBoxCamera, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), a);
     connect(_ui->ButtonApply, SIGNAL(clicked()), SLOT(hide()));
 
     QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));
@@ -30,17 +40,21 @@ SettingsWindow::SettingsWindow(Thresholder thresholder,
     QObject::connect(_ui->spinBoxHorPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsHor(int)));
     QObject::connect(_ui->spinBoxVetPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsVer(int)));
 
-    _ui->horizontalSliderThreshold->setValue(_thresholder());
+    _ui->horizontalSliderThreshold->setValue(_getThreshold());
 }
 
 SettingsWindow::~SettingsWindow()
 {
+    _putThreshold(_ui->horizontalSliderThreshold->value());
     cout << "SettingsWindow::~SettingsWindow()" << endl;
 }
 
 //////////////////////////////////////////////////////////////////////////
 void SettingsWindow::closeEvent(QCloseEvent* pEvent)
 {
+    /*
+     * Ignore closing just hide window
+     */
     pEvent->ignore();
     hide();
 }
@@ -64,22 +78,11 @@ void SettingsWindow::DrawPoints()
 //////////////////////////////////////////////////////////////////////////
 void SettingsWindow::showEvent(QShowEvent* pEvent)
 {
-    _ui->horizontalSliderThreshold->setValue(_thresholder());
+    _ui->horizontalSliderThreshold->setValue(_getThreshold());
     DrawPoints();
 }
 
 //////////////////////////////////////////////////////////////////////////
-void SettingsWindow::RefreshThreshold(int threshold)
-{
-    _threshold = threshold;
-}
-
-//////////////////////////////////////////////////////////////////////////
-void SettingsWindow::SensorChange(int iIndex)
-{
-//    uiNextCamera = iIndex - 1;
-}
-
 void SettingsWindow::slotDrawSensorImage(Mat image)
 {
 //    if ((float) lInCorrentCounter / (float) lFullCounter > 0.1)
@@ -119,7 +122,7 @@ void SettingsWindow::changeCalibrationPointsVer(int i)
 
 uint8_t SettingsWindow::getThreshold()
 {
-    return max(0, min(_ui->horizontalSliderThreshold->sliderPosition(), 255));
+    return max(0, min(_ui->horizontalSliderThreshold->value(), 255));
 }
 
 int SettingsWindow::getImageSelector() const

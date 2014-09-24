@@ -12,7 +12,7 @@ using namespace cv;
 CalibrationWindow::CalibrationWindow(CalibrationPoint cp, QWidget* pParent /*= 0 */) :
         QGLWidget(pParent), _calibrationPoint(cp ? cp : throw invalid_argument("calibration point getter is invalid"))
 {
-    startTimer(1000 / 30 /*FIXME fps??? */);
+    startTimer(1000 / 30);
 }
 
 CalibrationWindow::~CalibrationWindow()
