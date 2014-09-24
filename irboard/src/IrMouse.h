@@ -20,11 +20,7 @@ public:
 
 private:
     std::thread _thread;
-
-    bool isStopThread();
     std::atomic<bool> _stopThread;
-
-    std::shared_ptr<IrCameraProcessor> _irProcessor;
 };
 
 #endif /* IRMOUSE_H_ */

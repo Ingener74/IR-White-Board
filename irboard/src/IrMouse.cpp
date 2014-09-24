@@ -46,14 +46,13 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelec
                 promise<exception_ptr> errorControl;
                 auto controlFuture = errorControl.get_future();
 
-                _irProcessor = make_shared<IrCameraProcessor>(
+                auto irProcessor = make_shared<IrCameraProcessor>(
                     bind(&Platform::createVideoSource, platform.get()),
                     bind(&CoordinateConverter::putCoordinates, coordConverter.get(), _1, _2),
                     thresholder,
                     ref(errorControl),
                     outputImageSelector,
-                    bind(&IrMouse::isStopThread, this),
-                    // bind(&atomic<bool>::load, &_stopThread, memory_order_seq_cst),
+                    [this](){ return _stopThread.load(); },
                     imageOut
                 );
 
@@ -78,7 +77,3 @@ IrMouse::~IrMouse()
     cout << "IrMouse::~IrMouse()" << endl;
 }
 
-bool IrMouse::isStopThread()
-{
-    return _stopThread;
-}
