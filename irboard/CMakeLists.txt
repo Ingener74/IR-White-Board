@@ -4,6 +4,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 
 include(PCHSupport)
 
+find_package(Boost 1.53.0 REQUIRED system program_options)
+
 # find OpenCV
 find_package(OpenCV 
     COMPONENTS 
@@ -28,6 +30,8 @@ include_directories(
     ${Qt5OpenGL_INCLUDES}
 
     ${OpenCV_INCLUDE_DIRS}
+
+    ${Boost_INCLUDE_DIRS}
 
     src
 )
@@ -104,9 +108,8 @@ else()
     add_executable(${PROJECT_NAME} ${SOURCES} ${RES_SOURCES} ${UI_SOURCES})
 endif()
 
-set(LIBS
-    ${OpenCV_LIBRARIES} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY}
-)
+set(LIBS ${OpenCV_LIBRARIES} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${Boost_LIBRARIES})
+
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 qt5_use_modules(${PROJECT_NAME} Widgets Core OpenGL)
 

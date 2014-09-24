@@ -20,6 +20,8 @@
 #include <QtGui/QIcon>
 #include <QtGui/QPixmap>
 #include <QtGui/QCloseEvent>
+#include <QtGui/QPixmap>
+#include <QtGui/QBitmap>
 
 #include <QtCore/QTimer>
 #include <QtCore/QString>
@@ -52,7 +54,7 @@ MainWindow::MainWindow(
     /*
      * How to add mask to image
      */
-//    QPixmap windowImage(":/path/to/image.png");
+//    QPixmap windowImage(":/main/IrPen.png");
 //    setMask(windowImage.mask());
 
 //    setWindowOpacity(0.5);

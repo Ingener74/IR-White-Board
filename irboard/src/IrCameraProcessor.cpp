@@ -64,7 +64,7 @@ IrCameraProcessor::IrCameraProcessor(
                 auto end = chrono::high_resolution_clock::now();
 
                 auto execTime = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-                cout << "exec time " << execTime << endl;
+                cout << "exec time " << execTime << " ms" << endl;
 
                 if(imageOutput)imageOutput(oim() ? outImage : image);
                 ir(320, 240);

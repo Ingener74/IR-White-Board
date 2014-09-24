@@ -1,22 +1,23 @@
 <RCC>
-  <qresource prefix="/main">
-    <file>help.png</file>
-    <file>no_web_camera_640480.png</file>
-    <file>pictures.png</file>
-    <file>no_web_camera_320240.png</file>
-    <file>main.png</file>
-    <file>webcam.png</file>
-    <file>processor.png</file>
-    <file>apply.png</file>
-    <file>cancel.png</file>
-    <file>calibrate.png</file>
-    <file>cogwheel.png</file>
-    <file>totray.png</file>
-    <file>close.png</file>
-    <file>restore.png</file>
-    <file>no_web_camera.png</file>
-    <file>allok.png</file>
-    <file>hourglass.png</file>
-    <file>projectorscreen80.png</file>
-  </qresource>
+    <qresource prefix="/main">
+        <file>help.png</file>
+        <file>no_web_camera_640480.png</file>
+        <file>pictures.png</file>
+        <file>no_web_camera_320240.png</file>
+        <file>main.png</file>
+        <file>webcam.png</file>
+        <file>processor.png</file>
+        <file>apply.png</file>
+        <file>cancel.png</file>
+        <file>calibrate.png</file>
+        <file>cogwheel.png</file>
+        <file>totray.png</file>
+        <file>close.png</file>
+        <file>restore.png</file>
+        <file>no_web_camera.png</file>
+        <file>allok.png</file>
+        <file>hourglass.png</file>
+        <file>projectorscreen80.png</file>
+        <file>IrPen.png</file>
+    </qresource>
 </RCC>
