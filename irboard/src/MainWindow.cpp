@@ -59,9 +59,6 @@ MainWindow::MainWindow(
 
 //    setWindowOpacity(0.5);
 
-//	QTextCodec *codec = QTextCodec::codecForName("cp1251");
-//	QTextCodec::setCodecForTr(codec);
-
     _menu = make_shared<QMenu>();
 
     _menuRestore = shared_ptr<QAction>(
@@ -121,6 +118,7 @@ void MainWindow::closeEvent(QCloseEvent* pEvent)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MainWindow::timerEvent(QTimerEvent* pEvent)
 {
+
 	// check system resolution
 //	Size_<unsigned int> res = getSystemResolution();
 //	if( res != screenResolution ){
