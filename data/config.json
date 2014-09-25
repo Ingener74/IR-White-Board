@@ -1,5 +1,5 @@
 {
-    "threshold": 252,
-    "calibration_x":5,
-    "calibration_y":4
+    "threshold": "252",
+    "calibration_x": "5",
+    "calibration_y": "4"
 }

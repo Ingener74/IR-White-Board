@@ -50,9 +50,7 @@ signals:
 public slots:
     void changeCalibrationPointsHor(int i);
     void changeCalibrationPointsVer(int i);
-
     void slotDrawSensorImage(cv::Mat image);
-
     void slotSettingsNoCamera();
 
 private:

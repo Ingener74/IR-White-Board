@@ -59,14 +59,6 @@ MainWindow::MainWindow(
 
 //    setWindowOpacity(0.5);
 
-    QVector<int> test;
-
-    string s = R"(Test)";
-
-//	calibrationPoints = Size_<unsigned int>(5,4);
-//
-//	screenResolution = getSystemResolution();
-//
 //	QTextCodec *codec = QTextCodec::codecForName("cp1251");
 //	QTextCodec::setCodecForTr(codec);
 
@@ -288,95 +280,33 @@ void MainWindow::timerEvent(QTimerEvent* pEvent)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MainWindow::Calibration(void)
 {
-//	if(pCoordinateTransform != 0){ // for new calibration matrix clear old
-//		delete pCoordinateTransform;
-//		pCoordinateTransform = 0;
-//	}
-//	pCoordinateTransform = new C_CoordinateTransform(
-//			outImage.size(),
-//			screenResolution,
-//			Size_<unsigned int>(5, 4)
-//			);
-//
-//	pRawMouse->SetLeftDownCallBack(CoordinateTransformCalibrationOnLeftDown);
-//	pRawMouse->SetLeftUpCallBack(0);
-//	pRawMouse->SetMoveCallBack(0);
-//	pRawMouse->SetRightDownCallBack(0);
-//	pRawMouse->SetRightUpCallBack(0);
-
     _calibrationWindow->showFullScreen();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MainWindow::slotSystemNoCamera()
 {
-//	if(pRawMouse!=0){
-//		pRawMouse->SetLeftDownCallBack(0);
-//		pRawMouse->SetLeftUpCallBack(0);
-//		pRawMouse->SetMoveCallBack(0);
-//		pRawMouse->SetRightDownCallBack(0);
-//		pRawMouse->SetRightUpCallBack(0);
-//	}
-//
-//	if(findCaptureTimer==0){
-//		findCaptureTimer = startTimer(500);
-//	}
-//
-//	ui.labelMainImage->setPixmap(QPixmap(QString(":/main/no_web_camera.png")));
-//
-//	pSystemTray->showMessage(QObject::tr("������������� �����"), QObject::tr("��� ����� �������..."), QSystemTrayIcon::Information, 1000);
+    _ui->labelMainImage->setPixmap(QPixmap(QString(":/main/no_web_camera.png")));
+    _systemTray->showMessage(QObject::tr("System no camera"), QObject::tr("Message system no camera"),
+            QSystemTrayIcon::Information, 1000);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MainWindow::slotSystemAllOk()
 {
-//	if(pRawMouse!=0){
-//		pRawMouse->SetLeftDownCallBack(CoordinateTransformWorkOnLeftDown);
-//		pRawMouse->SetLeftUpCallBack(CoordinateTransformWorkOnLeftUp);
-//		pRawMouse->SetMoveCallBack(CoordinateTransformWorkOnMove);
-//		pRawMouse->SetRightDownCallBack(CoordinateTransformWorkOnRightDown);
-//		pRawMouse->SetRightUpCallBack(CoordinateTransformWorkOnRightUp);
-//	}
-//
-//	if(findCaptureTimer!=0){
-//		killTimer(findCaptureTimer);
-//		findCaptureTimer=0;
-//	}
-//
-//	if(captureTimer==0){
-//		captureTimer = startTimer(500);
-//	}
-//
-//	this->hide();
-//
-//	ui.labelMainImage->setPixmap(QPixmap(QString(":/main/allok.png")));
-//
-//	pSystemTray->showMessage(QObject::tr("������������� �����"), QObject::tr("������� � ������� ���������"), QSystemTrayIcon::Information, 1000);
+    this->hide();
+    _ui->labelMainImage->setPixmap(QPixmap(QString(":/main/allok.png")));
+    _systemTray->showMessage(QObject::tr("All ok"), QObject::tr("All ok message"), QSystemTrayIcon::Information, 1000);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MainWindow::slotSystemNotCalibrated()
 {
-//	if(findCaptureTimer!=0){
-//		killTimer(findCaptureTimer);
-//		findCaptureTimer=0;
-//	}
-//
-//	if(captureTimer==0){
-//		captureTimer = startTimer(500);
-//	}
-//	if(pRawMouse!=0){
-//		pRawMouse->SetLeftDownCallBack(0);
-//		pRawMouse->SetLeftUpCallBack(0);
-//		pRawMouse->SetMoveCallBack(0);
-//		pRawMouse->SetRightDownCallBack(0);
-//		pRawMouse->SetRightUpCallBack(0);
-//	}
-
     show();
 
     _ui->labelMainImage->setPixmap(QPixmap(QString::fromUtf8(":/main/calibrate.png")));
-    _systemTray->showMessage(QObject::tr("������������� �����"), QObject::tr("���������� ����������"), QSystemTrayIcon::Information, 1000);
+    _systemTray->showMessage(QObject::tr("System not calibrated"), QObject::tr("Message system not calibrated"),
+            QSystemTrayIcon::Information, 1000);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

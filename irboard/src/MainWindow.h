@@ -66,16 +66,5 @@ private:
     std::shared_ptr<CalibrationWindow>  _calibrationWindow;
 };
 
-// callbacks
-// for calibration
-//void CoordinateTransformCalibrationOnLeftDown( Point2f A_rPoint );
-//
-//// for work
-//void CoordinateTransformWorkOnLeftDown( Point2f A_rPoint );
-//void CoordinateTransformWorkOnLeftUp( Point2f A_rPoint );
-//void CoordinateTransformWorkOnMove( Point2f A_rPoint );
-//void CoordinateTransformWorkOnRightDown( Point2f A_rPoint );
-//void CoordinateTransformWorkOnRightUp( Point2f A_rPoint );
-
 #endif
 

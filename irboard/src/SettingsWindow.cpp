@@ -89,17 +89,17 @@ void SettingsWindow::showEvent(QShowEvent* pEvent)
 //////////////////////////////////////////////////////////////////////////
 void SettingsWindow::slotDrawSensorImage(Mat image)
 {
-    if (!isHidden())
-    {
-        Mat rgb, out;
+    if (isHidden()) return;
+    if (image.empty()) throw runtime_error("image is empty");
 
-        cvtColor(image, rgb, CV_RGB2BGR);
+    Mat rgb, out;
 
-        cv::resize(rgb, out, Size(320, 240));
+    cvtColor(image, rgb, CV_RGB2BGR);
 
-        QImage im((uchar*) out.data, out.cols, out.rows, QImage::Format_RGB888);
-        _ui->labelSensorView->setPixmap(QPixmap::fromImage(im));
-    }
+    cv::resize(rgb, out, Size(320, 240));
+
+    QImage im((uchar*) out.data, out.cols, out.rows, QImage::Format_RGB888);
+    _ui->labelSensorView->setPixmap(QPixmap::fromImage(im));
 }
 
 void SettingsWindow::slotSettingsNoCamera()
