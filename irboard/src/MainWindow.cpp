@@ -82,24 +82,24 @@ MainWindow::MainWindow(
     _systemTray->setContextMenu(_menu.get());
     _systemTray->show();
 
-//	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		this,					SLOT(slotSystemNoCamera())		);
-//	QObject::connect(this,								SIGNAL(signalSystemNoCamera()),		pSettingsWindow,		SLOT(slotSettingsNoCamera())	);
+//	QObject::connect(this,                    SIGNAL(signalSystemNoCamera()),         this,                    SLOT(slotSystemNoCamera())       );
+//	QObject::connect(this,                    SIGNAL(signalSystemNoCamera()),         pSettingsWindow,         SLOT(slotSettingsNoCamera())     );
 
-    QObject::connect(_ui->ButtonSettings,               SIGNAL(clicked()),                  _settingsWindow.get(),  SLOT(show())                    );
-    QObject::connect(_menuSettings.get(),               SIGNAL(triggered()),                _settingsWindow.get(),  SLOT(show())                    );
+    QObject::connect(_ui->ButtonSettings,     SIGNAL(clicked()),                      _settingsWindow.get(),   SLOT(show())                     );
+    QObject::connect(_menuSettings.get(),     SIGNAL(triggered()),                    _settingsWindow.get(),   SLOT(show())                     );
 
-    QObject::connect(_menuClose.get(),                  SIGNAL(triggered()),                this,                   SLOT(close())                   );
+    QObject::connect(_menuClose.get(),        SIGNAL(triggered()),                    this,                    SLOT(close())                    );
 
-    QObject::connect(_ui->ButtonToTray,                 SIGNAL(clicked()),                  this,                   SLOT(hide())                    );
-    QObject::connect(_menuRestore.get(),                SIGNAL(triggered()),                this,                   SLOT(show())                    );
+    QObject::connect(_ui->ButtonToTray,       SIGNAL(clicked()),                      this,                    SLOT(hide())                     );
+    QObject::connect(_menuRestore.get(),      SIGNAL(triggered()),                    this,                    SLOT(show())                     );
 
-    QObject::connect(_ui->ButtonCalibrate,              SIGNAL(clicked()),                  this,                   SLOT(Calibration())             );
-    QObject::connect(_menuCalibration.get(),            SIGNAL(triggered()),                this,                   SLOT(Calibration())             );
+    QObject::connect(_ui->ButtonCalibrate,    SIGNAL(clicked()),                      this,                    SLOT(Calibration())              );
+    QObject::connect(_menuCalibration.get(),  SIGNAL(triggered()),                    this,                    SLOT(Calibration())              );
 
-//	QObject::connect(pSettingsWindow,					SIGNAL(signalSettingsCaptureNoExist()),this,					SLOT(slotSystemNoCamera())		);
+//	QObject::connect(pSettingsWindow,         SIGNAL(signalSettingsCaptureNoExist()), this,                    SLOT(slotSystemNoCamera())       );
 
-//	QObject::connect(this,								SIGNAL(signalAllOk()),				this,					SLOT(slotSystemAllOk())			);
-//	QObject::connect(this,								SIGNAL(signalCalibrationIsNeeded()),this,					SLOT(slotSystemNotCalibrated())	);
+//	QObject::connect(this,                    SIGNAL(signalAllOk()),                  this,                    SLOT(slotSystemAllOk())          );
+//	QObject::connect(this,                    SIGNAL(signalCalibrationIsNeeded()),    this,                    SLOT(slotSystemNotCalibrated())  );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

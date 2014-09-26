@@ -14,7 +14,6 @@
 
 #include <opencv2/core/core.hpp>
 
-#include <QtCore/QJsonObject>
 #include <QtWidgets/QApplication>
 
 #include <IrMouse.h>
