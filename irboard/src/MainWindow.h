@@ -32,6 +32,8 @@ public:
     void closeEvent(QCloseEvent* pEvent);
     void timerEvent(QTimerEvent* pEvent);
 
+    void calibrationEnd();
+
 public slots:
     void Calibration(void);
 

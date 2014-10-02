@@ -22,10 +22,10 @@ using namespace std;
 using namespace std::placeholders;
 using namespace cv;
 
-IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelector outputImageSelector)
+IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelector outputImageSelector, CalibrationEnd ce)
 {
     _stopThread = false;
-    _thread = thread([imageOut, thresholder, outputImageSelector, this]()
+    _thread = thread([imageOut, thresholder, outputImageSelector, ce, this]()
     {
         while(!_stopThread)
         {
@@ -40,7 +40,8 @@ IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelec
                 auto coordConverter = make_shared<CoordinateConverter>(
                     bind(&Platform::mouseCommand, platform.get(), _1, _2, _3, _4),
                     bind(&Platform::loadTransformer, platform.get()),
-                    bind(&Platform::saveTransformer, platform.get(), _1)
+                    bind(&Platform::saveTransformer, platform.get(), _1),
+                    ce
                 );
 
                 promise<exception_ptr> errorControl;

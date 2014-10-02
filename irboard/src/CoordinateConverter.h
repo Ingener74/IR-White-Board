@@ -23,23 +23,26 @@ enum class MouseCommand
 };
 std::ostream& operator<<(std::ostream& out, const MouseCommand& rho);
 
-using MouseOutput = std::function<void(int, int, MouseButton, MouseCommand)>;
-using CoilsLoader = std::function<Transformer()>;
-using CoilsSaver  = std::function<void(const Transformer&)>;
+using MouseOutput      = std::function<void(int, int, MouseButton, MouseCommand)>;
+using CoilsLoader      = std::function<Transformer()>;
+using CoilsSaver       = std::function<void(const Transformer&)>;
+using CalibrationEnd   = std::function<void()>;
 
 class CoordinateConverter
 {
 public:
-    CoordinateConverter(MouseOutput, CoilsLoader, CoilsSaver);
+    CoordinateConverter(MouseOutput, CoilsLoader, CoilsSaver, CalibrationEnd);
     virtual ~CoordinateConverter();
 
-
     void putCoordinates(int x, int y);
+    void calibrate();
 
 private:
     MouseOutput _mouseOutput;
     CoilsSaver _coilsSaver;
     Transformer _transformer;
+    CalibrationEnd _calibrationEnd;
+    std::vector<cv::Point> _calibrationPoints;
 };
 
 #endif /* COORDINATECONVERTER_H_ */

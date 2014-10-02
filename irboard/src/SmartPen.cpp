@@ -74,7 +74,8 @@ int main(int argc, char* argv[])
         auto irMouse = make_shared<IrMouse>(
             std::bind(&SettingsWindow::slotDrawSensorImage, settingsWindow.get(), std::placeholders::_1),
             std::bind(&SettingsWindow::getThreshold, settingsWindow.get()),
-            std::bind(&SettingsWindow::getImageSelector, settingsWindow.get())
+            std::bind(&SettingsWindow::getImageSelector, settingsWindow.get()),
+            std::bind(&MainWindow::calibrationEnd, mainWindow.get())
         );
 
         return app->exec();

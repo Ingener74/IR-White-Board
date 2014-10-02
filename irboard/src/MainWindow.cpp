@@ -332,6 +332,11 @@ Size getSystemResolution()
     return Size(systemRes.width(), systemRes.height());
 }
 
+void MainWindow::calibrationEnd()
+{
+    _calibrationWindow->hide();
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //void CoordinateTransformWorkOnLeftDown( Point2f A_rPoint )
 //{

@@ -12,10 +12,12 @@
 #include <atomic>
 #include <thread>
 
+using CalibrationEnd = std::function<void()>;
+
 class IrMouse
 {
 public:
-    IrMouse(ImageOutput, Thresholder, OutputImageSelector);
+    IrMouse(ImageOutput, Thresholder, OutputImageSelector, CalibrationEnd);
     virtual ~IrMouse();
 
 private:
