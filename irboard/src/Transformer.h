@@ -19,7 +19,8 @@ public:
     Transformer(int width, int coilsCount, CoilsFiller);
     virtual ~Transformer();
 
-    cv::Point convert(int x, int y);
+    cv::Point convert(int x, int y) const;
+    bool isReady() const;
 
 private:
     std::vector<cv::Point> _coils;

@@ -25,7 +25,12 @@ Transformer::~Transformer()
     cout << "Transformer::~Transformer()" << endl;
 }
 
-Point Transformer::convert(int x, int y)
+Point Transformer::convert(int x, int y) const
 {
     return _coils[y * _width + x];
+}
+
+bool Transformer::isReady() const
+{
+    return (_coils.empty() || !_width);
 }

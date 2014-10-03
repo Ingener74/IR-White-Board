@@ -43,8 +43,11 @@ CoordinateConverter::~CoordinateConverter()
 
 void CoordinateConverter::putCoordinates(int x, int y)
 {
-    if (false /*in calibration expression*/)
+    if (!_transformer.isReady()/*in calibration expression: transformer not ready and and calibration point exist*/)
     {
+        /*
+         * calibration process
+         */
     }
     else
     {
