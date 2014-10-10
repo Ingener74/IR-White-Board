@@ -26,6 +26,13 @@ int main(int argc, char **argv)
 
         VideoWriter vw;
 
+        Mat image = imread(argv[1]);
+
+        while (true)
+        {
+            imshow("ir-tester", image);
+        }
+
         return 0;
     }
     catch (exception const & e)
@@ -34,4 +41,3 @@ int main(int argc, char **argv)
         return 1;
     }
 }
-

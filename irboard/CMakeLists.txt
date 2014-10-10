@@ -1,71 +1,21 @@
 cmake_minimum_required(VERSION 2.8)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
-
-include(PCHSupport)
-
-find_package(Boost 1.53.0 REQUIRED system program_options)
-
-# find OpenCV
-find_package(OpenCV 
-    COMPONENTS 
-        core 
-        imgproc 
-        highgui
-)
-
-# find OpenGL
-find_package(OpenGL)
-
-# find Qt5
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Core    REQUIRED)
-find_package(Qt5OpenGL  REQUIRED)
-
-include_directories(
-    ${Qt5Widgets_INCLUDES}
-    ${Qt5Core_INCLUDES}
-    ${Qt5OpenGL_INCLUDES}
-
-    ${OpenCV_INCLUDE_DIRS}
-
-    ${Boost_INCLUDE_DIRS}
-
-    src
-)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS} ${Qt5OpenGL_EXECUTABLE_COMPILE_FLAGS}")
-
-add_definitions(
-    -std=c++11
-    ${Qt5Widgets_DEFINITIONS}
-    ${Qt5Core_DEFINITIONS}
-    ${Qt5OpenGL_DEFINITIONS}
-)
-
-if(MINGW)
-    message("Configured for MinGW")
-    add_definitions(-DMINGW)
-elseif(APPLE)
-    message("Configured for MacOS X")
-    add_definitions(-DMACOSX)
-else()
-    message("Configured for Linux GCC")
-    add_definitions(-DLINUX)
-endif()
-
 set(PROJECT_NAME irboard)
 project(${PROJECT_NAME})
+
+include_directories(
+    src
+)
 
 qt5_add_resources(RES_SOURCES
     resources/MainResource.qrc
 )
+
 qt5_wrap_ui(UI_SOURCES 
     ui/MainWindow.ui
     ui/SettingsWindow.ui
 )
+
 set(HEADERS
     src/CalibrationWindow.h
     src/CoordConverter.h
@@ -77,6 +27,7 @@ set(HEADERS
     src/SettingsWindow.h
     src/Transformer.h
 )
+
 set(SOURCES
     src/IrCameraProcessor.cpp
     src/CalibrationWindow.cpp
@@ -92,6 +43,14 @@ set(SOURCES
 file(COPY ../data/config.json DESTINATION ${CMAKE_BINARY_DIR})
 
 # add_precompiled_header(irboard src/precompiled_headers.h)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS} ${Qt5OpenGL_EXECUTABLE_COMPILE_FLAGS}")
+
+add_definitions(
+    ${Qt5Widgets_DEFINITIONS}
+    ${Qt5Core_DEFINITIONS}
+    ${Qt5OpenGL_DEFINITIONS}
+)
 
 if(MINGW)
     set(HEADERS ${HEADERS}
