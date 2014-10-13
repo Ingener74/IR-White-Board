@@ -15,12 +15,12 @@
 #include <opencv2/core/core.hpp>
 
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 
 #include <IrMouse.h>
 #include <MainWindow.h>
 #include <SettingsWindow.h>
 #include <CalibrationWindow.h>
-
 
 #ifdef MINGW
 #include <WinPlatform.h>
@@ -99,6 +99,9 @@ int main(int argc, char* argv[])
     catch (std::exception const & e)
     {
         cerr << "Error: " << e.what() << endl;
+
+//        QMessageBox::critical(nullptr, "Error", e.what());
+
         return EXIT_FAILURE;
     }
 }
