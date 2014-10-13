@@ -42,11 +42,35 @@ enum
 };
 */
 
+map<int, string> events_{
+    {EVENT_MOUSEMOVE    , "EVENT_MOUSEMOVE    "},
+    {EVENT_LBUTTONDOWN  , "EVENT_LBUTTONDOWN  "},
+    {EVENT_RBUTTONDOWN  , "EVENT_RBUTTONDOWN  "},
+    {EVENT_MBUTTONDOWN  , "EVENT_MBUTTONDOWN  "},
+    {EVENT_LBUTTONUP    , "EVENT_LBUTTONUP    "},
+    {EVENT_RBUTTONUP    , "EVENT_RBUTTONUP    "},
+    {EVENT_MBUTTONUP    , "EVENT_MBUTTONUP    "},
+    {EVENT_LBUTTONDBLCLK, "EVENT_LBUTTONDBLCLK"},
+    {EVENT_RBUTTONDBLCLK, "EVENT_RBUTTONDBLCLK"},
+    {EVENT_MBUTTONDBLCLK, "EVENT_MBUTTONDBLCLK"},
+};
+
+map<int, string> flags_{
+    {EVENT_FLAG_LBUTTON , "EVENT_FLAG_LBUTTON "},
+    {EVENT_FLAG_RBUTTON , "EVENT_FLAG_RBUTTON "},
+    {EVENT_FLAG_MBUTTON , "EVENT_FLAG_MBUTTON "},
+    {EVENT_FLAG_CTRLKEY , "EVENT_FLAG_CTRLKEY "},
+    {EVENT_FLAG_SHIFTKEY, "EVENT_FLAG_SHIFTKEY"},
+    {EVENT_FLAG_ALTKEY  , "EVENT_FLAG_ALTKEY  "},
+};
+
 void mouseCallback(int event, int x, int y, int flags, void* userdata)
 {
     auto callback = *static_cast<function<void(Point)>*>(userdata);
 
-    if (event == EVENT_LBUTTONDOWN && flags == EVENT_FLAG_LBUTTON)
+//    cout << events_[event] << ", " << flags << endl;
+
+    if (event == EVENT_LBUTTONDOWN/* && (flags & EVENT_FLAG_LBUTTON)*/)
     {
         callback(Point(x, y));
     }
