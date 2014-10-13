@@ -21,6 +21,13 @@
 #include <SettingsWindow.h>
 #include <CalibrationWindow.h>
 
+
+#ifdef MINGW
+#include <WinPlatform.h>
+#else
+#include <Platform.h>
+#endif
+
 using namespace std;
 using namespace std::placeholders;
 using namespace cv;
@@ -72,10 +79,19 @@ int main(int argc, char* argv[])
         mainWindow->show();
 
         auto irMouse = make_shared<IrMouse>(
-            std::bind(&SettingsWindow::slotDrawSensorImage, settingsWindow.get(), std::placeholders::_1),
-            std::bind(&SettingsWindow::getThreshold, settingsWindow.get()),
-            std::bind(&SettingsWindow::getImageSelector, settingsWindow.get()),
-            std::bind(&MainWindow::calibrationEnd, mainWindow.get())
+            []()
+            {
+#ifdef MINGW
+            auto platform = make_shared<WinPlatform>();
+#else
+            auto platform = make_shared<Platform>();
+#endif
+                return platform;
+            },
+            [settingsWindow](Mat image){ settingsWindow->slotDrawSensorImage(image); },
+            [settingsWindow](){ return settingsWindow->getThreshold(); },
+            [settingsWindow](){ return settingsWindow->getImageSelector(); },
+            [mainWindow](){ mainWindow->calibrationEnd(); }
         );
 
         return app->exec();

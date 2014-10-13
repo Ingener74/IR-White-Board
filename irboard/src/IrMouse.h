@@ -12,12 +12,15 @@
 #include <atomic>
 #include <thread>
 
-using CalibrationEnd = std::function<void()>;
+class Platform;
+
+using CalibrationEnd  = std::function<void()>;
+using PlatformCreator = std::function<std::shared_ptr<Platform>()>;
 
 class IrMouse
 {
 public:
-    IrMouse(ImageOutput, Thresholder, OutputImageSelector, CalibrationEnd);
+    IrMouse(PlatformCreator, ImageOutput, Thresholder, OutputImageSelector, CalibrationEnd);
     virtual ~IrMouse();
 
 private:

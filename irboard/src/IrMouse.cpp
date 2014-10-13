@@ -14,33 +14,31 @@
 #include <IrMouse.h>
 #include <Platform.h>
 
-#ifdef MINGW
-#include <WinPlatform.h>
-#endif
-
 using namespace std;
 using namespace std::placeholders;
 using namespace cv;
 
-IrMouse::IrMouse(ImageOutput imageOut, Thresholder thresholder, OutputImageSelector outputImageSelector, CalibrationEnd ce)
-{
+IrMouse::IrMouse
+(
+    PlatformCreator      pc,
+    ImageOutput          imageOut,
+    Thresholder          thresholder,
+    OutputImageSelector  outputImageSelector,
+    CalibrationEnd       ce
+){
     _stopThread = false;
-    _thread = thread([imageOut, thresholder, outputImageSelector, ce, this]()
+    _thread = thread([pc, imageOut, thresholder, outputImageSelector, ce, this]()
     {
         while(!_stopThread)
         {
             try
             {
-#ifdef MINGW
-                auto platform = make_shared<WinPlatform>();
-#else
-                auto platform = make_shared<Platform>();
-#endif
+                auto platform = (pc ? pc : throw invalid_argument("invalid platform creator"))();
 
                 auto coordConverter = make_shared<CoordinateConverter>(
-                    bind(&Platform::mouseCommand, platform.get(), _1, _2, _3, _4),
-                    bind(&Platform::loadTransformer, platform.get()),
-                    bind(&Platform::saveTransformer, platform.get(), _1),
+                    [platform](int x, int y, MouseButton mb, MouseCommand mc){platform->mouseCommand(x, y, mb, mc); },
+                    [platform](){ return platform->loadTransformer(); },
+                    [platform](const Transformer& t){ platform->saveTransformer(t); },
                     ce
                 );
 
