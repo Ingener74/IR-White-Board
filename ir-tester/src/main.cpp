@@ -70,7 +70,7 @@ void mouseCallback(int event, int x, int y, int flags, void* userdata)
 
 //    cout << events_[event] << ", " << flags << endl;
 
-    if (event == EVENT_LBUTTONDOWN/* && (flags & EVENT_FLAG_LBUTTON)*/)
+    if (event == EVENT_LBUTTONDOWN || (event == EVENT_MOUSEMOVE && (flags & EVENT_FLAG_LBUTTON)))
     {
         callback(Point(x, y));
     }
@@ -113,8 +113,6 @@ int main(int argc, char **argv)
         cout << "image size " << image.size() << endl;
 
         VideoWriter vw;
-
-
 
         while (true)
         {

@@ -46,8 +46,8 @@ IrMouse::IrMouse
                 auto controlFuture = errorControl.get_future();
 
                 auto irProcessor = make_shared<IrCameraProcessor>(
-                    bind(&Platform::createVideoSource, platform.get()),
-                    bind(&CoordinateConverter::putCoordinates, coordConverter.get(), _1, _2),
+                    [platform](){ return platform->createVideoSource(); },
+                    [coordConverter](int x, int y){ coordConverter->putCoordinates(x, y); },
                     thresholder,
                     ref(errorControl),
                     outputImageSelector,
@@ -62,8 +62,8 @@ IrMouse::IrMouse
             catch (exception const & e)
             {
                 cerr << "IrMouse error: " << e.what() << endl;
+                this_thread::sleep_for(chrono::milliseconds(1000));
             }
-            this_thread::sleep_for(chrono::milliseconds(1000));
         }
         cout << "ir mouse thread stopped" << endl;
     });

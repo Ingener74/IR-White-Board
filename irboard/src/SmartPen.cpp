@@ -82,9 +82,9 @@ int main(int argc, char* argv[])
             []()
             {
 #ifdef MINGW
-            auto platform = make_shared<WinPlatform>();
+                auto platform = make_shared<WinPlatform>();
 #else
-            auto platform = make_shared<Platform>();
+                auto platform = make_shared<Platform>();
 #endif
                 return platform;
             },
