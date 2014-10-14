@@ -36,14 +36,11 @@ using namespace boost::property_tree;
 
 int main(int argc, char* argv[])
 {
+    auto app = make_shared<QApplication>(argc, argv);
+
     try
     {
-        auto app = make_shared<QApplication>(argc, argv);
-
-        auto calibrationWindow = make_shared<CalibrationWindow>([]()
-        {
-            return Point(200, 200);
-        });
+        auto calibrationWindow = make_shared<CalibrationWindow>([](){ return Point(200, 200); });
 
         const string configFileName = "config.json";
         ptree pt;
@@ -98,10 +95,7 @@ int main(int argc, char* argv[])
     }
     catch (std::exception const & e)
     {
-        cerr << "Error: " << e.what() << endl;
-
-//        QMessageBox::critical(nullptr, "Error", e.what());
-
+        QMessageBox::critical(nullptr, "Error", e.what());
         return EXIT_FAILURE;
     }
 }
