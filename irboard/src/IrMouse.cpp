@@ -15,7 +15,6 @@
 #include <Platform.h>
 
 using namespace std;
-using namespace std::placeholders;
 using namespace cv;
 
 IrMouse::IrMouse

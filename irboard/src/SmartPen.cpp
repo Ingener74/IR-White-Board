@@ -29,7 +29,6 @@
 #endif
 
 using namespace std;
-using namespace std::placeholders;
 using namespace cv;
 using namespace boost;
 using namespace boost::property_tree;
