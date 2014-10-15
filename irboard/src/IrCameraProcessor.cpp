@@ -36,7 +36,7 @@ IrCameraProcessor::IrCameraProcessor
     {
         try
         {
-            auto sensor = (sensorCreator   ? sensorCreator   : throw invalid_argument("sensor creator is empty"))();
+            auto sensor = (sensorCreator ? sensorCreator : throw invalid_argument("sensor creator is empty"))();
 
             if(!sensor->isOpened()) throw std::runtime_error("can't open ir sensor device");
 

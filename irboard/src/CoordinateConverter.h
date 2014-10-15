@@ -16,12 +16,12 @@ enum class MouseButton
 {
     NO_BUTTON, LEFT, RIGHT, MIDDLE,
 };
-std::ostream& operator<<(std::ostream& out, const MouseButton& rho);
+std::ostream& operator<<(std::ostream&, const MouseButton&);
 enum class MouseCommand
 {
     MOVE, UP, DOWN,
 };
-std::ostream& operator<<(std::ostream& out, const MouseCommand& rho);
+std::ostream& operator<<(std::ostream&, const MouseCommand&);
 
 using MouseOutput      = std::function<void(int, int, MouseButton, MouseCommand)>;
 using CoilsLoader      = std::function<Transformer()>;

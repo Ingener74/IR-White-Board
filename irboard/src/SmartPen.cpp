@@ -48,21 +48,17 @@ int main(int argc, char* argv[])
         json_parser::read_json(configFileName, pt);
 
         auto settingsWindow = make_shared<SettingsWindow>(
-                [&pt]()
-                {
+                [&pt](){
                     return pt.get<int>("threshold");
                 },
-                [&pt, &configFileName](int threshold)
-                {
+                [&pt, &configFileName](int threshold){
                     pt.put("threshold", threshold);
                     json_parser::write_json(configFileName, pt);
                 },
-                [&pt]()
-                {
+                [&pt](){
                     return Size(pt.get<int>("calibration_x"), pt.get<int>("calibration_y"));
                 },
-                [&pt, &configFileName](const Size& calibrationPoints)
-                {
+                [&pt, &configFileName](const Size& calibrationPoints){
                     pt.put("calibration_x", calibrationPoints.width);
                     pt.put("calibration_y", calibrationPoints.height);
                     json_parser::write_json(configFileName, pt);
