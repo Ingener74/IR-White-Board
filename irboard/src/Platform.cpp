@@ -22,6 +22,7 @@ class VideoCaptureMock: public VideoCapture
 public:
     VideoCaptureMock(int i)
     {
+        if (0 != i) throw invalid_argument("invalid sensor");
     }
     virtual ~VideoCaptureMock()
     {
