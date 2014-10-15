@@ -114,20 +114,32 @@ int main(int argc, char **argv)
 
         VideoWriter vw;
 
+        Point fakeIr{-1, -1};
+
         while (true)
         {
-            imshow("ir-tester", image);
-
-            std::function<void(Point)> callback = [](Point p){
-                cout << "mouse callback " << p << endl;
+            std::function<void(Point)> callback = [&fakeIr](Point p){
+//                cout << "mouse callback " << p << endl;
+                fakeIr = p;
             };
 
+            Mat blackImage{480, 640, CV_8UC3, Scalar(0, 0, 0)};
+
+            stringstream ss;
+            ss << fakeIr;
+
+            putText(blackImage, ss.str(), Point{10, 20}, FONT_HERSHEY_PLAIN, 1, Scalar{255,255,0});
+            circle(blackImage, fakeIr, 3, Scalar{255,255,255}, -1);
+
+            cout << "fake ir " << fakeIr << endl;
+
+            imshow("fake camera image", blackImage);
+            imshow("ir-tester", image);
             setMouseCallback("ir-tester", mouseCallback, &callback);
 
-            if (waitKey(1000 / 30) == 27)
-            {
-                return 0;
-            }
+            if ( waitKey(1000 / 30) == 27 ) return 0;
+
+            fakeIr = Point{-1, -1};
         }
 
         return 0;
