@@ -19,26 +19,26 @@ using namespace cv;
 
 IrMouse::IrMouse
 (
-    PlatformCreator      pc,
-    ImageOutput          imageOut,
+    PlatformCreator      platformCreator,
+    ImageOutput          imageOutput,
     Thresholder          thresholder,
     OutputImageSelector  outputImageSelector,
-    CalibrationEnd       ce
+    CalibrationEnd       calibrationEnd
 ){
     _stopThread = false;
-    _thread = thread([pc, imageOut, thresholder, outputImageSelector, ce, this]()
+    _thread = thread([platformCreator, imageOutput, thresholder, outputImageSelector, calibrationEnd, this]()
     {
         while(!_stopThread)
         {
             try
             {
-                auto platform = pc();
+                auto platform = platformCreator();
 
                 auto coordConverter = make_shared<CoordinateConverter>(
                     [platform](int x, int y, MouseButton mb, MouseCommand mc){platform->mouseCommand(x, y, mb, mc); },
                     [platform](){ return platform->loadTransformer(); },
                     [platform](const Transformer& t){ platform->saveTransformer(t); },
-                    ce
+                    calibrationEnd
                 );
 
                 promise<exception_ptr> errorControl;
@@ -51,7 +51,7 @@ IrMouse::IrMouse
                     ref(errorControl),
                     outputImageSelector,
                     [this](){ return _stopThread.load(); },
-                    imageOut
+                    imageOutput
                 );
 
                 controlFuture.wait();

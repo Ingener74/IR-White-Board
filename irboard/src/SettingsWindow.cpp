@@ -11,7 +11,7 @@
 using namespace std;
 using namespace cv;
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SettingsWindow::SettingsWindow(
         GetThreshold getThreshold,
         PutThreshold putThreshold,
@@ -21,10 +21,10 @@ SettingsWindow::SettingsWindow(
         Qt::WindowFlags f /*= 0 */) :
                 QWidget(parent, f),
                 _ui(make_shared<Ui_WindowSettings>()),
-                _getThreshold(getThreshold ? getThreshold : throw invalid_argument("in settings window get threshold is invalid")),
-                _putThreshold(putThreshold ? putThreshold : throw invalid_argument("in settings window put threshold is invalid")),
-                _getCalibPoints(getCalibPoints ? getCalibPoints : throw invalid_argument("get calibration points is invalid")),
-                _putCalibPoints(putCalibPoints ? putCalibPoints : throw invalid_argument("put calibration points is invalid"))
+                _getThreshold(getThreshold),
+                _putThreshold(putThreshold),
+                _getCalibPoints(getCalibPoints),
+                _putCalibPoints(putCalibPoints)
 {
     _ui->setupUi(this);
 
@@ -43,13 +43,14 @@ SettingsWindow::SettingsWindow(
     _ui->horizontalSliderThreshold->setValue(_getThreshold());
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SettingsWindow::~SettingsWindow()
 {
     _putThreshold(_ui->horizontalSliderThreshold->value());
     cout << "SettingsWindow::~SettingsWindow()" << endl;
 }
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::closeEvent(QCloseEvent* pEvent)
 {
     /*
@@ -59,6 +60,7 @@ void SettingsWindow::closeEvent(QCloseEvent* pEvent)
     hide();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::DrawPoints()
 {
     Mat points(Size(480, 360), CV_8UC3, CV_RGB(255, 178, 107));
@@ -79,14 +81,14 @@ void SettingsWindow::DrawPoints()
     _ui->labelPointsPositions->setPixmap(QPixmap::fromImage(im));
 }
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::showEvent(QShowEvent* pEvent)
 {
     _ui->horizontalSliderThreshold->setValue(_getThreshold());
     DrawPoints();
 }
 
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::slotDrawSensorImage(Mat image)
 {
     if (isHidden()) return;
@@ -102,11 +104,13 @@ void SettingsWindow::slotDrawSensorImage(Mat image)
     _ui->labelSensorView->setPixmap(QPixmap::fromImage(im));
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::slotSettingsNoCamera()
 {
     _ui->labelSensorView->setPixmap(QPixmap(QString::fromUtf8(":/main/no_web_camera_320240.png")));
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::changeCalibrationPointsHor(int i)
 {
     auto calibrationPoints = _getCalibPoints();
@@ -114,6 +118,7 @@ void SettingsWindow::changeCalibrationPointsHor(int i)
     DrawPoints();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::changeCalibrationPointsVer(int i)
 {
     auto calibrationPoints = _getCalibPoints();
@@ -121,11 +126,13 @@ void SettingsWindow::changeCalibrationPointsVer(int i)
     DrawPoints();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 uint8_t SettingsWindow::getThreshold()
 {
     return max(0, min(_ui->horizontalSliderThreshold->value(), 255));
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SettingsWindow::getImageSelector() const
 {
     return _ui->comboBoxViewedImage->currentIndex();
