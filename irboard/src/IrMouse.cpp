@@ -32,7 +32,7 @@ IrMouse::IrMouse
         {
             try
             {
-                auto platform = (pc ? pc : throw invalid_argument("invalid platform creator"))();
+                auto platform = pc();
 
                 auto coordConverter = make_shared<CoordinateConverter>(
                     [platform](int x, int y, MouseButton mb, MouseCommand mc){platform->mouseCommand(x, y, mb, mc); },

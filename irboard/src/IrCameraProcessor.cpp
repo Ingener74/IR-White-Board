@@ -29,24 +29,22 @@ IrCameraProcessor::IrCameraProcessor
     IrProcessorControl       irControl,
     ImageOutput              imageOutput
 ){
-    auto oim       = outputImageMode ? outputImageMode : throw invalid_argument("output image mode is invalid");
-    auto irc       = irControl       ? irControl       : throw invalid_argument("ir processor control is invalid");
-
-    _thread = thread([this, sensorCreator, irSpot, thresholder, imageOutput, oim, irc](promise<exception_ptr> &errorControl)
+    _thread = thread([this, sensorCreator, irSpot, thresholder, imageOutput, outputImageMode , irControl](
+            promise<exception_ptr> &errorControl)
     {
         try
         {
-            auto sensor = (sensorCreator ? sensorCreator : throw invalid_argument("sensor creator is empty"))();
+            auto sensor = sensorCreator();
 
             if(!sensor->isOpened()) throw std::runtime_error("can't open ir sensor device");
 
-            while(!irc())
+            while(!irControl())
             {
                 Mat image, mono, thresh;
 
                 *sensor >> image;
 
-                auto th = (thresholder ? thresholder : throw invalid_argument("invalid thresholder"))();
+                auto th = thresholder();
 
                 auto start = chrono::high_resolution_clock::now();
 
@@ -64,8 +62,8 @@ IrCameraProcessor::IrCameraProcessor
                 auto execTime = chrono::duration_cast<chrono::milliseconds>(end - start).count();
                 cout << "exec time " << execTime << " ms" << endl;
 
-                if(imageOutput)imageOutput(oim() ? outImage : image);
-                (irSpot ? irSpot : throw invalid_argument("invalid ir spot receiver"))(320, 240);
+                if(imageOutput)imageOutput(outputImageMode() ? outImage : image);
+                irSpot(320, 240);
             }
             errorControl.set_value(exception_ptr()); // set_exception(exception_ptr()) now working under mingw
             cout << "ir processor is stopped" << endl;
