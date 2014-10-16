@@ -10,6 +10,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <vector>
+#include <functional>
 
 using CoilsFiller = std::function<cv::Point(int)>;
 

@@ -68,7 +68,7 @@ void mouseCallback(int event, int x, int y, int flags, void* userdata)
 {
     auto callback = *static_cast<function<void(Point)>*>(userdata);
 
-//    cout << events_[event] << ", " << flags << endl;
+    cout << events_[event] << ", " << flags << endl;
 
     if (event == EVENT_LBUTTONDOWN || (event == EVENT_MOUSEMOVE && (flags & EVENT_FLAG_LBUTTON)))
     {
@@ -112,35 +112,42 @@ int main(int argc, char **argv)
 
         cout << "image size " << image.size() << endl;
 
-        VideoWriter vw;
+        VideoWriter vw{"test.mpg", CV_FOURCC('M','J','P','G'), 30, Size{640, 480}};
+
+        if(!vw.isOpened()) throw runtime_error("video writer not ready");
 
         Point fakeIr{-1, -1};
 
         while (true)
         {
+            cout << "begin" << endl;
             std::function<void(Point)> callback = [&fakeIr](Point p){
-//                cout << "mouse callback " << p << endl;
+                cout << "mouse callback " << p << endl;
                 fakeIr = p;
             };
 
-            Mat blackImage{480, 640, CV_8UC3, Scalar(0, 0, 0)};
-
-            stringstream ss;
-            ss << fakeIr;
-
-            putText(blackImage, ss.str(), Point{10, 20}, FONT_HERSHEY_PLAIN, 1, Scalar{255,255,0});
-            circle(blackImage, fakeIr, 3, Scalar{255,255,255}, -1);
-
-            cout << "fake ir " << fakeIr << endl;
-
-            imshow("fake camera image", blackImage);
             imshow("ir-tester", image);
             setMouseCallback("ir-tester", mouseCallback, &callback);
 
             if ( waitKey(1000 / 30) == 27 ) return 0;
 
+            Mat blackImage{480, 640, CV_8UC3, Scalar{0, 0, 0}};
+
+//            stringstream ss;
+//            ss << fakeIr;
+//            putText(blackImage, ss.str(), Point{10, 20}, FONT_HERSHEY_PLAIN, 1, Scalar{255,255,0});
+
+            circle(blackImage, fakeIr, 3, Scalar{255,255,255}, -1);
+
+            vw << blackImage;
+
+            imshow("fake camera image", blackImage);
+
             fakeIr = Point{-1, -1};
+            cout << "fake ir " << fakeIr << endl;
         }
+
+        vw.release();
 
         return 0;
     }
