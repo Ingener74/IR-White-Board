@@ -16,32 +16,6 @@
 using namespace std;
 using namespace cv;
 
-/*
-enum
-{
-    EVENT_MOUSEMOVE      =0,
-    EVENT_LBUTTONDOWN    =1,
-    EVENT_RBUTTONDOWN    =2,
-    EVENT_MBUTTONDOWN    =3,
-    EVENT_LBUTTONUP      =4,
-    EVENT_RBUTTONUP      =5,
-    EVENT_MBUTTONUP      =6,
-    EVENT_LBUTTONDBLCLK  =7,
-    EVENT_RBUTTONDBLCLK  =8,
-    EVENT_MBUTTONDBLCLK  =9
-};
-
-enum
-{
-    EVENT_FLAG_LBUTTON   =1,
-    EVENT_FLAG_RBUTTON   =2,
-    EVENT_FLAG_MBUTTON   =4,
-    EVENT_FLAG_CTRLKEY   =8,
-    EVENT_FLAG_SHIFTKEY  =16,
-    EVENT_FLAG_ALTKEY    =32
-};
-*/
-
 map<int, string> events_{
     {EVENT_MOUSEMOVE    , "EVENT_MOUSEMOVE"},
     {EVENT_LBUTTONDOWN  , "EVENT_LBUTTONDOWN"},
@@ -68,12 +42,8 @@ void mouseCallback(int event, int x, int y, int flags, void* userdata)
 {
     auto callback = *static_cast<function<void(Point)>*>(userdata);
 
-    cout << events_[event] << ", " << flags << endl;
-
-    if (event == EVENT_LBUTTONDOWN || (event == EVENT_MOUSEMOVE && (flags & EVENT_FLAG_LBUTTON)))
-    {
+    if ( event == EVENT_LBUTTONDOWN || (event == EVENT_MOUSEMOVE && (flags & EVENT_FLAG_LBUTTON)))
         callback(Point(x, y));
-    }
 }
 
 int main(int argc, char **argv)
@@ -110,21 +80,14 @@ int main(int argc, char **argv)
         Mat image = imread(vm["image"].as<string>());
         if(image.empty()) throw runtime_error("image is empty");
 
-        cout << "image size " << image.size() << endl;
-
         VideoWriter vw{"test.mpg", CV_FOURCC('M','J','P','G'), 30, Size{640, 480}};
-
-        if(!vw.isOpened()) throw runtime_error("video writer not ready");
+//        if(!vw.isOpened()) throw runtime_error("video writer not ready");
 
         Point fakeIr{-1, -1};
 
         while (true)
         {
-            cout << "begin" << endl;
-            std::function<void(Point)> callback = [&fakeIr](Point p){
-                cout << "mouse callback " << p << endl;
-                fakeIr = p;
-            };
+            std::function<void(Point)> callback = [&fakeIr](Point p){ fakeIr = p; };
 
             imshow("ir-tester", image);
             setMouseCallback("ir-tester", mouseCallback, &callback);
@@ -144,7 +107,6 @@ int main(int argc, char **argv)
             imshow("fake camera image", blackImage);
 
             fakeIr = Point{-1, -1};
-            cout << "fake ir " << fakeIr << endl;
         }
 
         vw.release();
