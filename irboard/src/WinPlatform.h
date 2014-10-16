@@ -26,8 +26,6 @@ public:
 
     virtual std::shared_ptr<cv::VideoCapture> createVideoSource();
 
-private:
-    SensorSelector _ss;
 };
 
 #endif /* WINPLATFORM_H_ */

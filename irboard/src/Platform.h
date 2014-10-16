@@ -10,6 +10,7 @@
 
 #include <CoordinateConverter.h>
 #include <memory>
+#include <functional>
 
 namespace cv
 {
@@ -18,10 +19,12 @@ class VideoCapture;
 
 class Transformer;
 
+using SensorSelector = std::function<int()>;
+
 class Platform
 {
 public:
-    Platform();
+    Platform(SensorSelector);
     virtual ~Platform();
 
     virtual void mouseCommand(int x, int y, MouseButton, MouseCommand);
@@ -30,6 +33,9 @@ public:
     virtual void saveTransformer(const Transformer&);
 
     virtual std::shared_ptr<cv::VideoCapture> createVideoSource();
+
+protected:
+    SensorSelector _ss;
 };
 
 #endif /* PLATFORM_H_ */

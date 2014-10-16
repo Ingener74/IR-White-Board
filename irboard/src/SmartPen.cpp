@@ -73,10 +73,11 @@ int main(int argc, char* argv[])
         auto irMouse = make_shared<IrMouse>(
             [&pt]()
             {
+                auto sensorSelector = [&pt](){ return pt.get<int>("sensor"); };
 #ifdef MINGW
-                auto platform = make_shared<WinPlatform>([&pt](){ return pt.get<int>("sensor"); });
+                auto platform = make_shared<WinPlatform>(sensorSelector);
 #else
-                auto platform = make_shared<Platform>();
+                auto platform = make_shared<Platform>(sensorSelector);
 #endif
                 return platform;
             },

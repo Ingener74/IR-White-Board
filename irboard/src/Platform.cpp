@@ -78,7 +78,7 @@ public:
     }
 };
 
-Platform::Platform()
+Platform::Platform(SensorSelector ss): _ss(ss)
 {
 }
 
@@ -106,5 +106,5 @@ void Platform::saveTransformer(const Transformer&)
 
 shared_ptr<VideoCapture> Platform::createVideoSource()
 {
-    return make_shared<VideoCaptureMock>(0);
+    return make_shared<VideoCaptureMock>(_ss());
 }

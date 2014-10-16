@@ -11,7 +11,7 @@
 using namespace std;
 using namespace cv;
 
-WinPlatform::WinPlatform(SensorSelector ss): _ss(ss)
+WinPlatform::WinPlatform(SensorSelector ss): Platform(ss)
 {
 }
 
