@@ -8,12 +8,15 @@
 #ifndef WINPLATFORM_H_
 #define WINPLATFORM_H_
 
+#include <functional>
 #include <Platform.h>
+
+using SensorSelector = std::function<int()>;
 
 class WinPlatform: public Platform
 {
 public:
-    WinPlatform();
+    WinPlatform(SensorSelector);
     virtual ~WinPlatform();
 
 //    virtual void mouseCommand(int x, int y, MouseButton, MouseCommand);
@@ -22,6 +25,9 @@ public:
 //    virtual void saveTransformer(const Transformer&);
 
     virtual std::shared_ptr<cv::VideoCapture> createVideoSource();
+
+private:
+    SensorSelector _ss;
 };
 
 #endif /* WINPLATFORM_H_ */

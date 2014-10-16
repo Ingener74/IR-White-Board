@@ -11,7 +11,7 @@
 using namespace std;
 using namespace cv;
 
-WinPlatform::WinPlatform()
+WinPlatform::WinPlatform(SensorSelector ss): _ss(ss)
 {
 }
 
@@ -34,5 +34,5 @@ WinPlatform::~WinPlatform()
 
 std::shared_ptr<cv::VideoCapture> WinPlatform::createVideoSource()
 {
-    return make_shared<VideoCapture>(0);
+    return make_shared<VideoCapture>(_ss());
 }
