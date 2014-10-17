@@ -20,7 +20,7 @@ class RemoteVariable
     Setter _s;
 
 public:
-    RemoteVariable(Getter g, Setter s): _g(g), _s(s){}
+    RemoteVariable(Getter g  = Getter(), Setter s = Setter()): _g(g), _s(s){}
     virtual ~RemoteVariable() = default;
 
     operator T()
