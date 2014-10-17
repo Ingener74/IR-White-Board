@@ -13,18 +13,14 @@ using namespace cv;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SettingsWindow::SettingsWindow(
-        GetThreshold getThreshold,
-        PutThreshold putThreshold,
-        GetCalibrationPoints getCalibPoints,
-        PutCalibrationPoints putCalibPoints,
+        RemoteVariable<int> threshold,
+        RemoteVariable<cv::Size> calibrationPoints,
         QWidget * parent /*= 0*/,
         Qt::WindowFlags f /*= 0 */) :
                 QWidget(parent, f),
                 _ui(make_shared<Ui_WindowSettings>()),
-                _getThreshold(getThreshold),
-                _putThreshold(putThreshold),
-                _getCalibPoints(getCalibPoints),
-                _putCalibPoints(putCalibPoints)
+                _threshold(threshold),
+                _calibrationPoints(calibrationPoints)
 {
     _ui->setupUi(this);
 
@@ -40,13 +36,13 @@ SettingsWindow::SettingsWindow(
     QObject::connect(_ui->spinBoxHorPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsHor(int)));
     QObject::connect(_ui->spinBoxVetPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsVer(int)));
 
-    _ui->horizontalSliderThreshold->setValue(_getThreshold());
+    _ui->horizontalSliderThreshold->setValue(_threshold);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SettingsWindow::~SettingsWindow()
 {
-    _putThreshold(_ui->horizontalSliderThreshold->value());
+    _threshold = _ui->horizontalSliderThreshold->value();
     cout << "SettingsWindow::~SettingsWindow()" << endl;
 }
 
@@ -64,7 +60,7 @@ void SettingsWindow::closeEvent(QCloseEvent* pEvent)
 void SettingsWindow::DrawPoints()
 {
     Mat points(Size(480, 360), CV_8UC3, CV_RGB(255, 178, 107));
-    auto calibrationPoints = _getCalibPoints();
+    cv::Size calibrationPoints = _calibrationPoints;
     for (unsigned int py = 0; py < calibrationPoints.height; ++py)
     {
         for (unsigned int px = 0; px < calibrationPoints.width; ++px)
@@ -84,7 +80,7 @@ void SettingsWindow::DrawPoints()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::showEvent(QShowEvent* pEvent)
 {
-    _ui->horizontalSliderThreshold->setValue(_getThreshold());
+    _ui->horizontalSliderThreshold->setValue(_threshold);
     DrawPoints();
 }
 
@@ -113,16 +109,16 @@ void SettingsWindow::slotSettingsNoCamera()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::changeCalibrationPointsHor(int i)
 {
-    auto calibrationPoints = _getCalibPoints();
-    _putCalibPoints(Size(i, calibrationPoints.height));
+    cv::Size calibrationPoints = _calibrationPoints;
+    _calibrationPoints = Size(i, calibrationPoints.height);
     DrawPoints();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::changeCalibrationPointsVer(int i)
 {
-    auto calibrationPoints = _getCalibPoints();
-    _putCalibPoints(Size(calibrationPoints.width, i));
+    cv::Size calibrationPoints = _calibrationPoints;
+    _calibrationPoints = Size(calibrationPoints.width, i);
     DrawPoints();
 }
 

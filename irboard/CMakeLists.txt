@@ -26,6 +26,7 @@ set(HEADERS
     src/Platform.h
     src/SettingsWindow.h
     src/Transformer.h
+    src/RemoteVariable.h
 )
 
 set(SOURCES
@@ -38,6 +39,7 @@ set(SOURCES
     src/CoordinateConverter.cpp
     src/Platform.cpp
     src/IrMouse.cpp
+    src/RemoteVariable.cpp
 )
 
 file(COPY ../data/config.json DESTINATION ${CMAKE_BINARY_DIR})

@@ -10,16 +10,13 @@
 
 #include <QtWidgets/QWidget>
 
+#include <RemoteVariable.h>
+
 //////////////////////////////////////////////////////////////////////////
 
 class QCloseEvent;
 class QShowEvent;
 class Ui_WindowSettings;
-
-using GetThreshold = std::function<int()>;
-using PutThreshold = std::function<void(int)>;
-using GetCalibrationPoints = std::function<cv::Size()>;
-using PutCalibrationPoints = std::function<void(cv::Size)>;
 
 class SettingsWindow: public QWidget
 {
@@ -28,11 +25,10 @@ Q_OBJECT
 
 public:
     SettingsWindow(
-            GetThreshold,
-            PutThreshold,
-            GetCalibrationPoints,
-            PutCalibrationPoints,
-            QWidget * parent = 0, Qt::WindowFlags f = 0);
+            RemoteVariable<int> threshold,
+            RemoteVariable<cv::Size> calibrationPoints,
+            QWidget * parent = 0,
+            Qt::WindowFlags f = 0);
 
     virtual ~SettingsWindow();
 
@@ -55,10 +51,9 @@ public slots:
 
 private:
     std::shared_ptr<Ui_WindowSettings> _ui;
-    GetThreshold                       _getThreshold;
-    PutThreshold                       _putThreshold;
-    GetCalibrationPoints               _getCalibPoints;
-    PutCalibrationPoints               _putCalibPoints;
+
+    RemoteVariable<int>                _threshold;
+    RemoteVariable<cv::Size>           _calibrationPoints;
 };
 
 #endif
