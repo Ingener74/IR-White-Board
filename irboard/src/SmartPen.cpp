@@ -95,7 +95,8 @@ int main(int argc, char* argv[])
             [settingsWindow](Mat image){ settingsWindow->slotDrawSensorImage(image); },
             [settingsWindow](){ return settingsWindow->getThreshold(); },
             [settingsWindow](){ return settingsWindow->getImageSelector(); },
-            [mainWindow](){ mainWindow->calibrationEnd(); }
+            [mainWindow](){ mainWindow->calibrationEnd(); },
+            sensor
         );
 
         return app->exec();

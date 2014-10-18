@@ -20,7 +20,7 @@ using PlatformCreator = std::function<std::shared_ptr<Platform>()>;
 class IrMouse
 {
 public:
-    IrMouse(PlatformCreator, ImageOutput, Thresholder, OutputImageSelector, CalibrationEnd);
+    IrMouse(PlatformCreator, ImageOutput, Thresholder, OutputImageSelector, CalibrationEnd, RemoteVariable<int> sensorSelector);
     virtual ~IrMouse();
 
 private:

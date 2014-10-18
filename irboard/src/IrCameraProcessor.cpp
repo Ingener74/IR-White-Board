@@ -27,18 +27,21 @@ IrCameraProcessor::IrCameraProcessor
     promise<exception_ptr>&  errorControl,
     OutputImageSelector      outputImageMode,
     IrProcessorControl       irControl,
+    RemoteVariable<int>      sensorSelector,
     ImageOutput              imageOutput
 ){
-    _thread = thread([this, sensorCreator, irSpot, thresholder, imageOutput, outputImageMode , irControl](
+    _thread = thread([this, sensorCreator, irSpot, thresholder, imageOutput, outputImageMode , irControl, sensorSelector](
             promise<exception_ptr> &errorControl)
     {
         try
         {
             auto sensor = sensorCreator();
 
+            int currentSensor = sensorSelector;
+
             if(!sensor->isOpened()) throw std::runtime_error("can't open ir sensor device");
 
-            while(!irControl())
+            while(!irControl() && sensorSelector == currentSensor)
             {
                 Mat image, mono, thresh;
 

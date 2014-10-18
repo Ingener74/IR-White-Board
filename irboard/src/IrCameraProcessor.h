@@ -15,6 +15,8 @@
 #include <memory>
 #include <thread>
 
+#include <RemoteVariable.h>
+
 namespace cv
 {
 class VideoCapture;
@@ -38,6 +40,7 @@ public:
             std::promise<std::exception_ptr>& errorControl,
             OutputImageSelector,
             IrProcessorControl,
+            RemoteVariable<int> sensorSelector,
             ImageOutput = ImageOutput());
     virtual ~IrCameraProcessor();
 

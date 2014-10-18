@@ -23,7 +23,7 @@ public:
     RemoteVariable(Getter g  = Getter(), Setter s = Setter()): _g(g), _s(s){}
     virtual ~RemoteVariable() = default;
 
-    operator T()
+    operator T() const
     {
         return _g();
     }

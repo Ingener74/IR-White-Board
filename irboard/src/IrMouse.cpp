@@ -23,10 +23,11 @@ IrMouse::IrMouse
     ImageOutput          imageOutput,
     Thresholder          thresholder,
     OutputImageSelector  outputImageSelector,
-    CalibrationEnd       calibrationEnd
+    CalibrationEnd       calibrationEnd,
+    RemoteVariable<int>  sensorSelector
 ){
     _stopThread = false;
-    _thread = thread([platformCreator, imageOutput, thresholder, outputImageSelector, calibrationEnd, this]()
+    _thread = thread([platformCreator, imageOutput, thresholder, outputImageSelector, calibrationEnd, this, sensorSelector]()
     {
         while(!_stopThread)
         {
@@ -51,6 +52,7 @@ IrMouse::IrMouse
                     ref(errorControl),
                     outputImageSelector,
                     [this](){ return _stopThread.load(); },
+                    sensorSelector,
                     imageOutput
                 );
 
