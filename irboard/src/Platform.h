@@ -8,9 +8,11 @@
 #ifndef PLATFORM_H_
 #define PLATFORM_H_
 
-#include <CoordinateConverter.h>
 #include <memory>
 #include <functional>
+
+#include <CoordinateConverter.h>
+#include <RemoteVariable.h>
 
 namespace cv
 {
@@ -24,7 +26,7 @@ using SensorSelector = std::function<int()>;
 class Platform
 {
 public:
-    Platform(SensorSelector);
+    Platform(RemoteVariable<int>);
     virtual ~Platform();
 
     virtual void mouseCommand(int x, int y, MouseButton, MouseCommand);
@@ -35,7 +37,7 @@ public:
     virtual std::shared_ptr<cv::VideoCapture> createVideoSource();
 
 protected:
-    SensorSelector _ss;
+    RemoteVariable<int> _sensor;
 };
 
 #endif /* PLATFORM_H_ */

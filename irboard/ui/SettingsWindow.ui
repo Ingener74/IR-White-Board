@@ -72,10 +72,10 @@
           <item row="0" column="1">
            <widget class="QSpinBox" name="spinBoxCamera">
             <property name="minimum">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="maximum">
-             <number>10</number>
+             <number>9</number>
             </property>
            </widget>
           </item>

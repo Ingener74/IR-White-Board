@@ -16,7 +16,7 @@ using SensorSelector = std::function<int()>;
 class WinPlatform: public Platform
 {
 public:
-    WinPlatform(SensorSelector);
+    WinPlatform(RemoteVariable<int>);
     virtual ~WinPlatform();
 
 //    virtual void mouseCommand(int x, int y, MouseButton, MouseCommand);

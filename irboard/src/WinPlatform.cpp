@@ -11,7 +11,7 @@
 using namespace std;
 using namespace cv;
 
-WinPlatform::WinPlatform(SensorSelector ss): Platform(ss)
+WinPlatform::WinPlatform(RemoteVariable<int> sensor): Platform(sensor)
 {
 }
 
@@ -34,5 +34,5 @@ WinPlatform::~WinPlatform()
 
 std::shared_ptr<cv::VideoCapture> WinPlatform::createVideoSource()
 {
-    return make_shared<VideoCapture>(_ss());
+    return make_shared<VideoCapture>(_sensor);
 }

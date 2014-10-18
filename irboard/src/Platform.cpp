@@ -78,7 +78,7 @@ public:
     }
 };
 
-Platform::Platform(SensorSelector ss): _ss(ss)
+Platform::Platform(RemoteVariable<int> sensor): _sensor(sensor)
 {
 }
 
@@ -106,5 +106,5 @@ void Platform::saveTransformer(const Transformer&)
 
 shared_ptr<VideoCapture> Platform::createVideoSource()
 {
-    return make_shared<VideoCaptureMock>(_ss());
+    return make_shared<VideoCaptureMock>(_sensor);
 }

@@ -39,6 +39,8 @@ int main(int argc, char* argv[])
 
     try
     {
+        cout << "" << endl;
+
         auto calibrationWindow = make_shared<CalibrationWindow>([](){ return Point(200, 200); });
 
         const string configFileName = "config.json";
@@ -46,20 +48,30 @@ int main(int argc, char* argv[])
 
         json_parser::read_json(configFileName, pt);
 
-        auto settingsWindow = make_shared<SettingsWindow>(
-            RemoteVariable<int>{
-                [&pt](){ return pt.get<int>("threshold"); },
-                [&pt, &configFileName](int threshold){
-                    pt.put("threshold", threshold);
-                    json_parser::write_json(configFileName, pt);
-                }},
+        auto threshold = RemoteVariable<int>{
+            [&pt](){ return pt.get<int>("threshold"); },
+            [&pt, &configFileName](int threshold){
+                pt.put("threshold", threshold); json_parser::write_json(configFileName, pt);
+            }
+        };
+
+        auto sensor = RemoteVariable<int>{
+            [&pt](){ return pt.get<int>("sensor"); },
+            [&pt, &configFileName](int sensor){
+                pt.put("sensor", sensor);
+                json_parser::write_json(configFileName, pt);
+            }
+        };
+
+        auto settingsWindow = make_shared<SettingsWindow>(threshold,
             RemoteVariable<cv::Size>{
                 [&pt](){ return Size(pt.get<int>("calibration_x"), pt.get<int>("calibration_y")); },
                 [&pt, &configFileName](const Size& calibrationPoints){
                     pt.put("calibration_x", calibrationPoints.width);
                     pt.put("calibration_y", calibrationPoints.height);
                     json_parser::write_json(configFileName, pt);
-                }}
+                }},
+                sensor
         );
 
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
@@ -71,13 +83,12 @@ int main(int argc, char* argv[])
         mainWindow->show();
 
         auto irMouse = make_shared<IrMouse>(
-            [&pt]()
+            [&pt, &sensor]()
             {
-                auto sensorSelector = [&pt](){ return pt.get<int>("sensor"); };
 #ifdef MINGW
-                auto platform = make_shared<WinPlatform>(sensorSelector);
+                auto platform = make_shared<WinPlatform>(sensor);
 #else
-                auto platform = make_shared<Platform>(sensorSelector);
+                auto platform = make_shared<Platform>(sensor);
 #endif
                 return platform;
             },

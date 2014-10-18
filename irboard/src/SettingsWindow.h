@@ -27,6 +27,7 @@ public:
     SettingsWindow(
             RemoteVariable<int> threshold,
             RemoteVariable<cv::Size> calibrationPoints,
+            RemoteVariable<int> sensor,
             QWidget * parent = 0,
             Qt::WindowFlags f = 0);
 
@@ -54,6 +55,7 @@ private:
 
     RemoteVariable<int>                _threshold;
     RemoteVariable<cv::Size>           _calibrationPoints;
+    RemoteVariable<int>                _sensor;
 };
 
 #endif

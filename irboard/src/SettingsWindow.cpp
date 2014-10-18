@@ -15,20 +15,20 @@ using namespace cv;
 SettingsWindow::SettingsWindow(
         RemoteVariable<int> threshold,
         RemoteVariable<cv::Size> calibrationPoints,
+        RemoteVariable<int> sensor,
         QWidget * parent /*= 0*/,
         Qt::WindowFlags f /*= 0 */) :
                 QWidget(parent, f),
                 _ui(make_shared<Ui_WindowSettings>()),
                 _threshold(threshold),
-                _calibrationPoints(calibrationPoints)
+                _calibrationPoints(calibrationPoints),
+                _sensor(sensor)
 {
     _ui->setupUi(this);
 
-    function<void(int)> a = [](int i){
-        cout << "i = " << i << endl;
-    };
+    _ui->spinBoxCamera->setValue(_sensor);
 
-    connect(_ui->spinBoxCamera, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), a);
+    connect(_ui->spinBoxCamera, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [this](int i){ _sensor = i; });
     connect(_ui->ButtonApply, SIGNAL(clicked()), SLOT(hide()));
 
     QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));
@@ -109,16 +109,16 @@ void SettingsWindow::slotSettingsNoCamera()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::changeCalibrationPointsHor(int i)
 {
-    cv::Size calibrationPoints = _calibrationPoints;
-    _calibrationPoints = Size(i, calibrationPoints.height);
+//    Size calibrationPoints = _calibrationPoints;
+    _calibrationPoints = Size(i, static_cast<Size>(_calibrationPoints).height);
     DrawPoints();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::changeCalibrationPointsVer(int i)
 {
-    cv::Size calibrationPoints = _calibrationPoints;
-    _calibrationPoints = Size(calibrationPoints.width, i);
+//    Size calibrationPoints = _calibrationPoints;
+    _calibrationPoints = Size(static_cast<Size>(_calibrationPoints).width, i);
     DrawPoints();
 }
 
