@@ -53,9 +53,7 @@ int main(int argc, char* argv[])
          */
         auto threshold = RemoteVariable<int>{
             [&](){ return pt.get<int>("threshold"); },
-            [&](int threshold){
-                pt.put("threshold", threshold); json_parser::write_json(configFileName, pt);
-            }
+            [&](int threshold){ pt.put("threshold", threshold); json_parser::write_json(configFileName, pt); }
         };
 
         /*

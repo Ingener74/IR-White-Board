@@ -32,6 +32,8 @@ SettingsWindow::SettingsWindow(
 
     connect(_ui->ButtonApply, SIGNAL(clicked()), SLOT(hide()));
 
+    connect(_ui->horizontalSliderThreshold, &QSlider::valueChanged, [=](int thresh){ _threshold = thresh; });
+
     QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));
 
     _ui->spinBoxHorPoints->setValue(static_cast<Size>(_calibrationPoints).width);
@@ -124,10 +126,10 @@ void SettingsWindow::changeCalibrationPointsVer(int i)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-uint8_t SettingsWindow::getThreshold()
-{
-    return max(0, min(_ui->horizontalSliderThreshold->value(), 255));
-}
+//uint8_t SettingsWindow::getThreshold()
+//{
+//    return max(0, min(_ui->horizontalSliderThreshold->value(), 255));
+//}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SettingsWindow::getImageSelector() const

@@ -36,7 +36,7 @@ public:
     void showEvent(QShowEvent* pEvent);
 
     int getImageSelector() const;
-    uint8_t getThreshold();
+//    uint8_t getThreshold();
 
 signals:
     void signalSettingsCaptureNoExist();
