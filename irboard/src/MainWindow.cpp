@@ -192,47 +192,6 @@ void MainWindow::timerEvent(QTimerEvent* pEvent)
 //				}
 //			}
 //		}
-//	}else if(pEvent->timerId() == findCaptureTimer){
-//		// capture device not opened or not exist in system, then we try to open default device or check every 500 ms to exist default
-//
-//		if(pVideoCapture != 0){
-//			captureExist=false;
-//			pVideoCapture->release();
-//			delete pVideoCapture; pVideoCapture = 0;
-//		}
-//
-//		pVideoCapture = new VideoCapture;
-//
-//		pVideoCapture->open(uiCurrentCamera);
-//
-//		if(!pVideoCapture->isOpened()){
-//			captureExist=false;
-//		}else{
-//			if(pVideoCapture->grab()){
-//				if(pVideoCapture->retrieve(inputImage)){
-//					if(inputImage.cols!=0&&inputImage.rows!=0){
-//						captureExist=true;
-//
-//						emit signalCalibrationIsNeeded();
-//					}else{
-//						captureExist=false;
-//					}
-//				}
-//			}
-//		}
-//
-//////		if(!bshown){
-////			oVideoCapturer.open(uiCurrentCamera);
-////			if(oVideoCapturer.isOpened()){
-////				if(Size_<unsigned int>(oVideoCapturer.get(CV_CAP_PROP_FRAME_WIDTH), oVideoCapturer.get(CV_CAP_PROP_FRAME_HEIGHT)) != Size_<unsigned int>(0, 0) ){
-////					captureExist = true;
-////
-////					// emit signal all ok or need to calibrate
-////
-////				}
-////			}
-//////		}
-//	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
