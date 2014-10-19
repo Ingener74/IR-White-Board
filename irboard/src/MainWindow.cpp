@@ -118,46 +118,6 @@ void MainWindow::closeEvent(QCloseEvent* pEvent)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void MainWindow::timerEvent(QTimerEvent* pEvent)
 {
-
-	// check system resolution
-//	Size_<unsigned int> res = getSystemResolution();
-//	if( res != screenResolution ){
-//		slotSystemNotCalibrated();
-//		screenResolution = res;
-//	}
-	// end check system resolution
-
-	//                fps * sec * min  -> to reset in correct camera checking every 10 minutes
-//	if(lFullCounter > fps * 60  * 10){
-//		lFullCounter = 1;
-//		lInCorrentCounter = 0;
-//	}
-//
-//	if(uiNextCamera != uiCurrentCamera){
-//
-//		// for incorrect checking
-//		lFullCounter=1;
-//		lInCorrentCounter=0;
-//		// end checking
-//
-//		uiCurrentCamera = uiNextCamera;
-//
-//		captureExist = false;
-//
-//		pVideoCapture->release();
-//		delete pVideoCapture; pVideoCapture = 0;
-//		pVideoCapture = new VideoCapture();
-//		pVideoCapture->open(uiCurrentCamera);
-//
-//		if(!pVideoCapture->isOpened()){
-//			captureExist=false;
-//			emit signalSystemNoCamera();
-//		}else{
-//			captureExist=true;
-//		}
-//
-//	}
-
 //	if( pEvent->timerId() == captureTimer ){
 //		if(captureExist){
 //			if(pVideoCapture->grab()){

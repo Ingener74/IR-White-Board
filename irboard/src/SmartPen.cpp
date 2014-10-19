@@ -105,7 +105,6 @@ int main(int argc, char* argv[])
         };
 
         auto settingsWindow = make_shared<SettingsWindow>(threshold, calibrationPoints, sensor);
-
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
 
