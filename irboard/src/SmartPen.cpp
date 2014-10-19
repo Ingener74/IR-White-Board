@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
                 return platform;
             },
             [settingsWindow](Mat image){ settingsWindow->slotDrawSensorImage(image); },
-            [settingsWindow](){ return settingsWindow->getThreshold(); },
+            [settingsWindow](){ return settingsWindow->getThreshold(); }, // threshold variable
             [settingsWindow](){ return settingsWindow->getImageSelector(); },
             [mainWindow](){ mainWindow->calibrationEnd(); },
             sensor
