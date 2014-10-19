@@ -61,10 +61,7 @@ int main(int argc, char* argv[])
          */
         auto sensor = RemoteVariable<int>{
             [&](){ return pt.get<int>("sensor"); },
-            [&](int sensor){
-                pt.put("sensor", sensor);
-                json_parser::write_json(configFileName, pt);
-            }
+            [&](int sensor){ pt.put("sensor", sensor); json_parser::write_json(configFileName, pt); }
         };
 
         /*
@@ -83,6 +80,8 @@ int main(int argc, char* argv[])
                 return transformer;
             },
             [&](const Transformer& trans){
+                if(!trans.isReady()) return;
+
                 pt.put("transformer.width", trans.getWidth());
                 pt.put("transformer.height", trans.getCoils().size() / trans.getWidth());
                 for(int i = 0; i < trans.getCoils().size(); ++i){
@@ -116,7 +115,7 @@ int main(int argc, char* argv[])
         mainWindow->show();
 
         auto irMouse = make_shared<IrMouse>(
-            [&]()
+            [=]()
             {
 #ifdef MINGW
                 auto platform = make_shared<WinPlatform>(sensor);
@@ -129,7 +128,8 @@ int main(int argc, char* argv[])
             threshold,
             [=](){ return settingsWindow->getImageSelector(); },
             [=](){ mainWindow->calibrationEnd(); },
-            sensor
+            sensor,
+            transformer
         );
 
         return app->exec();

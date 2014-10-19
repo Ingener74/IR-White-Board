@@ -21,12 +21,13 @@ using namespace cv;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 IrMouse::IrMouse
 (
-    PlatformCreator      platformCreator,
-    ImageOutput          imageOutput,
-    RemoteVariable<int>  threshold,
-    OutputImageSelector  outputImageSelector,
-    CalibrationEnd       calibrationEnd,
-    RemoteVariable<int>  sensorSelector
+    PlatformCreator             platformCreator,
+    ImageOutput                 imageOutput,
+    RemoteVariable<int>         threshold,
+    OutputImageSelector         outputImageSelector,
+    CalibrationEnd              calibrationEnd,
+    RemoteVariable<int>         sensorSelector,
+    RemoteVariable<Transformer> transformer
 ){
     _stopThread = false;
     _thread = thread([=]()
@@ -38,9 +39,8 @@ IrMouse::IrMouse
                 auto platform = platformCreator();
 
                 auto coordConverter = make_shared<CoordinateConverter>(
-                    [platform](int x, int y, MouseButton mb, MouseCommand mc){platform->mouseCommand(x, y, mb, mc); },
-                    [platform](){ return platform->loadTransformer(); },
-                    [platform](const Transformer& t){ platform->saveTransformer(t); },
+                    [=](int x, int y, MouseButton mb, MouseCommand mc){platform->mouseCommand(x, y, mb, mc); },
+                    transformer,
                     calibrationEnd
                 );
 

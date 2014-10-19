@@ -27,17 +27,17 @@ ostream& operator<<(ostream& out, const MouseCommand& rho)
     return out;
 }
 
-CoordinateConverter::CoordinateConverter(MouseOutput mo, CoilsLoader cl, CoilsSaver cs, CalibrationEnd ce) :
+CoordinateConverter::CoordinateConverter(MouseOutput mo, RemoteVariable<Transformer> transformer, CalibrationEnd ce) :
         _mouseOutput(mo ? mo : throw invalid_argument("mouse output is invalid")),
-        _coilsSaver(cs ? cs : throw invalid_argument("coils saver is invalid")),
-        _transformer((cl ? cl : throw invalid_argument("coils loader is invalid"))()),
+        _remoteTransformer(transformer),
+        _transformer(_remoteTransformer),
         _calibrationEnd(ce ? ce : throw invalid_argument("calibration end is invalid"))
 {
 }
 
 CoordinateConverter::~CoordinateConverter()
 {
-    _coilsSaver(_transformer);
+    _remoteTransformer = _transformer;
     cout << "CoordinateConverter::~CoordinateConverter()" << endl;
 }
 

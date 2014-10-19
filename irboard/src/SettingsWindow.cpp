@@ -27,27 +27,33 @@ SettingsWindow::SettingsWindow(
     _ui->setupUi(this);
 
     _ui->spinBoxCamera->setValue(_sensor);
+    connect(_ui->spinBoxCamera, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [=](int i){
+        _sensor = i;
+    });
 
-    connect(_ui->spinBoxCamera, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [this](int i){ _sensor = i; });
+    _ui->spinBoxHorPoints->setValue(static_cast<Size>(_calibrationPoints).width);
+    connect(_ui->spinBoxHorPoints, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [=](int i){
+        _calibrationPoints = Size(i, static_cast<Size>(_calibrationPoints).height);
+        DrawPoints();
+    });
+
+    _ui->spinBoxVetPoints->setValue(static_cast<Size>(_calibrationPoints).height);
+    connect(_ui->spinBoxVetPoints, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [=](int i){
+        _calibrationPoints = Size(static_cast<Size>(_calibrationPoints).width, i);
+        DrawPoints();
+    });
+
+    _ui->horizontalSliderThreshold->setValue(_threshold);
+    connect(_ui->horizontalSliderThreshold, &QSlider::valueChanged, [=](int thresh){ _threshold = thresh; });
 
     connect(_ui->ButtonApply, SIGNAL(clicked()), SLOT(hide()));
 
-    connect(_ui->horizontalSliderThreshold, &QSlider::valueChanged, [=](int thresh){ _threshold = thresh; });
-
-    QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));
-
-    _ui->spinBoxHorPoints->setValue(static_cast<Size>(_calibrationPoints).width);
-    _ui->spinBoxVetPoints->setValue(static_cast<Size>(_calibrationPoints).height);
-    QObject::connect(_ui->spinBoxHorPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsHor(int)));
-    QObject::connect(_ui->spinBoxVetPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsVer(int)));
-
-    _ui->horizontalSliderThreshold->setValue(_threshold);
+//    QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 SettingsWindow::~SettingsWindow()
 {
-    _threshold = _ui->horizontalSliderThreshold->value();
     cout << "SettingsWindow::~SettingsWindow()" << endl;
 }
 
@@ -85,7 +91,6 @@ void SettingsWindow::DrawPoints()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::showEvent(QShowEvent* pEvent)
 {
-    _ui->horizontalSliderThreshold->setValue(_threshold);
     DrawPoints();
 }
 
@@ -110,26 +115,6 @@ void SettingsWindow::slotSettingsNoCamera()
 {
     _ui->labelSensorView->setPixmap(QPixmap(QString::fromUtf8(":/main/no_web_camera_320240.png")));
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SettingsWindow::changeCalibrationPointsHor(int i)
-{
-    _calibrationPoints = Size(i, static_cast<Size>(_calibrationPoints).height);
-    DrawPoints();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void SettingsWindow::changeCalibrationPointsVer(int i)
-{
-    _calibrationPoints = Size(static_cast<Size>(_calibrationPoints).width, i);
-    DrawPoints();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//uint8_t SettingsWindow::getThreshold()
-//{
-//    return max(0, min(_ui->horizontalSliderThreshold->value(), 255));
-//}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int SettingsWindow::getImageSelector() const

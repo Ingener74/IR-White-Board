@@ -8,9 +8,11 @@
 #ifndef COORDINATECONVERTER_H_
 #define COORDINATECONVERTER_H_
 
-#include <Transformer.h>
 #include <functional>
 #include <iostream>
+
+#include <Transformer.h>
+#include <RemoteVariable.h>
 
 enum class MouseButton
 {
@@ -24,14 +26,12 @@ enum class MouseCommand
 std::ostream& operator<<(std::ostream&, const MouseCommand&);
 
 using MouseOutput      = std::function<void(int, int, MouseButton, MouseCommand)>;
-using CoilsLoader      = std::function<Transformer()>;
-using CoilsSaver       = std::function<void(const Transformer&)>;
 using CalibrationEnd   = std::function<void()>;
 
 class CoordinateConverter
 {
 public:
-    CoordinateConverter(MouseOutput, CoilsLoader, CoilsSaver, CalibrationEnd);
+    CoordinateConverter(MouseOutput, RemoteVariable<Transformer> transformer, CalibrationEnd);
     virtual ~CoordinateConverter();
 
     void putCoordinates(int x, int y);
@@ -39,7 +39,7 @@ public:
 
 private:
     MouseOutput _mouseOutput;
-    CoilsSaver _coilsSaver;
+    RemoteVariable<Transformer> _remoteTransformer;
     Transformer _transformer;
     CalibrationEnd _calibrationEnd;
     std::vector<cv::Point> _calibrationPoints;

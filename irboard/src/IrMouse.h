@@ -8,9 +8,11 @@
 #ifndef IRMOUSE_H_
 #define IRMOUSE_H_
 
-#include <IrCameraProcessor.h>
 #include <atomic>
 #include <thread>
+
+#include <IrCameraProcessor.h>
+#include <Transformer.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Platform;
@@ -23,7 +25,9 @@ using PlatformCreator = std::function<std::shared_ptr<Platform>()>;
 class IrMouse
 {
 public:
-    IrMouse(PlatformCreator, ImageOutput, RemoteVariable<int> threshold, OutputImageSelector, CalibrationEnd, RemoteVariable<int> sensorSelector);
+    IrMouse(PlatformCreator, ImageOutput, RemoteVariable<int> threshold, OutputImageSelector, CalibrationEnd,
+            RemoteVariable<int> sensorSelector,
+            RemoteVariable<Transformer> transformer);
     virtual ~IrMouse();
 
 private:

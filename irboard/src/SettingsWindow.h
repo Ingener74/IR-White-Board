@@ -36,7 +36,6 @@ public:
     void showEvent(QShowEvent* pEvent);
 
     int getImageSelector() const;
-//    uint8_t getThreshold();
 
 signals:
     void signalSettingsCaptureNoExist();
@@ -44,8 +43,6 @@ signals:
     void signalCameraChanged();
 
 public slots:
-    void changeCalibrationPointsHor(int i);
-    void changeCalibrationPointsVer(int i);
     void slotDrawSensorImage(cv::Mat image);
     void slotSettingsNoCamera();
 
