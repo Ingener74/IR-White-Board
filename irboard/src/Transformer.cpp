@@ -34,3 +34,14 @@ bool Transformer::isReady() const
 {
     return (_coils.empty() || !_width);
 }
+
+const std::vector<cv::Point>& Transformer::getCoils() const
+{
+    return _coils;
+}
+
+int Transformer::getWidth() const
+{
+    return _width;
+}
+

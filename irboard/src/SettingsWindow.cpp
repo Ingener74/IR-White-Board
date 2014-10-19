@@ -29,6 +29,7 @@ SettingsWindow::SettingsWindow(
     _ui->spinBoxCamera->setValue(_sensor);
 
     connect(_ui->spinBoxCamera, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [this](int i){ _sensor = i; });
+
     connect(_ui->ButtonApply, SIGNAL(clicked()), SLOT(hide()));
 
     QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));

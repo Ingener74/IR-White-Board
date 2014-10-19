@@ -28,7 +28,6 @@ class Mat;
 using SensorCreator = std::function<std::shared_ptr<cv::VideoCapture>()>;
 using IrSpotReceiver = std::function<void (int, int)>;
 using ImageOutput = std::function<void(cv::Mat)>;
-using Thresholder = std::function<uint8_t()>;
 using OutputImageSelector = std::function<int()>;
 using IrProcessorControl = std::function<bool()>;
 
@@ -39,7 +38,7 @@ public:
     IrCameraProcessor(
             SensorCreator,
             IrSpotReceiver,
-            Thresholder,
+            RemoteVariable<int> threshold,
             std::promise<std::exception_ptr>& errorControl,
             OutputImageSelector,
             IrProcessorControl,

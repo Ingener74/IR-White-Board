@@ -23,6 +23,9 @@ public:
     cv::Point convert(int x, int y) const;
     bool isReady() const;
 
+    const std::vector<cv::Point>& getCoils() const;
+    int getWidth() const;
+
 private:
     std::vector<cv::Point> _coils;
     int _width = 0;

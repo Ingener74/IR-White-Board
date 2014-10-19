@@ -23,13 +23,13 @@ IrMouse::IrMouse
 (
     PlatformCreator      platformCreator,
     ImageOutput          imageOutput,
-    Thresholder          thresholder,
+    RemoteVariable<int>  threshold,
     OutputImageSelector  outputImageSelector,
     CalibrationEnd       calibrationEnd,
     RemoteVariable<int>  sensorSelector
 ){
     _stopThread = false;
-    _thread = thread([platformCreator, imageOutput, thresholder, outputImageSelector, calibrationEnd, this, sensorSelector]()
+    _thread = thread([=]()
     {
         while(!_stopThread)
         {
@@ -50,7 +50,7 @@ IrMouse::IrMouse
                 auto irProcessor = make_shared<IrCameraProcessor>(
                     [platform](){ return platform->createVideoSource(); },
                     [coordConverter](int x, int y){ coordConverter->putCoordinates(x, y); },
-                    thresholder,
+                    threshold,
                     ref(errorControl),
                     outputImageSelector,
                     [this](){ return _stopThread.load(); },

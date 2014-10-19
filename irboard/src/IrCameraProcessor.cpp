@@ -24,15 +24,14 @@ IrCameraProcessor::IrCameraProcessor
 (
     SensorCreator            sensorCreator,
     IrSpotReceiver           irSpot,
-    Thresholder              thresholder,
+    RemoteVariable<int>      threshold,
     promise<exception_ptr>&  errorControl,
     OutputImageSelector      outputImageMode,
     IrProcessorControl       irControl,
     RemoteVariable<int>      sensorSelector,
     ImageOutput              imageOutput
 ){
-    _thread = thread([this, sensorCreator, irSpot, thresholder, imageOutput, outputImageMode , irControl, sensorSelector](
-            promise<exception_ptr> &errorControl)
+    _thread = thread([=](promise<exception_ptr> &errorControl)
     {
         try
         {
@@ -48,7 +47,7 @@ IrCameraProcessor::IrCameraProcessor
 
                 *sensor >> image;
 
-                auto th = thresholder();
+                int th = threshold;
 
                 auto start = chrono::high_resolution_clock::now();
 

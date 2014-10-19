@@ -48,32 +48,66 @@ int main(int argc, char* argv[])
 
         json_parser::read_json(configFileName, pt);
 
+        /*
+         *
+         */
         auto threshold = RemoteVariable<int>{
-            [&pt](){ return pt.get<int>("threshold"); },
-            [&pt, &configFileName](int threshold){
+            [&](){ return pt.get<int>("threshold"); },
+            [&](int threshold){
                 pt.put("threshold", threshold); json_parser::write_json(configFileName, pt);
             }
         };
 
+        /*
+         *
+         */
         auto sensor = RemoteVariable<int>{
-            [&pt](){ return pt.get<int>("sensor"); },
-            [&pt, &configFileName](int sensor){
+            [&](){ return pt.get<int>("sensor"); },
+            [&](int sensor){
                 pt.put("sensor", sensor);
                 json_parser::write_json(configFileName, pt);
             }
         };
 
-        auto settingsWindow = make_shared<SettingsWindow>(
-                threshold,
-                RemoteVariable<cv::Size>{
-                    [&pt](){ return Size(pt.get<int>("calibration_x"), pt.get<int>("calibration_y")); },
-                    [&pt, &configFileName](const Size& calibrationPoints){
-                        pt.put("calibration_x", calibrationPoints.width);
-                        pt.put("calibration_y", calibrationPoints.height);
-                        json_parser::write_json(configFileName, pt);
-                }},
-                sensor
-        );
+        /*
+         *
+         */
+        auto transformer = RemoteVariable<Transformer>{
+            [&](){
+                auto transformer = Transformer{
+                    pt.get<int>("transformer.width"),
+                    pt.get<int>("transformer.height"),
+                    [&](int i){
+                        return Point{
+                            pt.get<int>("transformer.coil" + to_string(i) + ".x"),
+                            pt.get<int>("transformer.coil" + to_string(i) + ".y")};
+                    }};
+                return transformer;
+            },
+            [&](const Transformer& trans){
+                pt.put("transformer.width", trans.getWidth());
+                pt.put("transformer.height", trans.getCoils().size() / trans.getWidth());
+                for(int i = 0; i < trans.getCoils().size(); ++i){
+                    pt.get<int>("transformer.coil" + to_string(i) + ".x");
+                    pt.get<int>("transformer.coil" + to_string(i) + ".y");
+                }
+                json_parser::write_json(configFileName, pt);
+            }
+        };
+
+        /*
+         *
+         */
+        auto calibrationPoints = RemoteVariable<cv::Size>{
+            [&](){ return Size(pt.get<int>("calibration_x"), pt.get<int>("calibration_y")); },
+            [&](const Size& calibrationPoints){
+                pt.put("calibration_x", calibrationPoints.width);
+                pt.put("calibration_y", calibrationPoints.height);
+                json_parser::write_json(configFileName, pt);
+            }
+        };
+
+        auto settingsWindow = make_shared<SettingsWindow>(threshold, calibrationPoints, sensor);
 
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
@@ -84,7 +118,7 @@ int main(int argc, char* argv[])
         mainWindow->show();
 
         auto irMouse = make_shared<IrMouse>(
-            [&pt, &sensor]()
+            [&]()
             {
 #ifdef MINGW
                 auto platform = make_shared<WinPlatform>(sensor);
@@ -93,10 +127,10 @@ int main(int argc, char* argv[])
 #endif
                 return platform;
             },
-            [settingsWindow](Mat image){ settingsWindow->slotDrawSensorImage(image); },
-            [settingsWindow](){ return settingsWindow->getThreshold(); }, // threshold variable
-            [settingsWindow](){ return settingsWindow->getImageSelector(); },
-            [mainWindow](){ mainWindow->calibrationEnd(); },
+            [=](Mat image){ settingsWindow->slotDrawSensorImage(image); },
+            threshold,
+            [=](){ return settingsWindow->getImageSelector(); },
+            [=](){ mainWindow->calibrationEnd(); },
             sensor
         );
 
