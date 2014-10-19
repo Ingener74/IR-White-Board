@@ -28,19 +28,19 @@
 #include <Platform.h>
 #endif
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 using namespace std;
 using namespace cv;
 using namespace boost;
 using namespace boost::property_tree;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char* argv[])
 {
     auto app = make_shared<QApplication>(argc, argv);
 
     try
     {
-        cout << "" << endl;
-
         auto calibrationWindow = make_shared<CalibrationWindow>([](){ return Point(200, 200); });
 
         const string configFileName = "config.json";
@@ -63,13 +63,14 @@ int main(int argc, char* argv[])
             }
         };
 
-        auto settingsWindow = make_shared<SettingsWindow>(threshold,
-            RemoteVariable<cv::Size>{
-                [&pt](){ return Size(pt.get<int>("calibration_x"), pt.get<int>("calibration_y")); },
-                [&pt, &configFileName](const Size& calibrationPoints){
-                    pt.put("calibration_x", calibrationPoints.width);
-                    pt.put("calibration_y", calibrationPoints.height);
-                    json_parser::write_json(configFileName, pt);
+        auto settingsWindow = make_shared<SettingsWindow>(
+                threshold,
+                RemoteVariable<cv::Size>{
+                    [&pt](){ return Size(pt.get<int>("calibration_x"), pt.get<int>("calibration_y")); },
+                    [&pt, &configFileName](const Size& calibrationPoints){
+                        pt.put("calibration_x", calibrationPoints.width);
+                        pt.put("calibration_y", calibrationPoints.height);
+                        json_parser::write_json(configFileName, pt);
                 }},
                 sensor
         );

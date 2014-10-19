@@ -33,6 +33,8 @@ SettingsWindow::SettingsWindow(
 
     QObject::connect(this, SIGNAL(signalSettingsCaptureNoExist()), SLOT(slotSettingsNoCamera()));
 
+    _ui->spinBoxHorPoints->setValue(static_cast<Size>(_calibrationPoints).width);
+    _ui->spinBoxVetPoints->setValue(static_cast<Size>(_calibrationPoints).height);
     QObject::connect(_ui->spinBoxHorPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsHor(int)));
     QObject::connect(_ui->spinBoxVetPoints, SIGNAL(valueChanged(int)), this, SLOT(changeCalibrationPointsVer(int)));
 
@@ -109,7 +111,6 @@ void SettingsWindow::slotSettingsNoCamera()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::changeCalibrationPointsHor(int i)
 {
-//    Size calibrationPoints = _calibrationPoints;
     _calibrationPoints = Size(i, static_cast<Size>(_calibrationPoints).height);
     DrawPoints();
 }
@@ -117,7 +118,6 @@ void SettingsWindow::changeCalibrationPointsHor(int i)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void SettingsWindow::changeCalibrationPointsVer(int i)
 {
-//    Size calibrationPoints = _calibrationPoints;
     _calibrationPoints = Size(static_cast<Size>(_calibrationPoints).width, i);
     DrawPoints();
 }

@@ -63,7 +63,7 @@ public:
 
         image = cv::Mat(640, 480, CV_8UC3, Scalar(0, 0, 0));
 
-        circle(image, Point(320, 240), 2, Scalar(255, 255, 255), -1);
+        circle(image, Point(320, 240), 5, Scalar(255, 255, 255), -1);
 
         return true;
     }

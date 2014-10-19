@@ -81,7 +81,7 @@ int main(int argc, char **argv)
         if(image.empty()) throw runtime_error("image is empty");
 
         VideoWriter vw{"test.mpg", CV_FOURCC('M','J','P','G'), 30, Size{640, 480}};
-//        if(!vw.isOpened()) throw runtime_error("video writer not ready");
+        if(!vw.isOpened()) throw runtime_error("video writer not ready");
 
         Point fakeIr{-1, -1};
 
