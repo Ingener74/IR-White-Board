@@ -227,6 +227,19 @@ void MainWindow::slotSystemNotCalibrated()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Size getSystemResolution()
+{
+    QDesktopWidget desk;
+    QRect systemRes = desk.screenGeometry();
+    return Size(systemRes.width(), systemRes.height());
+}
+
+void MainWindow::calibrationEnd()
+{
+    _calibrationWindow->hide();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //void CoordinateTransformCalibrationOnLeftDown( Point2f A_rPoint ){
 //	pCoordinateTransform->OnLeftDown(A_rPoint);
 //	if( pCoordinateTransform->GetStatus() == E_ctssREADY ){
@@ -242,19 +255,6 @@ void MainWindow::slotSystemNotCalibrated()
 //		}
 //	}
 //}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Size getSystemResolution()
-{
-    QDesktopWidget desk;
-    QRect systemRes = desk.screenGeometry();
-    return Size(systemRes.width(), systemRes.height());
-}
-
-void MainWindow::calibrationEnd()
-{
-    _calibrationWindow->hide();
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //void CoordinateTransformWorkOnLeftDown( Point2f A_rPoint )

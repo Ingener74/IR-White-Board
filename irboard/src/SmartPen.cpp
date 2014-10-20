@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
         json_parser::read_json(configFileName, pt);
 
         /*
-         *
+         * threshold config variable
          */
         auto threshold = RemoteVariable<int>{
             [&](){ return pt.get<int>("threshold"); },
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
         };
 
         /*
-         *
+         * sensor config variable
          */
         auto sensor = RemoteVariable<int>{
             [&](){ return pt.get<int>("sensor"); },
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
         };
 
         /*
-         *
+         * transformer config variable
          */
         auto transformer = RemoteVariable<Transformer>{
             [&](){
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
         };
 
         /*
-         *
+         * calibration points config variable
          */
         auto calibrationPoints = RemoteVariable<cv::Size>{
             [&](){ return Size(pt.get<int>("calibration_x"), pt.get<int>("calibration_y")); },

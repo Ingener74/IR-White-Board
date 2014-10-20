@@ -20,9 +20,6 @@ public:
     virtual ~WinPlatform();
 
 //    virtual void mouseCommand(int x, int y, MouseButton, MouseCommand);
-//
-//    virtual Transformer loadTransformer();
-//    virtual void saveTransformer(const Transformer&);
 
     virtual std::shared_ptr<cv::VideoCapture> createVideoSource();
 

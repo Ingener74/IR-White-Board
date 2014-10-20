@@ -23,14 +23,6 @@ WinPlatform::~WinPlatform()
 //void WinPlatform::mouseCommand(int x, int y, MouseButton enumMouseButton, MouseCommand enumMouseCommand)
 //{
 //}
-//
-//Transformer WinPlatform::loadTransformer()
-//{
-//}
-//
-//void WinPlatform::saveTransformer(const Transformer&)
-//{
-//}
 
 std::shared_ptr<cv::VideoCapture> WinPlatform::createVideoSource()
 {

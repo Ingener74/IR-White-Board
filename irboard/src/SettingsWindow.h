@@ -37,11 +37,6 @@ public:
 
     int getImageSelector() const;
 
-signals:
-    void signalSettingsCaptureNoExist();
-    void signalSettingsCaptureExist();
-    void signalCameraChanged();
-
 public slots:
     void slotDrawSensorImage(cv::Mat image);
     void slotSettingsNoCamera();

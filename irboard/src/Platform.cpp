@@ -63,7 +63,7 @@ public:
 
         image = cv::Mat(640, 480, CV_8UC3, Scalar(0, 0, 0));
 
-        circle(image, Point(320, 240), 5, Scalar(255, 255, 255), -1);
+        circle(image, Point(240, 320), 5, Scalar(255, 255, 255), -1);
 
         return true;
     }
@@ -90,18 +90,6 @@ Platform::~Platform()
 void Platform::mouseCommand(int x, int y, MouseButton mouseButton, MouseCommand mouseCommand)
 {
     cout << "mouse " << x << " x " << y << ", " << mouseButton << ", " << mouseCommand << endl;
-}
-
-Transformer Platform::loadTransformer()
-{
-    return Transformer(640, 640 * 480, [](int index)
-    {
-        return Point(0, 0);
-    });
-}
-
-void Platform::saveTransformer(const Transformer&)
-{
 }
 
 shared_ptr<VideoCapture> Platform::createVideoSource()

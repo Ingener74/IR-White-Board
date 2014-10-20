@@ -10,6 +10,7 @@
 #include <CoordinateConverter.h>
 
 using namespace std;
+using namespace cv;
 
 ostream& operator<<(ostream& out, const MouseButton& rho)
 {
@@ -27,11 +28,13 @@ ostream& operator<<(ostream& out, const MouseCommand& rho)
     return out;
 }
 
-CoordinateConverter::CoordinateConverter(MouseOutput mo, RemoteVariable<Transformer> transformer, CalibrationEnd ce) :
+CoordinateConverter::CoordinateConverter(MouseOutput mo, RemoteVariable<Transformer> transformer, CalibrationEnd ce,
+        RemoteVariable<cv::Size> screenResolution) :
         _mouseOutput(mo ? mo : throw invalid_argument("mouse output is invalid")),
         _remoteTransformer(transformer),
         _transformer(_remoteTransformer),
-        _calibrationEnd(ce ? ce : throw invalid_argument("calibration end is invalid"))
+        _calibrationEnd(ce ? ce : throw invalid_argument("calibration end is invalid")),
+        _screenResolution(screenResolution)
 {
 }
 
@@ -61,4 +64,10 @@ void CoordinateConverter::putCoordinates(int x, int y)
 
 void CoordinateConverter::calibrate()
 {
+    /*
+     * image size
+     * screen size
+     */
+
+    Size screenResolution = _screenResolution;
 }
