@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QDesktopWidget>
 
 #include <IrMouse.h>
 #include <MainWindow.h>
@@ -104,6 +105,17 @@ int main(int argc, char* argv[])
             }
         };
 
+        /*
+         * screen resolution variable
+         */
+        auto screenResolution = RemoteVariable<Size>{
+            [](){
+                auto systemRes = QDesktopWidget{}.screenGeometry();
+                return Size{systemRes.width(), systemRes.height()};
+            },
+            [](const Size&){},
+        };
+
         auto settingsWindow = make_shared<SettingsWindow>(threshold, calibrationPoints, sensor);
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
@@ -128,7 +140,8 @@ int main(int argc, char* argv[])
             [=](){ return settingsWindow->getImageSelector(); },
             [=](){ mainWindow->calibrationEnd(); },
             sensor,
-            transformer
+            transformer,
+            screenResolution
         );
 
         return app->exec();

@@ -27,7 +27,8 @@ IrMouse::IrMouse
     OutputImageSelector         outputImageSelector,
     CalibrationEnd              calibrationEnd,
     RemoteVariable<int>         sensorSelector,
-    RemoteVariable<Transformer> transformer
+    RemoteVariable<Transformer> transformer,
+    RemoteVariable<cv::Size>    screenResolution
 ){
     _stopThread = false;
     _thread = thread([=]()
@@ -41,7 +42,8 @@ IrMouse::IrMouse
                 auto coordConverter = make_shared<CoordinateConverter>(
                     [=](int x, int y, MouseButton mb, MouseCommand mc){platform->mouseCommand(x, y, mb, mc); },
                     transformer,
-                    calibrationEnd
+                    calibrationEnd,
+                    screenResolution
                 );
 
                 promise<exception_ptr> errorControl;
@@ -65,7 +67,7 @@ IrMouse::IrMouse
             catch (exception const & e)
             {
                 cerr << "IrMouse error: " << e.what() << endl;
-                this_thread::sleep_for(chrono::milliseconds(1000));
+                this_thread::sleep_for(chrono::seconds(1));
             }
         }
         cout << "ir mouse thread stopped" << endl;

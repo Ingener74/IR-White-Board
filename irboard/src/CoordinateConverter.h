@@ -16,12 +16,17 @@
 
 enum class MouseButton
 {
-    NO_BUTTON, LEFT, RIGHT, MIDDLE,
+    NO_BUTTON,
+    LEFT,
+    RIGHT,
+    MIDDLE,
 };
 std::ostream& operator<<(std::ostream&, const MouseButton&);
 enum class MouseCommand
 {
-    MOVE, UP, DOWN,
+    MOVE,
+    UP,
+    DOWN,
 };
 std::ostream& operator<<(std::ostream&, const MouseCommand&);
 

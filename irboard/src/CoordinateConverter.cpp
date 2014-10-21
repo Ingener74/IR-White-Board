@@ -5,6 +5,8 @@
  *      Author: pavel
  */
 
+#include <map>
+#include <string>
 #include <iostream>
 
 #include <CoordinateConverter.h>
@@ -14,17 +16,24 @@ using namespace cv;
 
 ostream& operator<<(ostream& out, const MouseButton& rho)
 {
-    static string mb[]
-    { "No Button", "Left", "Right", "Middle", };
-    out << mb[static_cast<int>(rho)];
+    static map<MouseButton, string> buttons{
+        {MouseButton::NO_BUTTON, "No Button"},
+        {MouseButton::LEFT,      "Left"},
+        {MouseButton::RIGHT,     "Right"},
+        {MouseButton::MIDDLE,    "Middle"}
+    };
+    out << buttons[rho];
     return out;
 }
 
 ostream& operator<<(ostream& out, const MouseCommand& rho)
 {
-    static string mc[]
-    { "Move", "Up", "Down", };
-    out << mc[static_cast<int>(rho)];
+    static map<MouseCommand, string> commands{
+        {MouseCommand::MOVE, "Move"},
+        {MouseCommand::UP,   "Up"},
+        {MouseCommand::DOWN, "Down"}
+    };
+    out << commands[rho];
     return out;
 }
 
