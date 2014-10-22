@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
         /*
          * sensor config variable
          */
-        auto sensor = RemoteVariable<int>{
+        auto sensorSelector = RemoteVariable<int>{
             [&](){ return pt.get<int>("sensor"); },
             [&](int sensor){ pt.put("sensor", sensor); json_parser::write_json(configFileName, pt); }
         };
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
         /*
          * calibration points config variable
          */
-        auto calibrationPoints = RemoteVariable<cv::Size>{
+        auto calibrationGridNodesCounts = RemoteVariable<cv::Size>{
             [&](){ return Size(pt.get<int>("calibration_x"), pt.get<int>("calibration_y")); },
             [&](const Size& calibrationPoints){
                 pt.put("calibration_x", calibrationPoints.width);
@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
             [](const Size&){},
         };
 
-        auto settingsWindow = make_shared<SettingsWindow>(threshold, calibrationPoints, sensor);
+        auto settingsWindow = make_shared<SettingsWindow>(threshold, calibrationGridNodesCounts, sensorSelector);
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMinimizeButtonHint));
         settingsWindow->setWindowFlags(settingsWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
 
@@ -125,13 +125,39 @@ int main(int argc, char* argv[])
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
         mainWindow->show();
 
+        /*
+         * IrMouseController
+         */
+        class IrMouseController{
+        public:
+            IrMouseController(){
+            }
+            virtual ~IrMouseController(){
+            }
+
+        private:
+        };
+
+        /*
+         * IrMouseView
+         */
+        class IrMouseView{
+        public:
+            IrMouseView(){
+            }
+            virtual ~IrMouseView(){
+            }
+
+        private:
+        };
+
         auto irMouse = make_shared<IrMouse>(
             [=]()
             {
 #ifdef MINGW
-                auto platform = make_shared<WinPlatform>(sensor);
+                auto platform = make_shared<WinPlatform>(sensorSelector);
 #else
-                auto platform = make_shared<Platform>(sensor);
+                auto platform = make_shared<Platform>(sensorSelector);
 #endif
                 return platform;
             },
@@ -139,10 +165,13 @@ int main(int argc, char* argv[])
             threshold,
             [=](){ return settingsWindow->getImageSelector(); },
             [=](){ mainWindow->calibrationEnd(); },
-            sensor,
+            sensorSelector,
             transformer,
-            screenResolution
+            screenResolution,
+            calibrationGridNodesCounts
         );
+
+//        mainWindow->setCalibrationBegin([](){ irMouse->ca });
 
         return app->exec();
     }

@@ -239,6 +239,11 @@ void MainWindow::calibrationEnd()
     _calibrationWindow->hide();
 }
 
+//void MainWindow::setCalibrationBegin(const CalibrationBegin& calibrationBegin)
+//{
+//    _calibrationBegin = calibrationBegin;
+//}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //void CoordinateTransformCalibrationOnLeftDown( Point2f A_rPoint ){
 //	pCoordinateTransform->OnLeftDown(A_rPoint);

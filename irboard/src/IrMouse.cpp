@@ -28,7 +28,8 @@ IrMouse::IrMouse
     CalibrationEnd              calibrationEnd,
     RemoteVariable<int>         sensorSelector,
     RemoteVariable<Transformer> transformer,
-    RemoteVariable<cv::Size>    screenResolution
+    RemoteVariable<cv::Size>    screenResolution,
+    RemoteVariable<cv::Size>    calibrationGridNodesCounts
 ){
     _stopThread = false;
     _thread = thread([=]()
@@ -41,21 +42,22 @@ IrMouse::IrMouse
 
                 auto coordConverter = make_shared<CoordinateConverter>(
                     [=](int x, int y, MouseButton mb, MouseCommand mc){platform->mouseCommand(x, y, mb, mc); },
-                    transformer,
                     calibrationEnd,
-                    screenResolution
+                    transformer,
+                    screenResolution,
+                    calibrationGridNodesCounts
                 );
 
                 promise<exception_ptr> errorControl;
                 auto controlFuture = errorControl.get_future();
 
                 auto irProcessor = make_shared<IrCameraProcessor>(
-                    [platform](){ return platform->createVideoSource(); },
-                    [coordConverter](int x, int y){ coordConverter->putCoordinates(x, y); },
+                    [=](){ return platform->createVideoSource(); },
+                    [=](int x, int y){ coordConverter->putCoordinates(x, y); },
                     threshold,
                     ref(errorControl),
                     outputImageSelector,
-                    [this](){ return _stopThread.load(); },
+                    [=](){ return _stopThread.load(); },
                     sensorSelector,
                     imageOutput
                 );

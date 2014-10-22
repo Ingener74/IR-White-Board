@@ -27,12 +27,13 @@ class IrMouse
 public:
     IrMouse(PlatformCreator,
             ImageOutput,
-            RemoteVariable<int> threshold,
+            RemoteVariable<int>          threshold,
             OutputImageSelector,
             CalibrationEnd,
-            RemoteVariable<int> sensorSelector,
-            RemoteVariable<Transformer> transformer,
-            RemoteVariable<cv::Size> screenResolution);
+            RemoteVariable<int>          sensorSelector,
+            RemoteVariable<Transformer>  transformer,
+            RemoteVariable<cv::Size>     screenResolution,
+            RemoteVariable<cv::Size>     calibrationGridNodesCounts);
     virtual ~IrMouse();
 
 private:

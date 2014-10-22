@@ -36,8 +36,12 @@ using CalibrationEnd   = std::function<void()>;
 class CoordinateConverter
 {
 public:
-    CoordinateConverter(MouseOutput, RemoteVariable<Transformer> transformer, CalibrationEnd,
-            RemoteVariable<cv::Size> screenResolution);
+    CoordinateConverter(
+            MouseOutput,
+            CalibrationEnd,
+            RemoteVariable<Transformer>  transformer,
+            RemoteVariable<cv::Size>     screenResolution,
+            RemoteVariable<cv::Size>     calibrationGridNodes);
     virtual ~CoordinateConverter();
 
     void putCoordinates(int x, int y);
@@ -45,11 +49,15 @@ public:
 
 private:
     MouseOutput _mouseOutput;
+    CalibrationEnd _calibrationEnd;
     RemoteVariable<Transformer> _remoteTransformer;
     Transformer _transformer;
-    CalibrationEnd _calibrationEnd;
     std::vector<cv::Point> _calibrationPoints;
     RemoteVariable<cv::Size> _screenResolution;
+    RemoteVariable<cv::Size> _calibrationGridNodes;
+
+    static double distance(const cv::Point&, const cv::Point&);
+    static bool isValidPoint(const std::vector<cv::Point>& points, const cv::Point& point, double invalidRadius);
 };
 
 #endif /* COORDINATECONVERTER_H_ */

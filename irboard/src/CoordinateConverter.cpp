@@ -37,13 +37,20 @@ ostream& operator<<(ostream& out, const MouseCommand& rho)
     return out;
 }
 
-CoordinateConverter::CoordinateConverter(MouseOutput mo, RemoteVariable<Transformer> transformer, CalibrationEnd ce,
-        RemoteVariable<cv::Size> screenResolution) :
-        _mouseOutput(mo ? mo : throw invalid_argument("mouse output is invalid")),
-        _remoteTransformer(transformer),
-        _transformer(_remoteTransformer),
-        _calibrationEnd(ce ? ce : throw invalid_argument("calibration end is invalid")),
-        _screenResolution(screenResolution)
+CoordinateConverter::CoordinateConverter
+(
+    MouseOutput                  mo,
+    CalibrationEnd               ce,
+    RemoteVariable<Transformer>  transformer,
+    RemoteVariable<cv::Size>     screenResolution,
+    RemoteVariable<cv::Size>     calibrationGridNodes
+):
+    _mouseOutput(mo ? mo : throw invalid_argument("mouse output is invalid")),
+    _calibrationEnd(ce ? ce : throw invalid_argument("calibration end is invalid")),
+    _remoteTransformer(transformer),
+    _transformer(_remoteTransformer),
+    _screenResolution(screenResolution),
+    _calibrationGridNodes(calibrationGridNodes)
 {
 }
 
@@ -53,13 +60,47 @@ CoordinateConverter::~CoordinateConverter()
     cout << "CoordinateConverter::~CoordinateConverter()" << endl;
 }
 
+double CoordinateConverter::distance(const cv::Point& point_, const cv::Point& point_1)
+{
+    return sqrt((point_1.y - point_.y)*(point_1.y - point_.y) +
+            (point_1.x - point_.x)*(point_1.x - point_.x));
+}
+
+bool CoordinateConverter::isValidPoint(const std::vector<cv::Point>& points, const cv::Point& point, double invalidRadius)
+{
+    for (auto i : points)
+        if (distance(i, point) < invalidRadius) return false;
+    return true;
+}
+
 void CoordinateConverter::putCoordinates(int x, int y)
 {
-    if (!_transformer.isReady()/*in calibration expression: transformer not ready and and calibration point exist*/)
+    if (!_calibrationPoints.empty())
     {
         /*
          * calibration process
          */
+
+        auto point = Point{ x, y };
+        auto invalidRadius = 0.0;
+
+        Size calibrationGridNodes = _calibrationGridNodes;
+        auto validPointsCount = calibrationGridNodes.width * calibrationGridNodes.height;
+
+        if (!isValidPoint(_calibrationPoints, point, invalidRadius)) return;
+
+        _calibrationPoints.push_back(point);
+
+        if (_calibrationPoints.size() != validPointsCount) return;
+
+        /*
+         * calculate transformer
+         */
+
+        /*
+         * calibration end
+         */
+        _calibrationPoints = vector<Point>{};
     }
     else
     {
@@ -79,4 +120,7 @@ void CoordinateConverter::calibrate()
      */
 
     Size screenResolution = _screenResolution;
+
+    Size imageSize = Size{};
 }
+

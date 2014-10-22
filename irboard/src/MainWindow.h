@@ -21,6 +21,7 @@ Q_OBJECT
 
 public:
     using Ptr = std::shared_ptr<MainWindow>;
+    using CalibrationBegin = std::function<void()>;
 
     MainWindow(
             std::shared_ptr<QApplication>,
@@ -50,6 +51,8 @@ signals:
 
     void signalPulledOut();
 
+//    void setCalibrationBegin(const CalibrationBegin& calibrationBegin);
+
 private:
     std::shared_ptr<Ui_MainWindow>      _ui;
 
@@ -66,6 +69,7 @@ private:
     std::shared_ptr<SettingsWindow>     _settingsWindow;
 
     std::shared_ptr<CalibrationWindow>  _calibrationWindow;
+    CalibrationBegin                    _calibrationBegin;
 };
 
 #endif
