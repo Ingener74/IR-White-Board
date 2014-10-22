@@ -151,6 +151,9 @@ int main(int argc, char* argv[])
         private:
         };
 
+        auto view = make_shared<IrMouseView>();
+        auto control = make_shared<IrMouseController>();
+
         auto irMouse = make_shared<IrMouse>(
             [=]()
             {

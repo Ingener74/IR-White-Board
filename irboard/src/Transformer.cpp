@@ -13,11 +13,15 @@ using namespace std;
 using namespace cv;
 
 Transformer::Transformer(int width, int coilsCount, CoilsFiller cf) :
-        _coils(coilsCount/* ? coilsCount : throw invalid_argument("coils must have more than zero hanks")*/),
-        _width(width/* ? width : throw invalid_argument("transformer width can't be zero")*/)
+        _coils(coilsCount),
+        _width(width)
 {
     for (int i = 0; i < coilsCount; ++i)
         _coils[i] = cf(i);
+}
+
+Transformer::Transformer(): Transformer(0, 0, [](int i){ return Point{}; })
+{
 }
 
 Transformer::~Transformer()

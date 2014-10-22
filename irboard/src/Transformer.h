@@ -18,6 +18,7 @@ class Transformer
 {
 public:
     Transformer(int width, int coilsCount, CoilsFiller);
+    Transformer();
     virtual ~Transformer();
 
     cv::Point convert(int x, int y) const;

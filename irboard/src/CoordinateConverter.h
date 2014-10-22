@@ -52,9 +52,11 @@ private:
     CalibrationEnd _calibrationEnd;
     RemoteVariable<Transformer> _remoteTransformer;
     Transformer _transformer;
-    std::vector<cv::Point> _calibrationPoints;
     RemoteVariable<cv::Size> _screenResolution;
-    RemoteVariable<cv::Size> _calibrationGridNodes;
+    RemoteVariable<cv::Size> _calibrationGridNodesCounts;
+
+    std::vector<cv::Point> _sensorCalibrationPointsGrid;
+    std::vector<cv::Point> _screenCalibrationPointsGrid;
 
     static double distance(const cv::Point&, const cv::Point&);
     static bool isValidPoint(const std::vector<cv::Point>& points, const cv::Point& point, double invalidRadius);
