@@ -16,7 +16,7 @@
 using namespace std;
 using namespace cv;
 
-map<int, string> events_{
+const map<int, string> events_{
     {EVENT_MOUSEMOVE    , "EVENT_MOUSEMOVE"},
     {EVENT_LBUTTONDOWN  , "EVENT_LBUTTONDOWN"},
     {EVENT_RBUTTONDOWN  , "EVENT_RBUTTONDOWN"},
@@ -29,7 +29,7 @@ map<int, string> events_{
     {EVENT_MBUTTONDBLCLK, "EVENT_MBUTTONDBLCLK"},
 };
 
-map<int, string> flags_{
+const map<int, string> flags_{
     {EVENT_FLAG_LBUTTON , "EVENT_FLAG_LBUTTON"},
     {EVENT_FLAG_RBUTTON , "EVENT_FLAG_RBUTTON"},
     {EVENT_FLAG_MBUTTON , "EVENT_FLAG_MBUTTON"},
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
         Mat image = imread(vm["image"].as<string>());
         if(image.empty()) throw runtime_error("image is empty");
 
-        VideoWriter vw{"test.mpg", CV_FOURCC_PROMPT, 30, Size{640, 480}};
+        VideoWriter vw{"test.mpg", CV_FOURCC_DEFAULT, 30, Size{640, 480}};
         if(!vw.isOpened()) throw runtime_error("video writer not ready");
 
         Point fakeIr{-1, -1};
