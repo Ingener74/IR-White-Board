@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 
         if (vm.count("help"))
         {
-            od.print(cout);
+            cout << od << endl;
             return 0;
         }
 

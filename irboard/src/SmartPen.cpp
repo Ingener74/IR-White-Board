@@ -126,34 +126,6 @@ int main(int argc, char* argv[])
         mainWindow->setWindowFlags(mainWindow->windowFlags() & ~(Qt::WindowMaximizeButtonHint));
         mainWindow->show();
 
-        /*
-         * IrMouseController
-         */
-        class IrMouseController{
-        public:
-            IrMouseController(){
-            }
-            virtual ~IrMouseController(){
-            }
-
-        private:
-        };
-
-        /*
-         * IrMouseView
-         */
-        class IrMouseView{
-        public:
-            IrMouseView(){
-            }
-            virtual ~IrMouseView(){
-            }
-
-        private:
-        };
-
-        auto view = make_shared<IrMouseView>();
-        auto control = make_shared<IrMouseController>();
 
         auto irMouse = make_shared<IrMouse>(
             [=]()
