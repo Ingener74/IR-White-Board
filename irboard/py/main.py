@@ -3,7 +3,7 @@
 
 import sys
 
-from PySide.QtGui import QApplication, QMainWindow, QWidget
+from PySide.QtGui import QApplication, QMainWindow, QWidget, QSystemTrayIcon, QMenu, QIcon
 
 from MainWindow import Ui_MainWindow
 from SettingsWindow import Ui_WindowSettings
@@ -23,12 +23,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.settings_window = SettingsWindow()
 
         self.ButtonSettings.clicked.connect(self.settings_window.show)
+        self.ButtonCalibrate.clicked.connect(self.calibrate)
+        self.ButtonToTray.clicked.connect(self.hide)
+
+
+    def calibrate(self):
+        print u"Калибровка"
 
 
 def main():
     app = QApplication(sys.argv)
     win = MainWindow()
     win.show()
+
+    tray_menu = QMenu()
+    tray_menu.addAction(QIcon(':/main/restore.png'), u"Восстановить", win.show)
+    tray_menu.addAction(QIcon(':/main/calibrate.png'), u"Калибровка", win.calibrate)
+    tray_menu.addAction(QIcon(':/main/cogwheel.png'), u"Настройка", win.settings_window.show)
+    tray_menu.addSeparator()
+    tray_menu.addAction(QIcon(':/main/close.png'), u"Выход", app.quit)
+
+    tray = QSystemTrayIcon()
+    tray.setIcon(QIcon(':/main/webcam.png'))
+    tray.setContextMenu(tray_menu)
+    tray.show()
+
     return app.exec_()
 
 
