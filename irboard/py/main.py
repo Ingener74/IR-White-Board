@@ -1,26 +1,35 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PySide.QtGui import QMainWindow, QApplication
+import sys
 
-__author__ = 'Pavel'
+from PySide.QtGui import QApplication, QMainWindow, QWidget
+
+from MainWindow import Ui_MainWindow
+from SettingsWindow import Ui_WindowSettings
 
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super(QMainWindow, self).__init__(self)
+class SettingsWindow(QWidget, Ui_WindowSettings):
+    def __init__(self, parent=None):
+        super(SettingsWindow, self).__init__(parent)
+        self.setupUi(self)
 
-        print 'Паша'
 
-        pass
+class MainWindow(QMainWindow, Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent)
+        self.setupUi(self)
+
+        self.settings_window = SettingsWindow()
+
+        self.ButtonSettings.clicked.connect(self.settings_window.show)
 
 
 def main():
-    app = QApplication
+    app = QApplication(sys.argv)
     win = MainWindow()
     win.show()
     return app.exec_()
-    pass
 
 
 if __name__ == '__main__':
