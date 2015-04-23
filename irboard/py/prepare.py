@@ -13,12 +13,12 @@ from PySide.QtGui import QFileDialog, QApplication
 
 
 def get_pyside_rcc():
-    pyside_rcc, _ = QFileDialog.getOpenFileName(caption=u"Выбери pyside-rcc.exe")
+    pyside_rcc, _ = QFileDialog.getOpenFileName(caption=u"Открыть pyside-rcc.exe", filter='*.exe')
     return pyside_rcc
 
 
 def get_pyside_uic():
-    pyside_uic, _ = QFileDialog.getOpenFileName(caption=u"Выбери pyside-uic.py")
+    pyside_uic, _ = QFileDialog.getOpenFileName(caption=u"Открыть pyside-uic.exe", filter='*.exe')
     return pyside_uic
 
 
@@ -34,10 +34,13 @@ def main():
     pyside_rcc = json_[CONFIG_PYSIDE_RCC] if os.path.exists(json_[CONFIG_PYSIDE_RCC]) else get_pyside_rcc()
     pyside_uic = json_[CONFIG_PYSIDE_UIC] if os.path.exists(json_[CONFIG_PYSIDE_RCC]) else get_pyside_uic()
 
+    if len(pyside_rcc) == 0 or len(pyside_uic) == 0:
+        raise SystemExit
+
     subprocess.Popen([pyside_rcc, '../resources/MainResource.qrc', '-o', 'MainResource_rc.py'])
-    subprocess.Popen(['python', pyside_uic, '../ui/MainWindow.ui', '-o', 'MainWindow.py'])
-    subprocess.Popen(['python', pyside_uic, '../ui/SettingsWindow.ui', '-o', 'SettingsWindow.py'])
-    subprocess.Popen(['python', pyside_uic, '../ui/ErrorLogWindow.ui', '-o', 'ErrorLogWindow.py'])
+    subprocess.Popen([pyside_uic, '../ui/MainWindow.ui', '-o', 'MainWindow.py'])
+    subprocess.Popen([pyside_uic, '../ui/SettingsWindow.ui', '-o', 'SettingsWindow.py'])
+    subprocess.Popen([pyside_uic, '../ui/ErrorLogWindow.ui', '-o', 'ErrorLogWindow.py'])
 
     json_[CONFIG_PYSIDE_RCC] = pyside_rcc
     json_[CONFIG_PYSIDE_UIC] = pyside_uic
