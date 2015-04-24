@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 
 from PySide.QtGui import QApplication, QMainWindow, QWidget, QSystemTrayIcon, QMenu, QIcon
@@ -8,6 +9,8 @@ from PySide.QtGui import QApplication, QMainWindow, QWidget, QSystemTrayIcon, QM
 from MainWindow import Ui_MainWindow
 from SettingsWindow import Ui_WindowSettings
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../build/libirboard')))
+import IrBoard as ir
 
 class SettingsWindow(QWidget, Ui_WindowSettings):
     def __init__(self, parent=None):
@@ -25,6 +28,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ButtonSettings.clicked.connect(self.settings_window.show)
         self.ButtonCalibrate.clicked.connect(self.calibrate)
         self.ButtonToTray.clicked.connect(self.hide)
+        
+        self.ir_board = ir.IrBoard()
+        print u"Версия библиотеки инфракрасная ручка ",self.ir_board.getVersion()
 
 
     def calibrate(self):

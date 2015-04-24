@@ -27,32 +27,36 @@ find_package(OpenCV
 )
 
 # find OpenGL
-find_package(OpenGL)
+# find_package(OpenGL)
 
 # find Qt5
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Core    REQUIRED)
-find_package(Qt5OpenGL  REQUIRED)
+#set(CMAKE_INCLUDE_CURRENT_DIR ON)
+#set(CMAKE_AUTOMOC ON)
+#find_package(Qt5Widgets REQUIRED)
+#find_package(Qt5Core    REQUIRED)
+#find_package(Qt5OpenGL  REQUIRED)
 
 include_directories(
-    ${Qt5Widgets_INCLUDES}
-    ${Qt5Core_INCLUDES}
-    ${Qt5OpenGL_INCLUDES}
+#    ${Qt5Widgets_INCLUDES}
+#    ${Qt5Core_INCLUDES}
+#    ${Qt5OpenGL_INCLUDES}
 
     ${OpenCV_INCLUDE_DIRS}
 
     ${Boost_INCLUDE_DIRS}
 )
 
-add_definitions(
-    -std=c++11
-)
+#add_definitions(
+#    -std=c++11
+#)
 
-file(COPY data/monitor.png DESTINATION ${CMAKE_BINARY_DIR})
+#file(COPY data/monitor.png DESTINATION ${CMAKE_BINARY_DIR})
 
 # apps
-add_subdirectory(ir-tester)
+#add_subdirectory(ir-tester)
+#
+#add_subdirectory(irboard)
 
-add_subdirectory(irboard)
+# libIrBoard
+
+add_subdirectory(libirboard)
