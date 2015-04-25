@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '../ui/ErrorLogWindow.ui'
 #
-# Created: Thu Apr 23 22:42:35 2015
+# Created: Thu Apr 23 23:30:07 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!

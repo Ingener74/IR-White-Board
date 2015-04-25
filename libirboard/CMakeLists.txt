@@ -12,6 +12,8 @@ set(LIBRARY_NAME IrBoard)
 set(LIBRARY_SOURCES
     IrBoard.cpp 
     IrBoard.h
+    ImageOutput.cpp
+    ImageOutput.h
 )
 
 add_library(${LIBRARY_NAME} ${LIBRARY_SOURCES})

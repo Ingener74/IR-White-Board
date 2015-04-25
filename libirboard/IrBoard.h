@@ -10,18 +10,27 @@
 
 #ifdef SWIG
 #else
-    #include <string>
+
+#include <string>
+#include <c++/thread>
+#include <c++/atomic>
+
 #endif
 
 namespace irboard {
 
-class IrBoard {
-public:
-    IrBoard();
-    virtual ~IrBoard();
+    class IrBoard {
+    public:
+        IrBoard(class ImageOutput *imageOutput);
 
-    std::string getVersion() const;
-};
+        virtual ~IrBoard();
+
+        std::string getVersion() const;
+
+    private:
+        std::thread _thread;
+        std::atomic<bool> _stopThread;
+    };
 
 } /* namespace irboard */
 
