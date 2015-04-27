@@ -36,14 +36,14 @@ IrBoard::IrBoard(ImageOutput *imageOutput) {
 
     _stopThread = true;
 
-    _thread = thread([this]() {
-        while (true) {
+    _thread = thread([=]{
+        while (_stopThread) {
             try {
 
                 auto bar = promise<exception_ptr>();
                 auto foo = bar.get_future();
 
-                thread processor([&, this]{
+                thread processor([=, &bar]{
 
                     try {
                         // Инициализация
@@ -56,6 +56,8 @@ IrBoard::IrBoard(ImageOutput *imageOutput) {
 
                             this_thread::sleep_for(chrono::seconds(2));
                         }
+
+                        bar.set_value({});
 
                     } catch (exception const& e) {
                         bar.set_exception(current_exception());
