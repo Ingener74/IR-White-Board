@@ -12,25 +12,25 @@
 #else
 
 #include <string>
-#include <c++/thread>
-#include <c++/atomic>
+#include <thread>
+#include <atomic>
 
 #endif
 
 namespace irboard {
 
-    class IrBoard {
-    public:
-        IrBoard(class ImageOutput *imageOutput);
+class IrBoard {
+public:
+    IrBoard(class ImageOutput *imageOutput = nullptr);
 
-        virtual ~IrBoard();
+    virtual ~IrBoard();
 
-        std::string getVersion() const;
+    std::string getVersion() const;
 
-    private:
-        std::thread _thread;
-        std::atomic<bool> _stopThread;
-    };
+private:
+    std::thread _thread;
+    std::atomic<bool> _stopThread;
+};
 
 } /* namespace irboard */
 
